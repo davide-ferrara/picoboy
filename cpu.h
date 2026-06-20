@@ -1,0 +1,72 @@
+#ifndef CPU_H
+#define CPU_H
+
+#include <stdint.h>
+
+typedef struct {
+  union { uint16_t af; struct { uint8_t f; uint8_t a; }; };
+  union { uint16_t bc; struct { uint8_t c; uint8_t b; }; };
+  union { uint16_t de; struct { uint8_t e; uint8_t d; }; };
+  union { uint16_t hl; struct { uint8_t l; uint8_t h; }; };
+  uint16_t sp;
+  uint16_t pc;
+} CPU;
+
+enum Opcode {
+  NOP             = 0x00,
+  LD_A            = 0x3E,
+  LD_BC           = 0x01,
+  LD_DE           = 0x11,
+  LD_HL           = 0x21,
+  LD_SP           = 0x31,
+  LD_BC_A         = 0x02,
+  LD_A_BC         = 0x0A,
+  LD_DE_A         = 0x12,
+  LD_A_DE         = 0x1A,
+  LD_HLP_A        = 0x22,
+  LD_A_HLP        = 0x2A,
+  LD_HLM_A        = 0x32,
+  LD_A_HLM        = 0x3A,
+  INC_BC          = 0x03,
+  INC_DE          = 0x13,
+  INC_HL_16       = 0x23,
+  INC_SP_16       = 0x33,
+  INC_A           = 0x3C,
+  INC_B           = 0x04,
+  INC_C           = 0x0C,
+  INC_D           = 0x14,
+  INC_E           = 0x1C,
+  INC_H           = 0x24,
+  INC_L           = 0x2C,
+  INC_PHL         = 0x34,
+  XOR_AA          = 0xAF,
+  XOR_AB          = 0xA8,
+  XOR_AC          = 0xA9,
+  XOR_AD          = 0xAA,
+  XOR_AE          = 0xAB,
+  XOR_AH          = 0xAC,
+  XOR_AL          = 0xAD,
+  XOR_AHL         = 0xAE,
+  JP              = 0xC3,
+};
+
+enum { FLAG_Z = 0x80, FLAG_N = 0x40, FLAG_H = 0x20, FLAG_C = 0x10 };
+
+extern CPU cpu;
+extern uint8_t mmu[0x10000];
+
+uint8_t read8(uint16_t addr);
+void    write8(uint16_t addr, uint8_t value);
+uint8_t fetch8(void);
+uint16_t fetch16(void);
+
+void flag_clear(void);
+void flag_set(uint8_t mask);
+void flag_assign(uint8_t mask, int condition);
+
+int cpu_step(void);
+
+void print_bits8(uint8_t n);
+void print_flag_reg(void);
+
+#endif
