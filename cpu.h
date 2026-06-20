@@ -14,7 +14,14 @@ typedef struct {
 
 enum Opcode {
   NOP             = 0x00,
+  LD_B            = 0x06,
+  LD_C            = 0x0E,
+  LD_D            = 0x16,
+  LD_E            = 0x1E,
+  LD_H            = 0x26,
+  LD_L            = 0x2E,
   LD_A            = 0x3E,
+  LD_PHL          = 0x36,
   LD_BC           = 0x01,
   LD_DE           = 0x11,
   LD_HL           = 0x21,

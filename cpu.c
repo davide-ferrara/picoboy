@@ -37,9 +37,30 @@ int cpu_step(void) {
   switch (op) {
     case NOP:
       return 4;
+    case LD_B:
+      cpu.b = fetch8();
+      return 8;
+    case LD_C:
+      cpu.c = fetch8();
+      return 8;
+    case LD_D:
+      cpu.d = fetch8();
+      return 8;
+    case LD_E:
+      cpu.e = fetch8();
+      return 8;
+    case LD_H:
+      cpu.h = fetch8();
+      return 8;
+    case LD_L:
+      cpu.l = fetch8();
+      return 8;
     case LD_A:
       cpu.a = fetch8();
       return 8;
+    case LD_PHL:
+      write8(cpu.hl, fetch8());
+      return 12;
     case LD_BC:
       cpu.bc = fetch16();
       return 12;
@@ -129,13 +150,14 @@ int cpu_step(void) {
       flag_assign(FLAG_H, (old & 0x0F) == 0x0F);
       return 4;
     }
-    case INC_PHL: {
+    case INC_ADDR_HL: { // Incr value at addr hl
       uint8_t val = read8(cpu.hl);
       uint8_t old = val;
       val++;
       write8(cpu.hl, val);
-      cpu.f = (val == 0) ? 0x80 : 0;
-      if ((old & 0x0F) == 0x0F) cpu.f |= 0x20;
+      flag_assign(FLAG_Z, old == 0xFF);
+      flag_assign(FLAG_H, (old & 0x0F) == 0x0F);
+      flag_unset(FLAG_N);
       return 12;
     }
     case INC_BC:
