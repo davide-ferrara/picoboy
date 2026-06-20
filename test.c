@@ -2,6 +2,14 @@
 #include <stdio.h>
 #include "cpu.h"
 
+void test_flag_unset(void) {
+  printf("-- FLAG UNSET --\n");
+  flag_set(FLAG_Z);
+  print_flag_reg();
+  flag_unset(FLAG_Z);
+  print_flag_reg();
+}
+
 void test_set_flags(void) {
   printf("-- FLAGS REGISTER --\n");
   printf("-- Z|N|H|C|0|0|0|0 --\n\n");
@@ -81,6 +89,7 @@ static void inc_test(const char *reg,
     cpu.pc = 0; cpu.f = FLAG_C;
     cpu_step(); cpu_step();
     printf("C kept: %s=%02X  ", reg, *dst_reg); print_flag_reg();
+    printf("\n");
 }
 
 void test_incr_a(void) { inc_test("A", LD_A, INC_A, &cpu.a); }
@@ -100,5 +109,6 @@ int main(void) {
     test_incr_e();
     test_incr_h();
     test_incr_l();
+    test_flag_unset();
     return 0;
 }

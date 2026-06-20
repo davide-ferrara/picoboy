@@ -28,6 +28,17 @@ void flag_set(uint8_t mask) {
   cpu.f |= mask;
 }
 
+// 1001 
+// 1000 FLAG_Z
+// 0111 NOT FLAG_Z
+// ...
+// 1001 
+// 0111 AND
+// 0001
+void flag_unset(uint8_t flag) {
+  cpu.f &= ~flag;
+}
+
 void flag_assign(uint8_t mask, int condition) {
   if (condition) cpu.f |= mask;
 }
@@ -174,35 +185,43 @@ int cpu_step(void) {
       return 8;
     case XOR_AA:
       cpu.a ^= cpu.a;
-      cpu.f = (cpu.a == 0) ? 0x80 : 0;
+      cpu.f = 0;
+      flag_assign(FLAG_Z, cpu.a == 0);
       return 4;
     case XOR_AB:
       cpu.a ^= cpu.b;
-      cpu.f = (cpu.a == 0) ? 0x80 : 0;
+      cpu.f = 0;
+      flag_assign(FLAG_Z, cpu.a == 0);
       return 4;
     case XOR_AC:
       cpu.a ^= cpu.c;
-      cpu.f = (cpu.a == 0) ? 0x80 : 0;
+      cpu.f = 0;
+      flag_assign(FLAG_Z, cpu.a == 0);
       return 4;
     case XOR_AD:
       cpu.a ^= cpu.d;
-      cpu.f = (cpu.a == 0) ? 0x80 : 0;
+      cpu.f = 0;
+      flag_assign(FLAG_Z, cpu.a == 0);
       return 4;
     case XOR_AE:
       cpu.a ^= cpu.e;
-      cpu.f = (cpu.a == 0) ? 0x80 : 0;
+      cpu.f = 0;
+      flag_assign(FLAG_Z, cpu.a == 0);
       return 4;
     case XOR_AH:
       cpu.a ^= cpu.h;
-      cpu.f = (cpu.a == 0) ? 0x80 : 0;
+      cpu.f = 0;
+      flag_assign(FLAG_Z, cpu.a == 0);
       return 4;
     case XOR_AL:
       cpu.a ^= cpu.l;
-      cpu.f = (cpu.a == 0) ? 0x80 : 0;
+      cpu.f = 0;
+      flag_assign(FLAG_Z, cpu.a == 0);
       return 4;
     case XOR_AHL:
       cpu.a ^= read8(cpu.hl);
-      cpu.f = (cpu.a == 0) ? 0x80 : 0;
+      cpu.f = 0;
+      flag_assign(FLAG_Z, cpu.a == 0);
       return 8;
     case JP:
       cpu.pc = fetch16();

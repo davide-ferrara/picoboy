@@ -45,7 +45,7 @@ enum Opcode {
   INC_E           = 0x1C,
   INC_H           = 0x24,
   INC_L           = 0x2C,
-  INC_PHL         = 0x34,
+  INC_ADDR_HL     = 0x34,
   XOR_AA          = 0xAF,
   XOR_AB          = 0xA8,
   XOR_AC          = 0xA9,
@@ -69,6 +69,7 @@ uint16_t fetch16(void);
 
 void flag_clear(void);
 void flag_set(uint8_t mask);
+void flag_unset(uint8_t flag);
 void flag_assign(uint8_t mask, int condition);
 
 int cpu_step(void);

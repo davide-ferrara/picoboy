@@ -1,34 +1,56 @@
-.PHONY: build flash clean monitor bootsel viewer
+.DEFAULT_GOAL := emu
+.PHONY: all build flash clean monitor bootsel viewer emu test
 
-export PICO_SDK_PATH := $(HOME)/pico-sdk
+CC       := gcc
+CFLAGS   := -Wall -Wextra -std=c11 -g -O2 -D_DEFAULT_SOURCE
+LDFLAGS  :=
+
+PICO_SDK_PATH ?= $(HOME)/pico-sdk
+export PICO_SDK_PATH
+
 BUILD_DIR := build
+BIN_DIR   := bin
 
+all: emu
+
+# --- Host emulator ---
+emu: $(BIN_DIR)/gbemu
+
+$(BIN_DIR)/gbemu: cpu.c cpu.h main.c | $(BIN_DIR)
+	$(CC) $(CFLAGS) -o $@ cpu.c main.c $(LDFLAGS)
+
+# --- Host tests ---
+test: $(BIN_DIR)/test
+	./$(BIN_DIR)/test
+
+$(BIN_DIR)/test: cpu.c cpu.h test.c | $(BIN_DIR)
+	$(CC) $(CFLAGS) -o $@ cpu.c test.c $(LDFLAGS)
+
+$(BIN_DIR):
+	mkdir -p $@
+
+# --- Pico firmware ---
 build:
+	@test -d "$(PICO_SDK_PATH)" || { echo "Error: PICO_SDK_PATH=$(PICO_SDK_PATH) not found"; exit 1; }
 	mkdir -p $(BUILD_DIR) && cd $(BUILD_DIR) && cmake .. -DPICO_PLATFORM=rp2350 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON && make -j$$(nproc)
 	ln -sf $(BUILD_DIR)/compile_commands.json compile_commands.json
-
-bootsel:
-	picotool reboot -f
 
 flash: build
 	picotool load -F -x $(BUILD_DIR)/hello.uf2
 
-viewer:
-	gcc -O2 viewer/viewer.c -o viewer/viewer -lraylib -lm
+bootsel:
+	picotool reboot -f
 
 monitor:
 	screen /dev/ttyACM0 115200
 
-emu: bin/gbemu
+# --- Viewer (raylib) ---
+viewer: viewer/viewer
 
-bin/gbemu: cpu.c cpu.h main.c
-	mkdir -p bin && gcc -o $@ cpu.c main.c
+viewer/viewer: viewer/viewer.c
+	$(CC) -O2 $< -o $@ -lraylib -lm
 
-test: bin/test
-	./bin/test
-
-bin/test: cpu.c cpu.h test.c
-	mkdir -p bin && gcc -o $@ cpu.c test.c
-
+# --- Clean ---
 clean:
-	rm -rf $(BUILD_DIR) viewer bin
+	rm -rf $(BUILD_DIR) $(BIN_DIR)
+	rm -f compile_commands.json
