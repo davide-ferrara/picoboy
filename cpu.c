@@ -332,6 +332,36 @@ int rst(uint8_t op) {
     return 16;
 }
 
+enum { RLCA = 0x00, RRCA = 0x01, RLA = 0x10, RRA = 0x11 };
+
+// RLCA 00 000 111
+// RRCA 00 001 111
+// RLA  00 010 111
+// RRA  00 011 111
+// Rotate Left Circular Accumulator
+int rlca(uint8_t op) {
+    uint8_t op_t = (op >> 3) & 0x07;
+
+    switch (op_t) {
+        uint8_t carry = (cpu.a >> 7) & 1;
+        case RLCA:
+            cpu.a = (cpu.a << 1) | carry;
+            if (carry) flag_set(FLAG_C);
+            else       flag_unset(FLAG_C);
+            break;
+        case RRCA:
+            cpu.a = (cpu.a >> 1) | carry;
+            if (carry) flag_set(FLAG_C);
+            else       flag_unset(FLAG_C);
+            break;
+    }
+
+    flag_unset(FLAG_Z);
+    flag_unset(FLAG_N);
+    flag_unset(FLAG_H);
+    return 4;
+}
+
 int cpu_step(void) {
     if (cpu.halted) return 4;
     uint8_t op = fetch8();

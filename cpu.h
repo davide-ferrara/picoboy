@@ -41,24 +41,23 @@ enum Opcode {
 
 enum { FLAG_Z = 0x80, FLAG_N = 0x40, FLAG_H = 0x20, FLAG_C = 0x10 };
 
-
-extern CPU cpu;
-extern uint8_t mmu[0x10000];
-extern uint8_t *reg[];
+extern CPU      cpu;
+extern uint8_t  mmu[0x10000];
+extern uint8_t  *reg[];
 extern uint16_t *reg16[];
 extern uint16_t *reg16_stk[];
 
-uint8_t read8(uint16_t addr);
-void write8(uint16_t addr, uint8_t value);
-uint8_t fetch8(void);
+uint8_t  read8(uint16_t addr);
+void     write8(uint16_t addr, uint8_t value);
+uint8_t  fetch8(void);
 uint16_t fetch16(void);
-int push(uint16_t reg);
-int pop(uint16_t *reg);
+int      push(uint16_t reg);
+int      pop(uint16_t *reg);
 
-void flag_clear(void);
-void flag_set(uint8_t mask);
-void flag_unset(uint8_t flag);
-void flag_assign(uint8_t mask, int condition);
+void    flag_clear(void);
+void    flag_set(uint8_t mask);
+void    flag_unset(uint8_t flag);
+void    flag_assign(uint8_t mask, int condition);
 uint8_t flag_get(uint8_t flag);
 
 int cpu_step(void);
