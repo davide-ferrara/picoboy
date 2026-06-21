@@ -39,8 +39,53 @@ void flag_unset(uint8_t flag) {
   cpu.f &= ~flag;
 }
 
+uint8_t flag_get(uint8_t flag) {
+  return (cpu.f & flag) == flag ? 0x01 : 0x00;
+}
+
 void flag_assign(uint8_t mask, int condition) {
   if (condition) cpu.f |= mask;
+}
+
+int dec_reg(uint8_t *reg) {
+  uint8_t old = *reg;
+  (*reg)--;
+  flag_assign(FLAG_Z, *reg == 0);
+  flag_set(FLAG_N);
+  flag_assign(FLAG_H, (old & 0x0F) == 0x00);
+  return 4;
+}
+
+int cp(uint8_t val) {
+  flag_assign(FLAG_Z, cpu.a == val);
+  flag_set(FLAG_N);
+  flag_assign(FLAG_H, (cpu.a & 0x0F) < (val & 0x0F));
+  flag_assign(FLAG_C, cpu.a < val);
+  return 4;
+}
+
+int jp_cond(int condition) {
+  if (condition) {
+    cpu.pc = fetch16();
+    return 16;
+  }
+  fetch16();
+  return 12;
+}
+
+int push(uint16_t reg) {
+  cpu.sp--;
+  mmu[cpu.sp] = (uint8_t)(reg >> 8);
+  cpu.sp--;
+  mmu[cpu.sp] = (uint8_t)reg;
+  return 16;
+}
+
+int pop(uint16_t *reg) {
+  uint8_t low  = mmu[cpu.sp++];
+  uint8_t high = mmu[cpu.sp++];
+  *reg = ((uint16_t)high << 8) | low;
+  return 12;
 }
 
 int cpu_step(void) {
@@ -183,6 +228,41 @@ int cpu_step(void) {
     case INC_SP_16:
       cpu.sp++;
       return 8;
+    case DEC_A:
+      return dec_reg(&cpu.a);
+    case DEC_B:
+      return dec_reg(&cpu.b);
+    case DEC_C:
+      return dec_reg(&cpu.c);
+    case DEC_D:
+      return dec_reg(&cpu.d);
+    case DEC_E:
+      return dec_reg(&cpu.e);
+    case DEC_H:
+      return dec_reg(&cpu.h);
+    case DEC_L:
+      return dec_reg(&cpu.l);
+    case DEC_BC:
+      cpu.bc--;
+      return 8;
+    case DEC_DE:
+      cpu.de--;
+      return 8;
+    case DEC_HL_16:
+      cpu.hl--;
+      return 8;
+    case DEC_SP:
+      cpu.sp--;
+      return 8;
+    case DEC_ADDR_HL: {
+      uint8_t old = read8(cpu.hl);
+      uint8_t val = old - 1;
+      write8(cpu.hl, val);
+      flag_assign(FLAG_Z, val == 0);
+      flag_set(FLAG_N);
+      flag_assign(FLAG_H, (old & 0x0F) == 0);
+      return 12;
+    }
     case XOR_AA:
       cpu.a ^= cpu.a;
       cpu.f = 0;
@@ -223,9 +303,58 @@ int cpu_step(void) {
       cpu.f = 0;
       flag_assign(FLAG_Z, cpu.a == 0);
       return 8;
+    case CP_B:
+      return cp(cpu.b);
+    case CP_C:
+      return cp(cpu.c);
+    case CP_D:
+      return cp(cpu.d);
+    case CP_E:
+      return cp(cpu.e);
+    case CP_H:
+      return cp(cpu.h);
+    case CP_L:
+      return cp(cpu.l);
+    case CP_HL:
+      cp(read8(cpu.hl));
+      return 8;
+    case CP_A:
+      return cp(cpu.a);
+    case CP_U8:
+      cp(fetch8());
+      return 8;
+    case PUSH_BC:
+      return push(cpu.bc);
+    case PUSH_DE:
+      return push(cpu.de);
+    case PUSH_HL:
+      return push(cpu.hl);
+    case PUSH_AF:
+      return push(cpu.af);
+    case POP_BC:
+      return pop(&cpu.bc);
+    case POP_DE:
+      return pop(&cpu.de);
+    case POP_HL:
+      return pop(&cpu.hl);
+    case POP_AF:
+      pop(&cpu.af);
+      cpu.f &= 0xF0;
+      return 12;
     case JP:
       cpu.pc = fetch16();
       return 16;
+    case JP_NZ:
+      return jp_cond(flag_get(FLAG_Z) == 0);
+    case JP_Z:
+      return jp_cond(flag_get(FLAG_Z));
+    case JP_NC:
+      return jp_cond(flag_get(FLAG_C) == 0);
+    case JP_C:
+      return jp_cond(flag_get(FLAG_C));
+    case JP_HL:
+      cpu.pc = cpu.hl;
+      return 4;
     default:
       printf("Invalid opcode: %04X\n", op);
       return 0;

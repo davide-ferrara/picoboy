@@ -12,6 +12,7 @@ int main(void) {
   }
 
   cpu.pc = 0x0100;
+  cpu.sp = 0xFFFE;
   while (1) {
     printf("PC=%04X A=%02X F=%02X SP=%04X  ->  ", cpu.pc, cpu.a, cpu.f, cpu.sp);
     int cycles = cpu_step();

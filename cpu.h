@@ -46,6 +46,10 @@ enum Opcode {
   INC_H           = 0x24,
   INC_L           = 0x2C,
   INC_ADDR_HL     = 0x34,
+  DEC_BC          = 0x0B,
+  DEC_DE          = 0x1B,
+  DEC_HL_16       = 0x2B,
+  DEC_SP          = 0x3B,
   DEC_A           = 0x3D,
   DEC_B           = 0x05,
   DEC_C           = 0x0D,
@@ -53,7 +57,7 @@ enum Opcode {
   DEC_E           = 0x1D,
   DEC_H           = 0x25,
   DEC_L           = 0x2D,
-  DEC_SP          = 0x3B,
+  DEC_ADDR_HL     = 0x35,
   XOR_AA          = 0xAF,
   XOR_AB          = 0xA8,
   XOR_AC          = 0xA9,
@@ -62,7 +66,29 @@ enum Opcode {
   XOR_AH          = 0xAC,
   XOR_AL          = 0xAD,
   XOR_AHL         = 0xAE,
+  CP_B            = 0xB8,
+  CP_C            = 0xB9,
+  CP_D            = 0xBA,
+  CP_E            = 0xBB,
+  CP_H            = 0xBC,
+  CP_L            = 0xBD,
+  CP_HL           = 0xBE,
+  CP_A            = 0xBF,
+  CP_U8           = 0xFE,
+  JP_NZ           = 0xC2,
   JP              = 0xC3,
+  JP_Z            = 0xCA,
+  JP_NC           = 0xD2,
+  JP_C            = 0xDA,
+  JP_HL           = 0xE9,
+  PUSH_BC         = 0xC5,
+  PUSH_DE         = 0xD5,
+  PUSH_HL         = 0xE5,
+  PUSH_AF         = 0xF5,
+  POP_BC          = 0xC1,
+  POP_DE          = 0xD1,
+  POP_HL          = 0xE1,
+  POP_AF          = 0xF1,
 };
 
 enum { FLAG_Z = 0x80, FLAG_N = 0x40, FLAG_H = 0x20, FLAG_C = 0x10 };
@@ -79,6 +105,7 @@ void flag_clear(void);
 void flag_set(uint8_t mask);
 void flag_unset(uint8_t flag);
 void flag_assign(uint8_t mask, int condition);
+uint8_t flag_get(uint8_t flag);
 
 int cpu_step(void);
 
