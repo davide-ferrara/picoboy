@@ -326,6 +326,12 @@ int alu_imm(uint8_t op) {
     return 8;
 }
 
+int rst(uint8_t op) {
+    push(cpu.pc);
+    cpu.pc = op & 0x38;
+    return 16;
+}
+
 int cpu_step(void) {
     if (cpu.halted) return 4;
     uint8_t op = fetch8();
@@ -407,6 +413,8 @@ int cpu_step(void) {
                 return ld_r16_a((op >> 4) & 0x03);
             if ((op & 0xCF) == 0x0A)
                 return ld_a_r16((op >> 4) & 0x03);
+            if ((op & 0xC7) == 0xC7)
+                return rst(op);
             printf("Invalid opcode: %04X\n", op);
             return 0;
     }
