@@ -374,6 +374,17 @@ int rlca(uint8_t op) {
     return 4;
 }
 
+int add_hl_r16(uint8_t op) {
+    uint8_t pair = (op >> 4) & 0x03;
+    uint16_t val = *reg16[pair];
+    uint32_t res = (uint32_t)cpu.hl + val;
+    flag_assign(FLAG_H, ((cpu.hl & 0x0FFF) + (val & 0x0FFF)) > 0x0FFF);
+    flag_assign(FLAG_C, res > 0xFFFF);
+    flag_unset(FLAG_N);
+    cpu.hl = (uint16_t)res;
+    return 8;
+}
+
 int cpu_step(void) {
     if (cpu.halted) return 4;
     uint8_t op = fetch8();
@@ -455,6 +466,8 @@ int cpu_step(void) {
                 return ld_r16_a((op >> 4) & 0x03);
             if ((op & 0xCF) == 0x0A)
                 return ld_a_r16((op >> 4) & 0x03);
+            if ((op & 0xCF) == 0x09)
+                return add_hl_r16(op);
             if ((op & 0xC7) == 0xC7)
                 return rst(op);
             printf("Invalid opcode: %04X\n", op);
