@@ -6,6 +6,8 @@ CPU cpu = {0};
 uint8_t mmu[0x10000];
 uint8_t *reg[] = {&cpu.b, &cpu.c, &cpu.d, &cpu.e, &cpu.h, &cpu.l, NULL, &cpu.a};
 
+enum { ADD = 0, ADC = 1, SUB = 2, SBC = 3, AND = 4, XOR = 5, OR = 6, CP = 7 };
+
 uint8_t read8(uint16_t addr) {
     return mmu[addr];
 }
@@ -55,6 +57,72 @@ int dec(uint8_t *reg) {
     flag_assign(FLAG_Z, *reg == 0);
     flag_set(FLAG_N);
     flag_assign(FLAG_H, (old & 0x0F) == 0x00);
+    return 4;
+}
+
+int add(uint8_t val) {
+    cpu.a += val;
+    flag_assign(FLAG_Z, cpu.a == 0);
+    flag_unset(FLAG_N);
+    flag_assign(FLAG_H, (cpu.a & 0x0F) < (val & 0x0F));
+    flag_assign(FLAG_C, cpu.a < val);
+    return 4;
+}
+
+int adc(uint8_t val) {
+    int carry = flag_get(FLAG_C);
+    uint16_t res = (uint16_t)cpu.a + val + carry;
+    flag_assign(FLAG_H, (cpu.a & 0x0F) + (val & 0x0F) + carry > 0x0F);
+    flag_assign(FLAG_C, res > 0xFF);
+    cpu.a = (uint8_t)res;
+    flag_assign(FLAG_Z, cpu.a == 0);
+    flag_unset(FLAG_N);
+    return 4;
+}
+
+int sub(uint8_t val) {
+    flag_assign(FLAG_H, (cpu.a & 0x0F) < (val & 0x0F));
+    flag_assign(FLAG_C, cpu.a < val);
+    cpu.a -= val;
+    flag_assign(FLAG_Z, cpu.a == 0);
+    flag_set(FLAG_N);
+    return 4;
+}
+
+int sbc(uint8_t val) {
+    int carry = flag_get(FLAG_C);
+    flag_assign(FLAG_C, cpu.a < val + carry);
+    flag_assign(FLAG_H, (cpu.a & 0x0F) < (val & 0x0F) + carry);
+    cpu.a -= val + carry;
+    flag_assign(FLAG_Z, cpu.a == 0);
+    flag_set(FLAG_N);
+    return 4;
+}
+
+int and8(uint8_t val) {
+    cpu.a &= val;
+    flag_assign(FLAG_Z, cpu.a == 0);
+    flag_unset(FLAG_N);
+    flag_set(FLAG_H);
+    flag_unset(FLAG_C);
+    return 4;
+}
+
+int xor8(uint8_t val) {
+    cpu.a ^= val;
+    flag_assign(FLAG_Z, cpu.a == 0);
+    flag_unset(FLAG_N);
+    flag_unset(FLAG_H);
+    flag_unset(FLAG_C);
+    return 4;
+}
+
+int or8(uint8_t val) {
+    cpu.a |= val;
+    flag_assign(FLAG_Z, cpu.a == 0);
+    flag_unset(FLAG_N);
+    flag_unset(FLAG_H);
+    flag_unset(FLAG_C);
     return 4;
 }
 
@@ -137,6 +205,28 @@ int ld_r_r(uint8_t op) {
     return (src == 6 || dst == 6) ? 8 : 4;
 }
 
+int alu_a(uint8_t op) {
+    uint8_t src = op & 0x07;
+    uint8_t op_t = (op >> 3) & 0x07;
+    uint8_t val;
+
+    if (src == 6) val = read8(cpu.hl);
+    else val = *reg[src];
+
+    switch (op_t) {
+        case ADD: add(val); break;
+        case ADC: adc(val); break;
+        case SUB: sub(val); break;
+        case SBC: sbc(val); break;
+        case AND: and8(val); break;
+        case XOR: xor8(val); break;
+        case OR:  or8(val);  break;
+        case CP:  cp(val);   break;
+    }
+
+    return (src == 6) ? 8 : 4;
+}
+
 int cpu_step(void) {
     if (cpu.halted) return 4;
     uint8_t op = fetch8();
@@ -212,6 +302,7 @@ int cpu_step(void) {
             uint8_t old = cpu.a;
             cpu.a++;
             flag_assign(FLAG_Z, old == 0xFF);
+            flag_unset(FLAG_N);
             flag_assign(FLAG_H, (old & 0x0F) == 0x0F);
             return 4;
         }
@@ -314,63 +405,6 @@ int cpu_step(void) {
             flag_assign(FLAG_H, (old & 0x0F) == 0);
             return 12;
         }
-        case XOR_AA:
-            cpu.a ^= cpu.a;
-            cpu.f = 0;
-            flag_assign(FLAG_Z, cpu.a == 0);
-            return 4;
-        case XOR_AB:
-            cpu.a ^= cpu.b;
-            cpu.f = 0;
-            flag_assign(FLAG_Z, cpu.a == 0);
-            return 4;
-        case XOR_AC:
-            cpu.a ^= cpu.c;
-            cpu.f = 0;
-            flag_assign(FLAG_Z, cpu.a == 0);
-            return 4;
-        case XOR_AD:
-            cpu.a ^= cpu.d;
-            cpu.f = 0;
-            flag_assign(FLAG_Z, cpu.a == 0);
-            return 4;
-        case XOR_AE:
-            cpu.a ^= cpu.e;
-            cpu.f = 0;
-            flag_assign(FLAG_Z, cpu.a == 0);
-            return 4;
-        case XOR_AH:
-            cpu.a ^= cpu.h;
-            cpu.f = 0;
-            flag_assign(FLAG_Z, cpu.a == 0);
-            return 4;
-        case XOR_AL:
-            cpu.a ^= cpu.l;
-            cpu.f = 0;
-            flag_assign(FLAG_Z, cpu.a == 0);
-            return 4;
-        case XOR_AHL:
-            cpu.a ^= read8(cpu.hl);
-            cpu.f = 0;
-            flag_assign(FLAG_Z, cpu.a == 0);
-            return 8;
-        case CP_B:
-            return cp(cpu.b);
-        case CP_C:
-            return cp(cpu.c);
-        case CP_D:
-            return cp(cpu.d);
-        case CP_E:
-            return cp(cpu.e);
-        case CP_H:
-            return cp(cpu.h);
-        case CP_L:
-            return cp(cpu.l);
-        case CP_HL:
-            cp(read8(cpu.hl));
-            return 8;
-        case CP_A:
-            return cp(cpu.a);
         case CP_U8:
             cp(fetch8());
             return 8;
@@ -437,6 +471,8 @@ int cpu_step(void) {
         default:
             if (op >= 0x40 && op <= 0x7F)
                 return ld_r_r(op);
+            if (op >= 0x80 && op <= 0xBF)
+                return alu_a(op);
             printf("Invalid opcode: %04X\n", op);
             return 0;
     }

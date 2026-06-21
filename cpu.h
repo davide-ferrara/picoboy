@@ -58,24 +58,8 @@ enum Opcode {
     DEC_E = 0x1D,
     DEC_H = 0x25,
     DEC_L = 0x2D,
-    DEC_ADDR_HL = 0x35,
-    XOR_AA = 0xAF,
-    XOR_AB = 0xA8,
-    XOR_AC = 0xA9,
-    XOR_AD = 0xAA,
-    XOR_AE = 0xAB,
-    XOR_AH = 0xAC,
-    XOR_AL = 0xAD,
-    XOR_AHL = 0xAE,
-    CP_B = 0xB8,
-    CP_C = 0xB9,
-    CP_D = 0xBA,
-    CP_E = 0xBB,
-    CP_H = 0xBC,
-    CP_L = 0xBD,
-    CP_HL = 0xBE,
-    CP_A = 0xBF,
-    CP_U8 = 0xFE,
+    DEC_ADDR_HL     = 0x35,
+    CP_U8           = 0xFE,
     JP_NZ = 0xC2,
     JP = 0xC3,
     JP_Z = 0xCA,
@@ -108,8 +92,10 @@ enum Opcode {
 
 enum { FLAG_Z = 0x80, FLAG_N = 0x40, FLAG_H = 0x20, FLAG_C = 0x10 };
 
+
 extern CPU cpu;
 extern uint8_t mmu[0x10000];
+extern uint8_t *reg[];
 
 uint8_t read8(uint16_t addr);
 void write8(uint16_t addr, uint8_t value);
