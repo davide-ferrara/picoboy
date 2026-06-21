@@ -84,6 +84,25 @@ int jr_cond(int condition) {
     return 8;
 }
 
+int call_cond(int condition) {
+    if (condition) {
+        uint16_t target = fetch16();
+        push(cpu.pc);
+        cpu.pc = target;
+        return 24;
+    }
+    fetch16();
+    return 12;
+}
+
+int ret_cond(int condition) {
+    if (condition) {
+        pop(&cpu.pc);
+        return 20;
+    }
+    return 8;
+}
+
 int push(uint16_t reg) {
     cpu.sp--;
     mmu[cpu.sp] = (uint8_t)(reg >> 8);
@@ -397,6 +416,22 @@ int cpu_step(void) {
             return jr_cond(flag_get(FLAG_Z) == 1);
         case JR_C:
             return jr_cond(flag_get(FLAG_C) == 1);
+        case CALL_NZ:
+            return call_cond(flag_get(FLAG_Z) == 0);
+        case CALL_Z:
+            return call_cond(flag_get(FLAG_Z) == 1);
+        case CALL_C:
+            return call_cond(flag_get(FLAG_C) == 1);
+        case CALL_NC:
+            return call_cond(flag_get(FLAG_C) == 0);
+        case RET_NZ:
+            return ret_cond(flag_get(FLAG_Z) == 0);
+        case RET_Z:
+            return ret_cond(flag_get(FLAG_Z) == 1);
+        case RET_NC:
+            return ret_cond(flag_get(FLAG_C) == 0);
+        case RET_C:
+            return ret_cond(flag_get(FLAG_C) == 1);
         case HALT:
             return halt();
         default:

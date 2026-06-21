@@ -95,6 +95,14 @@ enum Opcode {
     POP_DE = 0xD1,
     POP_HL = 0xE1,
     POP_AF = 0xF1,
+	CALL_NZ = 0xC4,
+	CALL_Z = 0xCC,
+	CALL_C = 0xDC,
+	CALL_NC = 0xD4,
+	RET_NZ = 0xC0,
+	RET_Z  = 0xC8,
+	RET_NC = 0xD0,
+	RET_C  = 0xD8,
     HALT = 0x76,
 };
 
@@ -107,6 +115,8 @@ uint8_t read8(uint16_t addr);
 void write8(uint16_t addr, uint8_t value);
 uint8_t fetch8(void);
 uint16_t fetch16(void);
+int push(uint16_t reg);
+int pop(uint16_t *reg);
 
 void flag_clear(void);
 void flag_set(uint8_t mask);
