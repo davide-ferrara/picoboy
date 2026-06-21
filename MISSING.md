@@ -1,37 +1,5 @@
 # Opcode mancanti
 
-## Blocchi piccoli
-
-### Flag ops (3 opcode)
-
-| Opcode | Istruzione | Flag         |
-| ------ | ---------- | ------------ |
-| 0x2F   | CPL        | N=1,H=1      |
-| 0x37   | SCF        | N=0,H=0,C=1  |
-| 0x3F   | CCF        | N=0,H=0,C=!C |
-
-### LDH (2 opcode)
-
-| Opcode | Istruzione | Note                             |
-| ------ | ---------- | -------------------------------- |
-| 0xE0   | LDH (u8),A | write8(0xFF00 + fetch8(), cpu.a) |
-| 0xF0   | LDH A,(u8) | cpu.a = read8(0xFF00 + fetch8()) |
-
----
-
-## Singole
-
-### Memory
-
-| Opcode | Istruzione  | Note                                                                        |
-| ------ | ----------- | --------------------------------------------------------------------------- |
-| 0x08   | LD (u16),SP | 2 byte — fetch16() per indirizzo, poi write8 indirizzo e indirizzo+1 con SP |
-| 0xE2   | LD (C),A    | write8(0xFF00 + cpu.c, cpu.a)                                               |
-| 0xEA   | LD (u16),A  | write8(fetch16(), cpu.a)                                                    |
-| 0xF2   | LD A,(C)    | cpu.a = read8(0xFF00 + cpu.c)                                               |
-| 0xF9   | LD SP,HL    | cpu.sp = cpu.hl                                                             |
-| 0xFA   | LD A,(u16)  | cpu.a = read8(fetch16())                                                    |
-
 ### Stack / 16-bit
 
 | Opcode | Istruzione  | Note                                           |

@@ -497,6 +497,40 @@ int cpu_step(void) {
                 return add_hl_r16(op);
             if ((op & 0xC7) == 0xC7)
                 return rst(op);
+            if (op == 0x08) {
+                uint16_t addr = fetch16();
+                write8(addr, cpu.sp & 0xFF);
+                write8(addr + 1, cpu.sp >> 8);
+                return 20;
+            }
+            if (op == 0xE0) {
+                write8(0xFF00 + fetch8(), cpu.a);
+                return 12;
+            }
+            if (op == 0xE2) {
+                write8(0xFF00 + cpu.c, cpu.a);
+                return 8;
+            }
+            if (op == 0xEA) {
+                write8(fetch16(), cpu.a);
+                return 16;
+            }
+            if (op == 0xF0) {
+                cpu.a = read8(0xFF00 + fetch8());
+                return 12;
+            }
+            if (op == 0xF2) {
+                cpu.a = read8(0xFF00 + cpu.c);
+                return 8;
+            }
+            if (op == 0xF9) {
+                cpu.sp = cpu.hl;
+                return 8;
+            }
+            if (op == 0xFA) {
+                cpu.a = read8(fetch16());
+                return 16;
+            }
             if (op == 0x2F || op == 0x37 || op == 0x3F)
                 return flag_ops(op);
             else printf("Invalid opcode: %04X\n", op);
