@@ -1,28 +1,6 @@
 # Opcode mancanti
 
-## Blocco semplificabile
-
-### ADD HL,r16 (4 opcode)
-
-Pattern: `(op & 0xCF) == 0x09` — pair = `(op >> 4) & 3`
-
-| Opcode | Istruzione |
-| ------ | ---------- |
-| 0x09   | ADD HL,BC  |
-| 0x19   | ADD HL,DE  |
-| 0x29   | ADD HL,HL  |
-| 0x39   | ADD HL,SP  |
-
 ## Blocchi piccoli
-
-### Rotates / Shifts (4 opcode)
-
-| Opcode | Istruzione | Flag               |
-| ------ | ---------- | ------------------ |
-| 0x07   | RLCA       | Z=0,N=0,H=0,C=bit7 |
-| 0x0F   | RRCA       | Z=0,N=0,H=0,C=bit0 |
-| 0x17   | RLA        | Z=0,N=0,H=0,C=bit7 |
-| 0x1F   | RRA        | Z=0,N=0,H=0,C=bit0 |
 
 ### Flag ops (3 opcode)
 

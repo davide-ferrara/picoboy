@@ -8,7 +8,8 @@ uint8_t *reg[] = {&cpu.b, &cpu.c, &cpu.d, &cpu.e, &cpu.h, &cpu.l, NULL, &cpu.a};
 uint16_t *reg16[] = {&cpu.bc, &cpu.de, &cpu.hl, &cpu.sp};
 uint16_t *reg16_stk[] = {&cpu.bc, &cpu.de, &cpu.hl, &cpu.af};
 
-enum { ADD = 0, ADC = 1, SUB = 2, SBC = 3, AND = 4, XOR = 5, OR = 6, CP = 7 };
+enum { ADD = 0, ADC = 1, SUB = 2, SBC = 3, AND = 4, XOR = 5, OR = 6, CP = 7, CPL = 5, SCF = 6, CCF = 7 };
+enum { RLCA = 0x00, RRCA = 0x01, RLA = 0x10, RRA = 0x11 };
 
 uint8_t read8(uint16_t addr) {
     return mmu[addr];
@@ -332,8 +333,6 @@ int rst(uint8_t op) {
     return 16;
 }
 
-enum { RLCA = 0x00, RRCA = 0x01, RLA = 0x10, RRA = 0x11 };
-
 // RLCA 00 000 111
 // RRCA 00 001 111
 // RLA  00 010 111
@@ -383,6 +382,34 @@ int add_hl_r16(uint8_t op) {
     flag_unset(FLAG_N);
     cpu.hl = (uint16_t)res;
     return 8;
+}
+
+// 0x2F CPL 00 101 111 5
+// 0x37 SCF 00 110 111 6
+// 0x3F CCF 00 111 111 7
+int flag_ops(uint8_t op) {
+    uint8_t op_t = (op >> 3) & 0x07;
+    switch(op_t) {
+        case CPL:
+            cpu.a = ~cpu.a;
+            flag_set(FLAG_N);
+            flag_set(FLAG_H);
+            break;
+        case SCF:
+            flag_set(FLAG_C);
+            flag_unset(FLAG_N);
+            flag_unset(FLAG_H);
+            break;
+        case CCF:
+            if (flag_get(FLAG_C))
+                flag_unset(FLAG_C);
+            else
+                flag_set(FLAG_C);
+            flag_unset(FLAG_N);
+            flag_unset(FLAG_H);
+            break;
+    }
+    return 4;
 }
 
 int cpu_step(void) {
@@ -470,7 +497,9 @@ int cpu_step(void) {
                 return add_hl_r16(op);
             if ((op & 0xC7) == 0xC7)
                 return rst(op);
-            printf("Invalid opcode: %04X\n", op);
+            if (op == 0x2F || op == 0x37 || op == 0x3F)
+                return flag_ops(op);
+            else printf("Invalid opcode: %04X\n", op);
             return 0;
     }
 }
