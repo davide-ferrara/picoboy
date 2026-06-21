@@ -5,6 +5,8 @@
 CPU cpu = {0};
 uint8_t mmu[0x10000];
 uint8_t *reg[] = {&cpu.b, &cpu.c, &cpu.d, &cpu.e, &cpu.h, &cpu.l, NULL, &cpu.a};
+uint16_t *reg16[] = {&cpu.bc, &cpu.de, &cpu.hl, &cpu.sp};
+uint16_t *reg16_stk[] = {&cpu.bc, &cpu.de, &cpu.hl, &cpu.af};
 
 enum { ADD = 0, ADC = 1, SUB = 2, SBC = 3, AND = 4, XOR = 5, OR = 6, CP = 7 };
 
@@ -32,13 +34,6 @@ void flag_set(uint8_t mask) {
     cpu.f |= mask;
 }
 
-// 1001
-// 1000 FLAG_Z
-// 0111 NOT FLAG_Z
-// ...
-// 1001 
-// 0111 AND
-// 0001
 void flag_unset(uint8_t flag) {
     cpu.f &= ~flag;
 }
@@ -49,6 +44,50 @@ uint8_t flag_get(uint8_t flag) {
 
 void flag_assign(uint8_t mask, int condition) {
     if (condition) cpu.f |= mask;
+}
+
+int inc8(uint8_t src) {
+    if (src == 6) {
+        uint8_t old = read8(cpu.hl);
+        write8(cpu.hl, old + 1);
+        flag_assign(FLAG_Z, old == 0xFF);
+        flag_assign(FLAG_H, (old & 0x0F) == 0x0F);
+        flag_unset(FLAG_N);
+        return 12;
+    }
+    uint8_t old = *reg[src];
+    (*reg[src])++;
+    flag_assign(FLAG_Z, old == 0xFF);
+    flag_assign(FLAG_H, (old & 0x0F) == 0x0F);
+    flag_unset(FLAG_N);
+    return 4;
+}
+
+int dec8(uint8_t src) {
+    if (src == 6) {
+        uint8_t old = read8(cpu.hl);
+        write8(cpu.hl, old - 1);
+        flag_assign(FLAG_Z, old == 1);
+        flag_set(FLAG_N);
+        flag_assign(FLAG_H, (old & 0x0F) == 0);
+        return 12;
+    }
+    uint8_t old = *reg[src];
+    (*reg[src])--;
+    flag_assign(FLAG_Z, *reg[src] == 0);
+    flag_set(FLAG_N);
+    flag_assign(FLAG_H, (old & 0x0F) == 0);
+    return 4;
+}
+
+int inc16(uint8_t pair) {
+    (*reg16[pair])++;
+    return 8;
+}
+
+int dec16(uint8_t pair) {
+    (*reg16[pair])--;
+    return 8;
 }
 
 int dec(uint8_t *reg) {
@@ -186,6 +225,16 @@ int pop(uint16_t *reg) {
     return 12;
 }
 
+int push_r16(uint8_t pair) {
+    return push(*reg16_stk[pair]);
+}
+
+int pop_r16(uint8_t pair) {
+    pop(reg16_stk[pair]);
+    if (pair == 3) cpu.f &= 0xF0;
+    return 12;
+}
+
 int halt(void) {
     cpu.halted = 1;
     return 4;
@@ -203,6 +252,40 @@ int ld_r_r(uint8_t op) {
     else *reg[dst] = val;
 
     return (src == 6 || dst == 6) ? 8 : 4;
+}
+
+int ld_r_u8(uint8_t src) {
+    if (src == 6) {
+        write8(cpu.hl, fetch8());
+        return 12;
+    }
+    *reg[src] = fetch8();
+    return 8;
+}
+
+int ld_r16_u16(uint8_t pair) {
+    *reg16[pair] = fetch16();
+    return 12;
+}
+
+int ld_r16_a(uint8_t pair) {
+    switch (pair) {
+        case 0: write8(cpu.bc, cpu.a); break;
+        case 1: write8(cpu.de, cpu.a); break;
+        case 2: write8(cpu.hl, cpu.a); cpu.hl++; break;
+        case 3: write8(cpu.hl, cpu.a); cpu.hl--; break;
+    }
+    return 8;
+}
+
+int ld_a_r16(uint8_t pair) {
+    switch (pair) {
+        case 0: cpu.a = read8(cpu.bc); break;
+        case 1: cpu.a = read8(cpu.de); break;
+        case 2: cpu.a = read8(cpu.hl); cpu.hl++; break;
+        case 3: cpu.a = read8(cpu.hl); cpu.hl--; break;
+    }
+    return 8;
 }
 
 int alu_a(uint8_t op) {
@@ -234,198 +317,9 @@ int cpu_step(void) {
     switch (op) {
         case NOP:
             return 4;
-        case LD_B:
-            cpu.b = fetch8();
-            return 8;
-        case LD_C:
-            cpu.c = fetch8();
-            return 8;
-        case LD_D:
-            cpu.d = fetch8();
-            return 8;
-        case LD_E:
-            cpu.e = fetch8();
-            return 8;
-        case LD_H:
-            cpu.h = fetch8();
-            return 8;
-        case LD_L:
-            cpu.l = fetch8();
-            return 8;
-        case LD_A:
-            cpu.a = fetch8();
-            return 8;
-        case LD_PHL:
-            write8(cpu.hl, fetch8());
-            return 12;
-        case LD_BC:
-            cpu.bc = fetch16();
-            return 12;
-        case LD_DE:
-            cpu.de = fetch16();
-            return 12;
-        case LD_HL:
-            cpu.hl = fetch16();
-            return 12;
-        case LD_SP:
-            cpu.sp = fetch16();
-            return 12;
-        case LD_BC_A:
-            write8(cpu.bc, cpu.a);
-            return 8;
-        case LD_A_BC:
-            cpu.a = read8(cpu.bc);
-            return 8;
-        case LD_DE_A:
-            write8(cpu.de, cpu.a);
-            return 8;
-        case LD_A_DE:
-            cpu.a = read8(cpu.de);
-            return 8;
-        case LD_HLP_A:
-            write8(cpu.hl, cpu.a);
-            cpu.hl++;
-            return 8;
-        case LD_A_HLP:
-            cpu.a = read8(cpu.hl);
-            cpu.hl++;
-            return 8;
-        case LD_HLM_A:
-            write8(cpu.hl, cpu.a);
-            cpu.hl--;
-            return 8;
-        case LD_A_HLM:
-            cpu.a = read8(cpu.hl);
-            cpu.hl--;
-            return 8;
-        case INC_A: {
-            uint8_t old = cpu.a;
-            cpu.a++;
-            flag_assign(FLAG_Z, old == 0xFF);
-            flag_unset(FLAG_N);
-            flag_assign(FLAG_H, (old & 0x0F) == 0x0F);
-            return 4;
-        }
-        case INC_B: {
-            uint8_t old = cpu.b;
-            cpu.b++;
-            flag_assign(FLAG_Z, old == 0xFF);
-            flag_assign(FLAG_H, (old & 0x0F) == 0x0F);
-            return 4;
-        }
-        case INC_C: {
-            uint8_t old = cpu.c;
-            cpu.c++;
-            flag_assign(FLAG_Z, old == 0xFF);
-            flag_assign(FLAG_H, (old & 0x0F) == 0x0F);
-            return 4;
-        }
-        case INC_D: {
-            uint8_t old = cpu.d;
-            cpu.d++;
-            flag_assign(FLAG_Z, old == 0xFF);
-            flag_assign(FLAG_H, (old & 0x0F) == 0x0F);
-            return 4;
-        }
-        case INC_E: {
-            uint8_t old = cpu.e;
-            cpu.e++;
-            flag_assign(FLAG_Z, old == 0xFF);
-            flag_assign(FLAG_H, (old & 0x0F) == 0x0F);
-            return 4;
-        }
-        case INC_H: {
-            uint8_t old = cpu.h;
-            cpu.h++;
-            flag_assign(FLAG_Z, old == 0xFF);
-            flag_assign(FLAG_H, (old & 0x0F) == 0x0F);
-            return 4;
-        }
-        case INC_L: {
-            uint8_t old = cpu.l;
-            cpu.l++;
-            flag_assign(FLAG_Z, old == 0xFF);
-            flag_assign(FLAG_H, (old & 0x0F) == 0x0F);
-            return 4;
-        }
-        case INC_ADDR_HL: { // Incr value at addr hl
-            uint8_t val = read8(cpu.hl);
-            uint8_t old = val;
-            val++;
-            write8(cpu.hl, val);
-            flag_assign(FLAG_Z, old == 0xFF);
-            flag_assign(FLAG_H, (old & 0x0F) == 0x0F);
-            flag_unset(FLAG_N);
-            return 12;
-        }
-        case INC_BC:
-            cpu.bc++;
-            return 8;
-        case INC_DE:
-            cpu.de++;
-            return 8;
-        case INC_HL_16:
-            cpu.hl++;
-            return 8;
-        case INC_SP_16:
-            cpu.sp++;
-            return 8;
-        case DEC_A:
-            return dec(&cpu.a);
-        case DEC_B:
-            return dec(&cpu.b);
-        case DEC_C:
-            return dec(&cpu.c);
-        case DEC_D:
-            return dec(&cpu.d);
-        case DEC_E:
-            return dec(&cpu.e);
-        case DEC_H:
-            return dec(&cpu.h);
-        case DEC_L:
-            return dec(&cpu.l);
-        case DEC_BC:
-            cpu.bc--;
-            return 8;
-        case DEC_DE:
-            cpu.de--;
-            return 8;
-        case DEC_HL_16:
-            cpu.hl--;
-            return 8;
-        case DEC_SP:
-            cpu.sp--;
-            return 8;
-        case DEC_ADDR_HL: {
-            uint8_t old = read8(cpu.hl);
-            uint8_t val = old - 1;
-            write8(cpu.hl, val);
-            flag_assign(FLAG_Z, val == 0);
-            flag_set(FLAG_N);
-            flag_assign(FLAG_H, (old & 0x0F) == 0);
-            return 12;
-        }
         case CP_U8:
             cp(fetch8());
             return 8;
-        case PUSH_BC:
-            return push(cpu.bc);
-        case PUSH_DE:
-            return push(cpu.de);
-        case PUSH_HL:
-            return push(cpu.hl);
-        case PUSH_AF:
-            return push(cpu.af);
-        case POP_BC:
-            return pop(&cpu.bc);
-        case POP_DE:
-            return pop(&cpu.de);
-        case POP_HL:
-            return pop(&cpu.hl);
-        case POP_AF:
-            pop(&cpu.af);
-            cpu.f &= 0xF0;
-            return 12;
         case JP:
             cpu.pc = fetch16();
             return 16;
@@ -473,6 +367,26 @@ int cpu_step(void) {
                 return ld_r_r(op);
             if (op >= 0x80 && op <= 0xBF)
                 return alu_a(op);
+            if ((op & 0xCF) == 0xC5)
+                return push_r16((op >> 4) & 0x03);
+            if ((op & 0xCF) == 0xC1)
+                return pop_r16((op >> 4) & 0x03);
+            if ((op & 0x07) == 4)
+                return inc8((op >> 3) & 0x07);
+            if ((op & 0x07) == 5)
+                return dec8((op >> 3) & 0x07);
+            if ((op & 0x0F) == 3)
+                return inc16((op >> 4) & 0x03);
+            if ((op & 0x0F) == 0xB)
+                return dec16((op >> 4) & 0x03);
+            if ((op & 0xC7) == 0x06)
+                return ld_r_u8((op >> 3) & 0x07);
+            if ((op & 0xCF) == 0x01)
+                return ld_r16_u16((op >> 4) & 0x03);
+            if ((op & 0xCF) == 0x02)
+                return ld_r16_a((op >> 4) & 0x03);
+            if ((op & 0xCF) == 0x0A)
+                return ld_a_r16((op >> 4) & 0x03);
             printf("Invalid opcode: %04X\n", op);
             return 0;
     }
