@@ -343,19 +343,31 @@ int rlca(uint8_t op) {
     uint8_t op_t = (op >> 3) & 0x07;
 
     switch (op_t) {
-        uint8_t carry = (cpu.a >> 7) & 1;
-        case RLCA:
+        case RLCA: {
+            uint8_t carry = (cpu.a >> 7) & 1;
             cpu.a = (cpu.a << 1) | carry;
-            if (carry) flag_set(FLAG_C);
-            else       flag_unset(FLAG_C);
+            flag_assign(FLAG_C, carry);
             break;
-        case RRCA:
-            cpu.a = (cpu.a >> 1) | carry;
-            if (carry) flag_set(FLAG_C);
-            else       flag_unset(FLAG_C);
+        }
+        case RRCA: {
+            uint8_t carry = cpu.a & 1;
+            cpu.a = (cpu.a >> 1) | (carry << 7);
+            flag_assign(FLAG_C, carry);
             break;
+        }
+        case RLA: {
+            uint8_t carry = (cpu.a >> 7) & 1;
+            cpu.a = (cpu.a << 1) | flag_get(FLAG_C);
+            flag_assign(FLAG_C, carry);
+            break;
+        }
+        case RRA: {
+            uint8_t carry = cpu.a & 1;
+            cpu.a = (cpu.a >> 1) | (flag_get(FLAG_C) << 7);
+            flag_assign(FLAG_C, carry);
+            break;
+        }
     }
-
     flag_unset(FLAG_Z);
     flag_unset(FLAG_N);
     flag_unset(FLAG_H);
