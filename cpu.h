@@ -15,8 +15,7 @@ typedef struct {
 
 enum Opcode {
     NOP             = 0x00,
-    CP_U8           = 0xFE,
-    JP_NZ = 0xC2,
+    JP_NZ           = 0xC2,
     JP = 0xC3,
     JP_Z = 0xCA,
     JP_NC = 0xD2,
@@ -27,10 +26,12 @@ enum Opcode {
     JR_NC = 0x30,
     JR_Z = 0x28,
     JR_C            = 0x38,
+    CALL = 0xCD,
     CALL_NZ         = 0xC4,
 	CALL_Z = 0xCC,
 	CALL_C = 0xDC,
 	CALL_NC = 0xD4,
+    RET = 0xC9,
 	RET_NZ = 0xC0,
 	RET_Z  = 0xC8,
 	RET_NC = 0xD0,

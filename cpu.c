@@ -310,6 +310,22 @@ int alu_a(uint8_t op) {
     return (src == 6) ? 8 : 4;
 }
 
+int alu_imm(uint8_t op) {
+    uint8_t op_t = (op >> 3) & 0x07;
+    uint8_t val = fetch8();
+    switch (op_t) {
+        case ADD: add(val); break;
+        case ADC: adc(val); break;
+        case SUB: sub(val); break;
+        case SBC: sbc(val); break;
+        case AND: and8(val); break;
+        case XOR: xor8(val); break;
+        case OR:  or8(val);  break;
+        case CP:  cp(val);   break;
+    }
+    return 8;
+}
+
 int cpu_step(void) {
     if (cpu.halted) return 4;
     uint8_t op = fetch8();
@@ -317,9 +333,6 @@ int cpu_step(void) {
     switch (op) {
         case NOP:
             return 4;
-        case CP_U8:
-            cp(fetch8());
-            return 8;
         case JP:
             cpu.pc = fetch16();
             return 16;
@@ -352,6 +365,8 @@ int cpu_step(void) {
             return call_cond(flag_get(FLAG_C) == 1);
         case CALL_NC:
             return call_cond(flag_get(FLAG_C) == 0);
+        case CALL:
+            return call_cond(1);
         case RET_NZ:
             return ret_cond(flag_get(FLAG_Z) == 0);
         case RET_Z:
@@ -360,6 +375,9 @@ int cpu_step(void) {
             return ret_cond(flag_get(FLAG_C) == 0);
         case RET_C:
             return ret_cond(flag_get(FLAG_C) == 1);
+        case RET:
+            pop(&cpu.pc);
+            return 16;
         case HALT:
             return halt();
         default:
@@ -367,6 +385,8 @@ int cpu_step(void) {
                 return ld_r_r(op);
             if (op >= 0x80 && op <= 0xBF)
                 return alu_a(op);
+            if ((op & 0xC7) == 0xC6)
+                return alu_imm(op);
             if ((op & 0xCF) == 0xC5)
                 return push_r16((op >> 4) & 0x03);
             if ((op & 0xCF) == 0xC1)
