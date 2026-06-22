@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
-#include <unistd.h>
 #include <fcntl.h>
+#include <unistd.h>
 #include "cpu.h"
 #include "ppu.h"
 
@@ -17,11 +17,16 @@ int main(void) {
     cpu.pc = 0x0100;
     cpu.sp = 0xFFFE;
     cpu.halted = 0;
+    int count = 0;
     while (1) {
-        printf("PC=%04X A=%02X F=%02X SP=%04X  ->  ", cpu.pc, cpu.a, cpu.f, cpu.sp);
-        cycles += cpu_step();
+        cycles = cpu_step();
         ppu_step(cycles);
-        printf("+%d ppu clock\n", ppu.clock);
-        usleep(1000);
+        print_framebuffer();
+        count++;
+        if (count % 500000 == 0) {
+            fprintf(stderr, "[%dM] PC=%04X LY=%d LCDC=%02X BGP=%02X\n",
+                   count/1000000, cpu.pc, ppu.reg[4], ppu.reg[0], ppu.reg[7]);
+            fflush(stderr);
+        }
     }
 }
