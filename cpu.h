@@ -11,11 +11,13 @@ typedef struct {
     uint16_t sp;
     uint16_t pc;
     uint8_t ime;    // Interrupt master enable
+    uint8_t ime_pending; // Delay IME by 1 instruction after EI/RETI
     uint8_t halted;
 } CPU;
 
 enum Opcode {
     NOP             = 0x00,
+    STOP            = 0x10,
     JP_NZ           = 0xC2,
     JP              = 0xC3,
     JP_Z            = 0xCA,
@@ -43,6 +45,7 @@ enum Opcode {
     RETI            = 0xD9,
     LDH_IO_A        = 0xE0,
     LDH_A_IO        = 0xF0,
+    CB              = 0xCB,
 };
 
 enum { FLAG_Z = 0x80, FLAG_N = 0x40, FLAG_H = 0x20, FLAG_C = 0x10 };

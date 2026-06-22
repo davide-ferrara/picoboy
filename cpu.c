@@ -10,12 +10,18 @@ uint16_t *reg16[] = {&cpu.bc, &cpu.de, &cpu.hl, &cpu.sp};
 uint16_t *reg16_stk[] = {&cpu.bc, &cpu.de, &cpu.hl, &cpu.af};
 
 enum { ADD = 0, ADC = 1, SUB = 2, SBC = 3, AND = 4, XOR = 5, OR = 6, CP = 7, CPL = 5, SCF = 6, CCF = 7 };
-enum { RLCA = 0x00, RRCA = 0x01, RLA = 0x10, RRA = 0x11 };
+enum { RLCA = 0, RRCA = 1, RLA = 2, RRA = 3 };
 
 uint8_t read8(uint16_t addr) {
-    if (addr >= 0x8000 && addr <= 0x9FFF) return ppu_read8(addr);
+    if      (addr >= 0x8000 && addr <= 0x9FFF) return ppu_read8(addr);
     else if (addr >= 0xFE00 && addr <= 0xFE9F) return ppu_read8(addr);
     else if (addr >= 0xFF40 && addr <= 0xFF4B) return ppu_read8(addr);
+    else if (addr == 0xFF00) {
+        uint8_t p1 = mmu[0xFF00] & 0x30;
+        if (!(p1 & 0x10)) p1 |= 0x0F; // buttons not pressed
+        if (!(p1 & 0x20)) p1 |= 0x0F; // d-pad not pressed
+        return p1;
+    }
     else return mmu[addr];
 }
 
@@ -23,7 +29,11 @@ void write8(uint16_t addr, uint8_t val) {
     if      (addr >= 0x8000 && addr <= 0x9FFF) ppu_write8(addr, val);
     else if (addr >= 0xFE00 && addr <= 0xFE9F) ppu_write8(addr, val);
     else if (addr >= 0xFF40 && addr <= 0xFF4B) ppu_write8(addr, val);
-    else mmu[addr] = val;
+    else {
+        mmu[addr] = val;
+        if (addr == 0xFF02 && val == 0x81)
+            putchar(mmu[0xFF01]);
+    }
 }
 
 uint8_t fetch8(void) { return read8(cpu.pc++); }
@@ -51,6 +61,7 @@ uint8_t flag_get(uint8_t flag) {
 
 void flag_assign(uint8_t mask, int condition) {
     if (condition) cpu.f |= mask;
+    else           cpu.f &= ~mask;
 }
 
 int inc8(uint8_t src) {
@@ -390,6 +401,104 @@ int add_hl_r16(uint8_t op) {
     return 8;
 }
 
+int cb(uint8_t op) {
+    uint8_t src = op & 0x07;
+    uint8_t bit = (op >> 3) & 0x07;
+    uint8_t val;
+
+    if (src == 6) val = read8(cpu.hl);
+    else          val = *reg[src];
+
+    switch (op >> 6) {
+        case 0: // Shift/rotate
+            switch (bit) {
+                case 0: { // RLC
+                    uint8_t c = val >> 7;
+                    val = (val << 1) | c;
+                    flag_assign(FLAG_C, c);
+                    break;
+                }
+                case 1: { // RRC
+                    uint8_t c = val & 1;
+                    val = (val >> 1) | (c << 7);
+                    flag_assign(FLAG_C, c);
+                    break;
+                }
+                case 2: { // RL
+                    uint8_t c = val >> 7;
+                    val = (val << 1) | flag_get(FLAG_C);
+                    flag_assign(FLAG_C, c);
+                    break;
+                }
+                case 3: { // RR
+                    uint8_t c = val & 1;
+                    val = (val >> 1) | (flag_get(FLAG_C) << 7);
+                    flag_assign(FLAG_C, c);
+                    break;
+                }
+                case 4: { // SLA
+                    flag_assign(FLAG_C, val >> 7);
+                    val <<= 1;
+                    break;
+                }
+                case 5: { // SRA
+                    flag_assign(FLAG_C, val & 1);
+                    val = (val >> 1) | (val & 0x80);
+                    break;
+                }
+                case 6: { // SWAP
+                    val = (val << 4) | (val >> 4);
+                    flag_unset(FLAG_C);
+                    break;
+                }
+                case 7: { // SRL
+                    flag_assign(FLAG_C, val & 1);
+                    val >>= 1;
+                    break;
+                }
+            }
+            flag_assign(FLAG_Z, val == 0);
+            flag_unset(FLAG_N);
+            flag_unset(FLAG_H);
+            break;
+        case 1: // BIT
+            flag_unset(FLAG_N);
+            flag_set(FLAG_H);
+            flag_assign(FLAG_Z, (val & (1 << bit)) == 0);
+            return src == 6 ? 12 : 8;
+        case 2: // RES
+            val &= ~(1 << bit);
+            break;
+        case 3: // SET
+            val |= (1 << bit);
+            break;
+        default:
+            printf("Invalid CB opcode: %04X\n", op);
+            return 0;
+    }
+
+    if (src == 6) write8(cpu.hl, val);
+    else          *reg[src] = val;
+    return src == 6 ? 16 : 8;
+}
+
+// 0x27 DAA
+int daa(void) {
+    uint16_t a = cpu.a;
+    if (!flag_get(FLAG_N)) {
+        if (flag_get(FLAG_H) || (a & 0x0F) > 9) a += 6;
+        if (flag_get(FLAG_C) || a > 0x9F) a += 0x60;
+    } else {
+        if (flag_get(FLAG_H)) a = (a - 6) & 0xFF;
+        if (flag_get(FLAG_C)) a -= 0x60;
+    }
+    flag_assign(FLAG_Z, (a & 0xFF) == 0);
+    flag_unset(FLAG_H);
+    cpu.a = (uint8_t)a;
+    if (a & 0x100) flag_set(FLAG_C);
+    return 4;
+}
+
 // 0x2F CPL 00 101 111 5
 // 0x37 SCF 00 110 111 6
 // 0x3F CCF 00 111 111 7
@@ -421,8 +530,11 @@ int flag_ops(uint8_t op) {
 int cpu_step(void) {
     if (cpu.halted) return 4;
 
-    // Interrupt handling
-    if (cpu.ime) {
+    // Interrupt handling (delayed by 1 instruction after EI/RETI)
+    if (cpu.ime_pending) {
+        cpu.ime = 1;
+        cpu.ime_pending = 0;
+    } else if (cpu.ime) {
         uint8_t flagged = (mmu[0xFF0F] & mmu[0xFFFF]) & 0x1F;
         uint8_t addr;
         for (uint8_t i = 0; i < 5; i++) {
@@ -459,6 +571,10 @@ int cpu_step(void) {
     switch (op) {
         case NOP:
             return 4;
+        case STOP: {
+            fetch8();  // skip speed byte
+            return 4;
+        }
         case JP:
             cpu.pc = fetch16();
             return 16;
@@ -505,14 +621,14 @@ int cpu_step(void) {
             pop(&cpu.pc);
             return 16;
         case EI:
-            cpu.ime = 1;
+            cpu.ime_pending = 1;
             return 4;
         case DI:
             cpu.ime = 0;
             return 4;
         case RETI:
             pop(&cpu.pc);
-            cpu.ime = 1;
+            cpu.ime_pending = 1;
             return 16;
         case HALT:
             return halt();
@@ -526,6 +642,10 @@ int cpu_step(void) {
             cpu.a = read8(0xFF00 + a8);
             return 12;
             }
+        case CB: {
+            uint8_t op2 = fetch8();
+            return cb(op2);
+        }
         default:
             if (op >= 0x40 && op <= 0x7F)
                 return ld_r_r(op);
@@ -537,7 +657,7 @@ int cpu_step(void) {
                 return push_r16((op >> 4) & 0x03);
             if ((op & 0xCF) == 0xC1)
                 return pop_r16((op >> 4) & 0x03);
-            if ((op & 0xC7) == 0x07) 
+            if (op == 0x07 || op == 0x0F || op == 0x17 || op == 0x1F)
                 return rlca(op);
             if ((op & 0x07) == 4)
                 return inc8((op >> 3) & 0x07);
@@ -593,8 +713,29 @@ int cpu_step(void) {
                 cpu.a = read8(fetch16());
                 return 16;
             }
+            if (op == 0x27)
+                return daa();
             if (op == 0x2F || op == 0x37 || op == 0x3F)
                 return flag_ops(op);
+            if (op == 0xE8) {
+                int8_t off = (int8_t)fetch8();
+                uint16_t old = cpu.sp;
+                cpu.sp += off;
+                flag_unset(FLAG_Z);
+                flag_unset(FLAG_N);
+                flag_assign(FLAG_H, (old & 0x0F) + (off & 0x0F) > 0x0F);
+                flag_assign(FLAG_C, (old & 0xFF) + (off & 0xFF) > 0xFF);
+                return 16;
+            }
+            if (op == 0xF8) {
+                int8_t off = (int8_t)fetch8();
+                flag_unset(FLAG_Z);
+                flag_unset(FLAG_N);
+                flag_assign(FLAG_H, (cpu.sp & 0x0F) + (off & 0x0F) > 0x0F);
+                flag_assign(FLAG_C, (cpu.sp & 0xFF) + (off & 0xFF) > 0xFF);
+                cpu.hl = cpu.sp + off;
+                return 12;
+            }
             else printf("Invalid opcode: %04X\n", op);
             return 0;
     }

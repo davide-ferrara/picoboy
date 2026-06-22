@@ -105,6 +105,12 @@ void ppu_draw_scanline() {
 }
 
 void ppu_step(uint16_t cycles) {
+    if (!ppu_lcdc_get(LCD_EN)) {
+        ppu.clock = 0;
+        ppu.reg[LY] = 0;
+        ppu_lcd_mode_set(0);
+        return;
+    }
     ppu.clock += cycles;
     uint8_t *ly = &(ppu.reg[LY]);
 
