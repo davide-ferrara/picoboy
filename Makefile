@@ -16,8 +16,8 @@ all: emu
 # --- Host emulator ---
 emu: $(BIN_DIR)/gbemu
 
-$(BIN_DIR)/gbemu: cpu.c cpu.h main.c | $(BIN_DIR)
-	$(CC) $(CFLAGS) -o $@ cpu.c main.c $(LDFLAGS)
+$(BIN_DIR)/gbemu: cpu.c cpu.h ppu.h main.c | $(BIN_DIR)
+	$(CC) $(CFLAGS) -o $@ cpu.c ppu.c main.c $(LDFLAGS)
 
 # --- Host tests ---
 test: $(BIN_DIR)/test

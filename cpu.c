@@ -1,6 +1,7 @@
 #include "cpu.h"
 #include <stdint.h>
 #include <stdio.h>
+#include "ppu.h"
 
 CPU cpu = {0};
 uint8_t mmu[0x10000];
@@ -12,12 +13,17 @@ enum { ADD = 0, ADC = 1, SUB = 2, SBC = 3, AND = 4, XOR = 5, OR = 6, CP = 7, CPL
 enum { RLCA = 0x00, RRCA = 0x01, RLA = 0x10, RRA = 0x11 };
 
 uint8_t read8(uint16_t addr) {
-    return mmu[addr];
+    if (addr >= 0x8000 && addr <= 0x9FFF) return ppu_read8(addr);
+    else if (addr >= 0xFE00 && addr <= 0xFE9F) return ppu_read8(addr);
+    else if (addr >= 0xFF40 && addr <= 0xFF4B) return ppu_read8(addr);
+    else return mmu[addr];
 }
 
-void write8(uint16_t addr, uint8_t value) {
-    if (addr < 0x8000) return;
-    mmu[addr] = value;
+void write8(uint16_t addr, uint8_t val) {
+    if      (addr >= 0x8000 && addr <= 0x9FFF) ppu_write8(addr, val);
+    else if (addr >= 0xFE00 && addr <= 0xFE9F) ppu_write8(addr, val);
+    else if (addr >= 0xFF40 && addr <= 0xFF4B) ppu_write8(addr, val);
+    else mmu[addr] = val;
 }
 
 uint8_t fetch8(void) { return read8(cpu.pc++); }
@@ -414,6 +420,39 @@ int flag_ops(uint8_t op) {
 
 int cpu_step(void) {
     if (cpu.halted) return 4;
+
+    if (cpu.ime) {
+        uint8_t flagged = (mmu[0xFF0F] & mmu[0xFFFF]) & 0x1F;
+        uint8_t addr;
+        for (uint8_t i = 0; i < 5; i++) {
+            uint8_t curr = (flagged >> i) & 0x1;
+            if (curr) {
+                push(cpu.pc);
+                switch (i) {
+                    case 0:
+                        addr = 0x0040; // VBlank
+                        break;
+                    case 1:
+                        addr = 0x0048; // Stat
+                        break;
+                    case 2:
+                        addr = 0x0050; // Timer
+                        break;
+                    case 3:
+                        addr = 0x0058; // Serial
+                        break;
+                    case 4:
+                        addr = 0x0060; // Joypad
+                        break;
+                }
+                cpu.ime = 0;
+                cpu.pc = addr;
+                mmu[0xFF0F] &= ~(1 << i);
+                return 20;
+            }
+        }
+    }
+
     uint8_t op = fetch8();
 
     switch (op) {
@@ -463,6 +502,16 @@ int cpu_step(void) {
             return ret_cond(flag_get(FLAG_C) == 1);
         case RET:
             pop(&cpu.pc);
+            return 16;
+        case EI:
+            cpu.ime = 1;
+            return 4;
+        case DI:
+            cpu.ime = 0;
+            return 4;
+        case RETI:
+            pop(&cpu.pc);
+            cpu.ime = 1;
             return 16;
         case HALT:
             return halt();

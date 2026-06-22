@@ -10,6 +10,7 @@ typedef struct {
     union { uint16_t hl; struct { uint8_t l; uint8_t h; }; };
     uint16_t sp;
     uint16_t pc;
+    uint8_t ime;    // Interrupt master enable
     uint8_t halted;
 } CPU;
 
@@ -37,6 +38,9 @@ enum Opcode {
 	RET_NC          = 0xD0,
 	RET_C           = 0xD8,
     HALT            = 0x76,
+    EI              = 0xFB,
+    DI              = 0xF3,
+    RETI            = 0xD9,
 };
 
 enum { FLAG_Z = 0x80, FLAG_N = 0x40, FLAG_H = 0x20, FLAG_C = 0x10 };
