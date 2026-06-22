@@ -537,6 +537,8 @@ int cpu_step(void) {
                 return push_r16((op >> 4) & 0x03);
             if ((op & 0xCF) == 0xC1)
                 return pop_r16((op >> 4) & 0x03);
+            if ((op & 0xC7) == 0x07) 
+                return rlca(op);
             if ((op & 0x07) == 4)
                 return inc8((op >> 3) & 0x07);
             if ((op & 0x07) == 5)
