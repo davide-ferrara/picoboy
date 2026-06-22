@@ -41,6 +41,8 @@ enum Opcode {
     EI              = 0xFB,
     DI              = 0xF3,
     RETI            = 0xD9,
+    LDH_IO_A        = 0xE0,
+    LDH_A_IO        = 0xF0,
 };
 
 enum { FLAG_Z = 0x80, FLAG_N = 0x40, FLAG_H = 0x20, FLAG_C = 0x10 };

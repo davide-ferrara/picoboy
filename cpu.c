@@ -421,6 +421,7 @@ int flag_ops(uint8_t op) {
 int cpu_step(void) {
     if (cpu.halted) return 4;
 
+    // Interrupt handling
     if (cpu.ime) {
         uint8_t flagged = (mmu[0xFF0F] & mmu[0xFFFF]) & 0x1F;
         uint8_t addr;
@@ -515,6 +516,16 @@ int cpu_step(void) {
             return 16;
         case HALT:
             return halt();
+        case LDH_IO_A: {
+            uint8_t a8 = fetch8();
+            write8(0xFF00 + a8, cpu.a);
+            return 12;
+        }
+        case LDH_A_IO: {
+            uint8_t a8 = fetch8();
+            cpu.a = read8(0xFF00 + a8);
+            return 12;
+            }
         default:
             if (op >= 0x40 && op <= 0x7F)
                 return ld_r_r(op);
