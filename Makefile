@@ -3,13 +3,16 @@
 
 CC       := gcc
 CFLAGS   := -Wall -Wextra -std=c11 -g -O2 -D_DEFAULT_SOURCE
-LDFLAGS  :=
+LDFLAGS  := -lm -lraylib
 
 PICO_SDK_PATH ?= $(HOME)/pico-sdk
 export PICO_SDK_PATH
 
 BUILD_DIR := build
 BIN_DIR   := bin
+
+PHONY:
+	bin emu
 
 all: emu
 

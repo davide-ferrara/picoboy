@@ -29,8 +29,15 @@ void ppu_write8(uint16_t addr, uint8_t val) {
     else if (addr >= 0xFE00 && addr <= 0xFE9F)
         ppu.oam[addr - 0xFE00] = val;
     // Registri
-    else if (addr >= 0xFF40 && addr <= 0xFF4B)
+    else if (addr >= 0xFF40 && addr <= 0xFF4B) {
+        if (addr == 0xFF40) {
+            static uint32_t lcdc_writes = 0;
+            lcdc_writes++;
+            fprintf(stderr, "  LCDC[%u] write %02X (was %02X)\n",
+                    lcdc_writes, val, ppu.reg[0]);
+        }
         ppu.reg[addr - 0xFF40] = val;
+    }
 }
 
 void ppu_lcdc_set(uint8_t flag) {
@@ -38,7 +45,7 @@ void ppu_lcdc_set(uint8_t flag) {
 }
 
 uint8_t ppu_lcdc_get(uint8_t flag) {
-    return ppu.reg[LCDC] >> flag;
+    return (ppu.reg[LCDC] >> flag) & 1;
 }
 
 void ppu_stat_set(uint8_t flag) {
@@ -99,13 +106,30 @@ void ppu_draw_scanline() {
             uint8_t bit = 7 - pixel_x;
             uint8_t color_idx = ((byte1 >> bit) & 1) << 1 | ((byte0 >> bit) & 1);
 
-            ppu.framebuffer[ppu.reg[LY]][i] = (ppu.reg[BGP] >> (color_idx * 2)) & 0x03;
+            // ppu.framebuffer[ppu.reg[LY]][i] = (ppu.reg[BGP] >> (color_idx * 2)) & 0x03;
+            static const uint8_t grey[] = {255, 192, 96, 0};  // white→black
+            uint8_t idx = (ppu.reg[BGP] >> (color_idx * 2)) & 0x03;
+            ppu.framebuffer[ppu.reg[LY]][i] = grey[idx];
         }
     }
 }
 
 void ppu_step(uint16_t cycles) {
+    static uint32_t call_count = 0;
+    static uint64_t total_cycles = 0;
+    call_count++;
+    total_cycles += cycles;
+    if ((call_count & 0xFFF) == 0) {
+        fprintf(stderr, "  ppu_step: calls=%u total_cyc=%lu clk=%u LCD_EN=%d LCDC=%02X LY=%02X\n",
+                call_count, (unsigned long)total_cycles, ppu.clock, ppu_lcdc_get(LCD_EN), ppu.reg[LCDC], ppu.reg[LY]);
+    }
     if (!ppu_lcdc_get(LCD_EN)) {
+        static uint32_t off_count = 0;
+        off_count++;
+        if ((off_count & 0xFFFFF) == 0) {
+            fprintf(stderr, "  LCD off reset #%u calls=%u LCDC_prev=%02X\n",
+                    off_count, call_count, ppu.reg[LCDC]);
+        }
         ppu.clock = 0;
         ppu.reg[LY] = 0;
         ppu_lcd_mode_set(0);

@@ -3,12 +3,10 @@
 
 #include <stdint.h>
 
-enum Color {WHITE = 0x0, LIGHT_GREY = 0x1, DARK_GREY = 0x2, BLACK = 0x3};
-
 typedef uint8_t tile[16];
 
 typedef struct {
-    uint16_t clock;
+    uint32_t clock;
     uint8_t reg[0xC];                // 12 registri (0xFF40–0xFF4B)
     uint8_t vram[0x2000];            // 8192 byte VRAM
     uint8_t oam[0xA0];               // 160 byte OAM

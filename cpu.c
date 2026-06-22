@@ -33,6 +33,12 @@ void write8(uint16_t addr, uint8_t val) {
         mmu[addr] = val;
         if (addr == 0xFF02 && val == 0x81)
             putchar(mmu[0xFF01]);
+        if (addr == 0xFF85) {
+            static uint32_t ff85_w = 0;
+            ff85_w++;
+            if (ff85_w <= 100 || (ff85_w % 100) == 0)
+                fprintf(stderr, "  FF85[%u] write %02X (PC=%04X)\n", ff85_w, val, cpu.pc);
+        }
     }
 }
 
@@ -528,7 +534,13 @@ int flag_ops(uint8_t op) {
 }
 
 int cpu_step(void) {
-    if (cpu.halted) return 4;
+    static uint32_t int_count = 0;
+    if (cpu.halted) {
+        uint8_t flagged = (mmu[0xFF0F] & mmu[0xFFFF]) & 0x1F;
+        if (!flagged) return 4;
+        cpu.halted = 0;
+        if (!cpu.ime && !cpu.ime_pending) return 4;
+    }
 
     // Interrupt handling (delayed by 1 instruction after EI/RETI)
     if (cpu.ime_pending) {
@@ -561,6 +573,11 @@ int cpu_step(void) {
                 cpu.ime = 0;
                 cpu.pc = addr;
                 mmu[0xFF0F] &= ~(1 << i);
+                int_count++;
+                if (int_count <= 50 || (int_count % 100) == 0) {
+                    fprintf(stderr, "  INT#%u i=%u new_pc=%04X FF85=%02X LY=%02X\n",
+                            int_count, i, addr, mmu[0xFF85], ppu.reg[4]);
+                }
                 return 20;
             }
         }

@@ -1,0 +1,806 @@
+  ppu_step: calls=4096 total_cyc=32756 clk=0 LCD_EN=0 LCDC=00 LY=00
+  ppu_step: calls=8192 total_cyc=65504 clk=0 LCD_EN=0 LCDC=00 LY=00
+  ppu_step: calls=12288 total_cyc=98252 clk=0 LCD_EN=0 LCDC=00 LY=00
+  LCDC[1] write 80 (was 00)
+  ppu_step: calls=16384 total_cyc=141828 clk=272 LCD_EN=1 LCDC=80 LY=5E
+  LCDC[2] write 03 (was 80)
+  ppu_step: calls=20480 total_cyc=180720 clk=0 LCD_EN=0 LCDC=03 LY=00
+  ppu_step: calls=24576 total_cyc=213468 clk=0 LCD_EN=0 LCDC=03 LY=00
+  ppu_step: calls=28672 total_cyc=246216 clk=0 LCD_EN=0 LCDC=03 LY=00
+  ppu_step: calls=32768 total_cyc=278956 clk=0 LCD_EN=0 LCDC=03 LY=00
+  ppu_step: calls=36864 total_cyc=311704 clk=0 LCD_EN=0 LCDC=03 LY=00
+  ppu_step: calls=40960 total_cyc=344452 clk=0 LCD_EN=0 LCDC=03 LY=00
+  ppu_step: calls=45056 total_cyc=377192 clk=0 LCD_EN=0 LCDC=03 LY=00
+  ppu_step: calls=49152 total_cyc=409940 clk=0 LCD_EN=0 LCDC=03 LY=00
+  ppu_step: calls=53248 total_cyc=442688 clk=0 LCD_EN=0 LCDC=03 LY=00
+  ppu_step: calls=57344 total_cyc=475440 clk=0 LCD_EN=0 LCDC=03 LY=00
+  FF85[1] write 00 (PC=0290)
+  ppu_step: calls=61440 total_cyc=505652 clk=0 LCD_EN=0 LCDC=03 LY=00
+  LCDC[3] write 80 (was 03)
+  INT#1 i=0 new_pc=0040 FF85=00 LY=00
+  FF85[2] write 01 (PC=0207)
+  ppu_step: calls=65536 total_cyc=541816 clk=236 LCD_EN=1 LCDC=80 LY=28
+  ppu_step: calls=69632 total_cyc=585508 clk=148 LCD_EN=1 LCDC=80 LY=88
+  LCDC[4] write 00 (was 80)
+  INT#2 i=0 new_pc=0040 FF85=01 LY=00
+  FF85[3] write 01 (PC=0207)
+  ppu_step: calls=73728 total_cyc=618500 clk=0 LCD_EN=0 LCDC=00 LY=00
+  ppu_step: calls=77824 total_cyc=648932 clk=0 LCD_EN=0 LCDC=00 LY=00
+  ppu_step: calls=81920 total_cyc=679360 clk=0 LCD_EN=0 LCDC=00 LY=00
+  ppu_step: calls=86016 total_cyc=709788 clk=0 LCD_EN=0 LCDC=00 LY=00
+  ppu_step: calls=90112 total_cyc=740216 clk=0 LCD_EN=0 LCDC=00 LY=00
+  ppu_step: calls=94208 total_cyc=770644 clk=0 LCD_EN=0 LCDC=00 LY=00
+  ppu_step: calls=98304 total_cyc=801776 clk=0 LCD_EN=0 LCDC=00 LY=00
+  LCDC[5] write D3 (was 00)
+  FF85[4] write 00 (PC=02F5)
+  ppu_step: calls=102400 total_cyc=836628 clk=420 LCD_EN=1 LCDC=D3 LY=14
+  ppu_step: calls=106496 total_cyc=874852 clk=348 LCD_EN=1 LCDC=D3 LY=68
+  INT#3 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[5] write 01 (PC=0207)
+  FF85[6] write 00 (PC=02F5)
+  ppu_step: calls=110592 total_cyc=913888 clk=160 LCD_EN=1 LCDC=D3 LY=24
+  ppu_step: calls=114688 total_cyc=952120 clk=88 LCD_EN=1 LCDC=D3 LY=78
+  INT#4 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[7] write 01 (PC=0207)
+  FF85[8] write 00 (PC=02F5)
+  ppu_step: calls=118784 total_cyc=991148 clk=364 LCD_EN=1 LCDC=D3 LY=33
+  ppu_step: calls=122880 total_cyc=1029380 clk=284 LCD_EN=1 LCDC=D3 LY=87
+  INT#5 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[9] write 01 (PC=0207)
+  FF85[10] write 00 (PC=02F5)
+  ppu_step: calls=126976 total_cyc=1068416 clk=104 LCD_EN=1 LCDC=D3 LY=43
+  INT#6 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[11] write 01 (PC=0207)
+  FF85[12] write 00 (PC=02F5)
+  ppu_step: calls=131072 total_cyc=1107460 clk=396 LCD_EN=1 LCDC=D3 LY=98
+  ppu_step: calls=135168 total_cyc=1145676 clk=300 LCD_EN=1 LCDC=D3 LY=52
+  INT#7 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[13] write 01 (PC=0207)
+  FF85[14] write 00 (PC=02F5)
+  ppu_step: calls=139264 total_cyc=1184712 clk=120 LCD_EN=1 LCDC=D3 LY=0E
+  ppu_step: calls=143360 total_cyc=1222936 clk=48 LCD_EN=1 LCDC=D3 LY=62
+  INT#8 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[15] write 01 (PC=0207)
+  FF85[16] write 00 (PC=02F5)
+  ppu_step: calls=147456 total_cyc=1261972 clk=316 LCD_EN=1 LCDC=D3 LY=1D
+  ppu_step: calls=151552 total_cyc=1300204 clk=244 LCD_EN=1 LCDC=D3 LY=71
+  INT#9 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[17] write 01 (PC=0207)
+  FF85[18] write 00 (PC=02F5)
+  ppu_step: calls=155648 total_cyc=1339232 clk=64 LCD_EN=1 LCDC=D3 LY=2D
+  ppu_step: calls=159744 total_cyc=1377464 clk=440 LCD_EN=1 LCDC=D3 LY=80
+  INT#10 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[19] write 01 (PC=0207)
+  FF85[20] write 00 (PC=02F5)
+  ppu_step: calls=163840 total_cyc=1416500 clk=260 LCD_EN=1 LCDC=D3 LY=3C
+  INT#11 i=0 new_pc=0040 FF85=00 LY=90
+  ppu_step: calls=167936 total_cyc=1454840 clk=300 LCD_EN=1 LCDC=D3 LY=90
+  FF85[21] write 01 (PC=0207)
+  FF85[22] write 00 (PC=02F5)
+  ppu_step: calls=172032 total_cyc=1493760 clk=0 LCD_EN=1 LCDC=D3 LY=4C
+  INT#12 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[23] write 01 (PC=0207)
+  FF85[24] write 00 (PC=02F5)
+  ppu_step: calls=176128 total_cyc=1532796 clk=276 LCD_EN=1 LCDC=D3 LY=07
+  ppu_step: calls=180224 total_cyc=1571020 clk=204 LCD_EN=1 LCDC=D3 LY=5B
+  INT#13 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[25] write 01 (PC=0207)
+  FF85[26] write 00 (PC=02F5)
+  ppu_step: calls=184320 total_cyc=1610056 clk=16 LCD_EN=1 LCDC=D3 LY=17
+  ppu_step: calls=188416 total_cyc=1648288 clk=400 LCD_EN=1 LCDC=D3 LY=6A
+  INT#14 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[27] write 01 (PC=0207)
+  FF85[28] write 00 (PC=02F5)
+  ppu_step: calls=192512 total_cyc=1687316 clk=220 LCD_EN=1 LCDC=D3 LY=26
+  ppu_step: calls=196608 total_cyc=1725548 clk=140 LCD_EN=1 LCDC=D3 LY=7A
+  INT#15 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[29] write 01 (PC=0207)
+  FF85[30] write 00 (PC=02F5)
+  ppu_step: calls=200704 total_cyc=1764584 clk=416 LCD_EN=1 LCDC=D3 LY=35
+  ppu_step: calls=204800 total_cyc=1802808 clk=344 LCD_EN=1 LCDC=D3 LY=89
+  INT#16 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[31] write 01 (PC=0207)
+  FF85[32] write 00 (PC=02F5)
+  ppu_step: calls=208896 total_cyc=1841844 clk=156 LCD_EN=1 LCDC=D3 LY=45
+  INT#17 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[33] write 01 (PC=0207)
+  FF85[34] write 00 (PC=02F5)
+  ppu_step: calls=212992 total_cyc=1880880 clk=432 LCD_EN=1 LCDC=D3 LY=00
+  ppu_step: calls=217088 total_cyc=1919104 clk=360 LCD_EN=1 LCDC=D3 LY=54
+  INT#18 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[35] write 01 (PC=0207)
+  FF85[36] write 00 (PC=02F5)
+  ppu_step: calls=221184 total_cyc=1958140 clk=172 LCD_EN=1 LCDC=D3 LY=10
+  ppu_step: calls=225280 total_cyc=1996372 clk=100 LCD_EN=1 LCDC=D3 LY=64
+  INT#19 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[37] write 01 (PC=0207)
+  FF85[38] write 00 (PC=02F5)
+  ppu_step: calls=229376 total_cyc=2035400 clk=376 LCD_EN=1 LCDC=D3 LY=1F
+  ppu_step: calls=233472 total_cyc=2073632 clk=296 LCD_EN=1 LCDC=D3 LY=73
+  INT#20 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[39] write 01 (PC=0207)
+  FF85[40] write 00 (PC=02F5)
+  ppu_step: calls=237568 total_cyc=2112668 clk=116 LCD_EN=1 LCDC=D3 LY=2F
+  ppu_step: calls=241664 total_cyc=2150892 clk=44 LCD_EN=1 LCDC=D3 LY=83
+  INT#21 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[41] write 01 (PC=0207)
+  FF85[42] write 00 (PC=02F5)
+  ppu_step: calls=245760 total_cyc=2189928 clk=312 LCD_EN=1 LCDC=D3 LY=3E
+  INT#22 i=0 new_pc=0040 FF85=00 LY=90
+  ppu_step: calls=249856 total_cyc=2228704 clk=336 LCD_EN=1 LCDC=D3 LY=93
+  FF85[43] write 01 (PC=0207)
+  FF85[44] write 00 (PC=02F5)
+  ppu_step: calls=253952 total_cyc=2267188 clk=60 LCD_EN=1 LCDC=D3 LY=4E
+  INT#23 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[45] write 01 (PC=0207)
+  FF85[46] write 00 (PC=02F5)
+  ppu_step: calls=258048 total_cyc=2306224 clk=328 LCD_EN=1 LCDC=D3 LY=09
+  ppu_step: calls=262144 total_cyc=2344456 clk=256 LCD_EN=1 LCDC=D3 LY=5D
+  INT#24 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[47] write 01 (PC=0207)
+  FF85[48] write 00 (PC=02F5)
+  ppu_step: calls=266240 total_cyc=2383484 clk=76 LCD_EN=1 LCDC=D3 LY=19
+  ppu_step: calls=270336 total_cyc=2421716 clk=452 LCD_EN=1 LCDC=D3 LY=6C
+  INT#25 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[49] write 01 (PC=0207)
+  FF85[50] write 00 (PC=02F5)
+  ppu_step: calls=274432 total_cyc=2460752 clk=272 LCD_EN=1 LCDC=D3 LY=28
+  ppu_step: calls=278528 total_cyc=2498976 clk=200 LCD_EN=1 LCDC=D3 LY=7C
+  INT#26 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[51] write 01 (PC=0207)
+  FF85[52] write 00 (PC=02F5)
+  ppu_step: calls=282624 total_cyc=2538012 clk=12 LCD_EN=1 LCDC=D3 LY=38
+  ppu_step: calls=286720 total_cyc=2576244 clk=396 LCD_EN=1 LCDC=D3 LY=8B
+  INT#27 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[53] write 01 (PC=0207)
+  FF85[54] write 00 (PC=02F5)
+  ppu_step: calls=290816 total_cyc=2615272 clk=216 LCD_EN=1 LCDC=D3 LY=47
+  INT#28 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[55] write 01 (PC=0207)
+  FF85[56] write 00 (PC=02F5)
+  ppu_step: calls=294912 total_cyc=2654308 clk=28 LCD_EN=1 LCDC=D3 LY=03
+  ppu_step: calls=299008 total_cyc=2692540 clk=412 LCD_EN=1 LCDC=D3 LY=56
+  INT#29 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[57] write 01 (PC=0207)
+  FF85[58] write 00 (PC=02F5)
+  ppu_step: calls=303104 total_cyc=2731568 clk=232 LCD_EN=1 LCDC=D3 LY=12
+  ppu_step: calls=307200 total_cyc=2769800 clk=152 LCD_EN=1 LCDC=D3 LY=66
+  INT#30 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[59] write 01 (PC=0207)
+  FF85[60] write 00 (PC=02F5)
+  ppu_step: calls=311296 total_cyc=2808836 clk=428 LCD_EN=1 LCDC=D3 LY=21
+  ppu_step: calls=315392 total_cyc=2847060 clk=356 LCD_EN=1 LCDC=D3 LY=75
+  INT#31 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[61] write 01 (PC=0207)
+  FF85[62] write 00 (PC=02F5)
+  ppu_step: calls=319488 total_cyc=2886096 clk=168 LCD_EN=1 LCDC=D3 LY=31
+  ppu_step: calls=323584 total_cyc=2924328 clk=96 LCD_EN=1 LCDC=D3 LY=85
+  INT#32 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[63] write 01 (PC=0207)
+  FF85[64] write 00 (PC=02F5)
+  ppu_step: calls=327680 total_cyc=2963356 clk=372 LCD_EN=1 LCDC=D3 LY=40
+  INT#33 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[65] write 01 (PC=0207)
+  FF85[66] write 00 (PC=02F5)
+  ppu_step: calls=331776 total_cyc=3002144 clk=400 LCD_EN=1 LCDC=D3 LY=95
+  ppu_step: calls=335872 total_cyc=3040624 clk=112 LCD_EN=1 LCDC=D3 LY=50
+  INT#34 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[67] write 01 (PC=0207)
+  FF85[68] write 00 (PC=02F5)
+  ppu_step: calls=339968 total_cyc=3079652 clk=388 LCD_EN=1 LCDC=D3 LY=0B
+  ppu_step: calls=344064 total_cyc=3117884 clk=308 LCD_EN=1 LCDC=D3 LY=5F
+  INT#35 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[69] write 01 (PC=0207)
+  FF85[70] write 00 (PC=02F5)
+  ppu_step: calls=348160 total_cyc=3156920 clk=128 LCD_EN=1 LCDC=D3 LY=1B
+  ppu_step: calls=352256 total_cyc=3195144 clk=56 LCD_EN=1 LCDC=D3 LY=6F
+  INT#36 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[71] write 01 (PC=0207)
+  FF85[72] write 00 (PC=02F5)
+  ppu_step: calls=356352 total_cyc=3234180 clk=324 LCD_EN=1 LCDC=D3 LY=2A
+  ppu_step: calls=360448 total_cyc=3272412 clk=252 LCD_EN=1 LCDC=D3 LY=7E
+  INT#37 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[73] write 01 (PC=0207)
+  FF85[74] write 00 (PC=02F5)
+  ppu_step: calls=364544 total_cyc=3311440 clk=72 LCD_EN=1 LCDC=D3 LY=3A
+  ppu_step: calls=368640 total_cyc=3349672 clk=448 LCD_EN=1 LCDC=D3 LY=8D
+  INT#38 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[75] write 01 (PC=0207)
+  FF85[76] write 00 (PC=02F5)
+  ppu_step: calls=372736 total_cyc=3388708 clk=268 LCD_EN=1 LCDC=D3 LY=49
+  INT#39 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[77] write 01 (PC=0207)
+  FF85[78] write 00 (PC=02F5)
+  ppu_step: calls=376832 total_cyc=3427736 clk=88 LCD_EN=1 LCDC=D3 LY=05
+  ppu_step: calls=380928 total_cyc=3465968 clk=8 LCD_EN=1 LCDC=D3 LY=59
+  INT#40 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[79] write 01 (PC=0207)
+  FF85[80] write 00 (PC=02F5)
+  ppu_step: calls=385024 total_cyc=3505004 clk=284 LCD_EN=1 LCDC=D3 LY=14
+  ppu_step: calls=389120 total_cyc=3543228 clk=212 LCD_EN=1 LCDC=D3 LY=68
+  INT#41 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[81] write 01 (PC=0207)
+  FF85[82] write 00 (PC=02F5)
+  ppu_step: calls=393216 total_cyc=3582264 clk=24 LCD_EN=1 LCDC=D3 LY=24
+  ppu_step: calls=397312 total_cyc=3620496 clk=408 LCD_EN=1 LCDC=D3 LY=77
+  INT#42 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[83] write 01 (PC=0207)
+  FF85[84] write 00 (PC=02F5)
+  ppu_step: calls=401408 total_cyc=3659524 clk=228 LCD_EN=1 LCDC=D3 LY=33
+  ppu_step: calls=405504 total_cyc=3697756 clk=148 LCD_EN=1 LCDC=D3 LY=87
+  INT#43 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[85] write 01 (PC=0207)
+  FF85[86] write 00 (PC=02F5)
+  ppu_step: calls=409600 total_cyc=3736792 clk=424 LCD_EN=1 LCDC=D3 LY=42
+  INT#44 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[87] write 01 (PC=0207)
+  FF85[88] write 00 (PC=02F5)
+  ppu_step: calls=413696 total_cyc=3775836 clk=252 LCD_EN=1 LCDC=D3 LY=98
+  ppu_step: calls=417792 total_cyc=3814052 clk=164 LCD_EN=1 LCDC=D3 LY=52
+  INT#45 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[89] write 01 (PC=0207)
+  FF85[90] write 00 (PC=02F5)
+  ppu_step: calls=421888 total_cyc=3853088 clk=440 LCD_EN=1 LCDC=D3 LY=0D
+  ppu_step: calls=425984 total_cyc=3891312 clk=368 LCD_EN=1 LCDC=D3 LY=61
+  INT#46 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[91] write 01 (PC=0207)
+  FF85[92] write 00 (PC=02F5)
+  ppu_step: calls=430080 total_cyc=3930348 clk=180 LCD_EN=1 LCDC=D3 LY=1D
+  ppu_step: calls=434176 total_cyc=3968580 clk=108 LCD_EN=1 LCDC=D3 LY=71
+  INT#47 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[93] write 01 (PC=0207)
+  FF85[94] write 00 (PC=02F5)
+  ppu_step: calls=438272 total_cyc=4007608 clk=384 LCD_EN=1 LCDC=D3 LY=2C
+  ppu_step: calls=442368 total_cyc=4045840 clk=304 LCD_EN=1 LCDC=D3 LY=80
+  INT#48 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[95] write 01 (PC=0207)
+  FF85[96] write 00 (PC=02F5)
+  ppu_step: calls=446464 total_cyc=4084876 clk=124 LCD_EN=1 LCDC=D3 LY=3C
+  INT#49 i=0 new_pc=0040 FF85=00 LY=90
+  ppu_step: calls=450560 total_cyc=4123144 clk=84 LCD_EN=1 LCDC=D3 LY=90
+  FF85[97] write 01 (PC=0207)
+  FF85[98] write 00 (PC=02F5)
+  ppu_step: calls=454656 total_cyc=4162136 clk=320 LCD_EN=1 LCDC=D3 LY=4B
+  INT#50 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[99] write 01 (PC=0207)
+  FF85[100] write 00 (PC=02F5)
+  ppu_step: calls=458752 total_cyc=4201172 clk=140 LCD_EN=1 LCDC=D3 LY=07
+Frame 60: cycles=70232 ppu.clk=428 LCDC=D3 LY=22 IF=00 IE=09 FF85=00 halt=0 ime=1 pend=0 pc=02ED
+  ppu_step: calls=462848 total_cyc=4239396 clk=68 LCD_EN=1 LCDC=D3 LY=5B
+  ppu_step: calls=466944 total_cyc=4278432 clk=336 LCD_EN=1 LCDC=D3 LY=16
+  ppu_step: calls=471040 total_cyc=4316664 clk=264 LCD_EN=1 LCDC=D3 LY=6A
+  ppu_step: calls=475136 total_cyc=4355692 clk=84 LCD_EN=1 LCDC=D3 LY=26
+  ppu_step: calls=479232 total_cyc=4393924 clk=4 LCD_EN=1 LCDC=D3 LY=7A
+  ppu_step: calls=483328 total_cyc=4432960 clk=280 LCD_EN=1 LCDC=D3 LY=35
+  ppu_step: calls=487424 total_cyc=4471184 clk=208 LCD_EN=1 LCDC=D3 LY=89
+  ppu_step: calls=491520 total_cyc=4510220 clk=20 LCD_EN=1 LCDC=D3 LY=45
+  ppu_step: calls=495616 total_cyc=4549256 clk=296 LCD_EN=1 LCDC=D3 LY=00
+  ppu_step: calls=499712 total_cyc=4587480 clk=224 LCD_EN=1 LCDC=D3 LY=54
+  ppu_step: calls=503808 total_cyc=4626516 clk=36 LCD_EN=1 LCDC=D3 LY=10
+  ppu_step: calls=507904 total_cyc=4664748 clk=420 LCD_EN=1 LCDC=D3 LY=63
+  ppu_step: calls=512000 total_cyc=4703776 clk=240 LCD_EN=1 LCDC=D3 LY=1F
+  ppu_step: calls=516096 total_cyc=4742008 clk=160 LCD_EN=1 LCDC=D3 LY=73
+  ppu_step: calls=520192 total_cyc=4781044 clk=436 LCD_EN=1 LCDC=D3 LY=2E
+  ppu_step: calls=524288 total_cyc=4819268 clk=364 LCD_EN=1 LCDC=D3 LY=82
+  ppu_step: calls=528384 total_cyc=4858304 clk=176 LCD_EN=1 LCDC=D3 LY=3E
+  ppu_step: calls=532480 total_cyc=4897104 clk=216 LCD_EN=1 LCDC=D3 LY=93
+  ppu_step: calls=536576 total_cyc=4935564 clk=380 LCD_EN=1 LCDC=D3 LY=4D
+  ppu_step: calls=540672 total_cyc=4974600 clk=192 LCD_EN=1 LCDC=D3 LY=09
+  ppu_step: calls=544768 total_cyc=5012832 clk=120 LCD_EN=1 LCDC=D3 LY=5D
+  ppu_step: calls=548864 total_cyc=5051860 clk=396 LCD_EN=1 LCDC=D3 LY=18
+  ppu_step: calls=552960 total_cyc=5090092 clk=316 LCD_EN=1 LCDC=D3 LY=6C
+  ppu_step: calls=557056 total_cyc=5129128 clk=136 LCD_EN=1 LCDC=D3 LY=28
+  ppu_step: calls=561152 total_cyc=5167352 clk=64 LCD_EN=1 LCDC=D3 LY=7C
+  ppu_step: calls=565248 total_cyc=5206388 clk=332 LCD_EN=1 LCDC=D3 LY=37
+  ppu_step: calls=569344 total_cyc=5244620 clk=260 LCD_EN=1 LCDC=D3 LY=8B
+  ppu_step: calls=573440 total_cyc=5283648 clk=80 LCD_EN=1 LCDC=D3 LY=47
+  ppu_step: calls=577536 total_cyc=5322684 clk=348 LCD_EN=1 LCDC=D3 LY=02
+  ppu_step: calls=581632 total_cyc=5360916 clk=276 LCD_EN=1 LCDC=D3 LY=56
+  ppu_step: calls=585728 total_cyc=5399944 clk=96 LCD_EN=1 LCDC=D3 LY=12
+  ppu_step: calls=589824 total_cyc=5438176 clk=16 LCD_EN=1 LCDC=D3 LY=66
+  ppu_step: calls=593920 total_cyc=5477212 clk=292 LCD_EN=1 LCDC=D3 LY=21
+  ppu_step: calls=598016 total_cyc=5515436 clk=220 LCD_EN=1 LCDC=D3 LY=75
+  ppu_step: calls=602112 total_cyc=5554472 clk=32 LCD_EN=1 LCDC=D3 LY=31
+  ppu_step: calls=606208 total_cyc=5592704 clk=416 LCD_EN=1 LCDC=D3 LY=84
+  ppu_step: calls=610304 total_cyc=5631732 clk=236 LCD_EN=1 LCDC=D3 LY=40
+  ppu_step: calls=614400 total_cyc=5670516 clk=252 LCD_EN=1 LCDC=D3 LY=95
+  ppu_step: calls=618496 total_cyc=5709000 clk=432 LCD_EN=1 LCDC=D3 LY=4F
+  ppu_step: calls=622592 total_cyc=5748028 clk=252 LCD_EN=1 LCDC=D3 LY=0B
+  ppu_step: calls=626688 total_cyc=5786260 clk=172 LCD_EN=1 LCDC=D3 LY=5F
+  ppu_step: calls=630784 total_cyc=5825296 clk=448 LCD_EN=1 LCDC=D3 LY=1A
+  ppu_step: calls=634880 total_cyc=5863520 clk=376 LCD_EN=1 LCDC=D3 LY=6E
+  ppu_step: calls=638976 total_cyc=5902556 clk=188 LCD_EN=1 LCDC=D3 LY=2A
+  ppu_step: calls=643072 total_cyc=5940788 clk=116 LCD_EN=1 LCDC=D3 LY=7E
+  ppu_step: calls=647168 total_cyc=5979816 clk=392 LCD_EN=1 LCDC=D3 LY=39
+  ppu_step: calls=651264 total_cyc=6018048 clk=312 LCD_EN=1 LCDC=D3 LY=8D
+  ppu_step: calls=655360 total_cyc=6057084 clk=132 LCD_EN=1 LCDC=D3 LY=49
+  ppu_step: calls=659456 total_cyc=6096112 clk=408 LCD_EN=1 LCDC=D3 LY=04
+  ppu_step: calls=663552 total_cyc=6134344 clk=328 LCD_EN=1 LCDC=D3 LY=58
+  ppu_step: calls=667648 total_cyc=6173380 clk=148 LCD_EN=1 LCDC=D3 LY=14
+  ppu_step: calls=671744 total_cyc=6211604 clk=76 LCD_EN=1 LCDC=D3 LY=68
+  ppu_step: calls=675840 total_cyc=6250640 clk=344 LCD_EN=1 LCDC=D3 LY=23
+  ppu_step: calls=679936 total_cyc=6288872 clk=272 LCD_EN=1 LCDC=D3 LY=77
+  ppu_step: calls=684032 total_cyc=6327900 clk=92 LCD_EN=1 LCDC=D3 LY=33
+  ppu_step: calls=688128 total_cyc=6366132 clk=12 LCD_EN=1 LCDC=D3 LY=87
+  ppu_step: calls=692224 total_cyc=6405168 clk=288 LCD_EN=1 LCDC=D3 LY=42
+  ppu_step: calls=696320 total_cyc=6444168 clk=72 LCD_EN=1 LCDC=D3 LY=98
+  ppu_step: calls=700416 total_cyc=6482428 clk=28 LCD_EN=1 LCDC=D3 LY=52
+  ppu_step: calls=704512 total_cyc=6521464 clk=304 LCD_EN=1 LCDC=D3 LY=0D
+  ppu_step: calls=708608 total_cyc=6559688 clk=232 LCD_EN=1 LCDC=D3 LY=61
+  ppu_step: calls=712704 total_cyc=6598724 clk=44 LCD_EN=1 LCDC=D3 LY=1D
+  ppu_step: calls=716800 total_cyc=6636956 clk=428 LCD_EN=1 LCDC=D3 LY=70
+  ppu_step: calls=720896 total_cyc=6675984 clk=248 LCD_EN=1 LCDC=D3 LY=2C
+  ppu_step: calls=724992 total_cyc=6714216 clk=168 LCD_EN=1 LCDC=D3 LY=80
+  ppu_step: calls=729088 total_cyc=6753252 clk=444 LCD_EN=1 LCDC=D3 LY=3B
+  ppu_step: calls=733184 total_cyc=6791476 clk=372 LCD_EN=1 LCDC=D3 LY=8F
+  ppu_step: calls=737280 total_cyc=6830512 clk=184 LCD_EN=1 LCDC=D3 LY=4B
+  ppu_step: calls=741376 total_cyc=6869548 clk=4 LCD_EN=1 LCDC=D3 LY=07
+  ppu_step: calls=745472 total_cyc=6907772 clk=388 LCD_EN=1 LCDC=D3 LY=5A
+  ppu_step: calls=749568 total_cyc=6946808 clk=200 LCD_EN=1 LCDC=D3 LY=16
+  ppu_step: calls=753664 total_cyc=6985040 clk=128 LCD_EN=1 LCDC=D3 LY=6A
+  ppu_step: calls=757760 total_cyc=7024068 clk=404 LCD_EN=1 LCDC=D3 LY=25
+  ppu_step: calls=761856 total_cyc=7062300 clk=324 LCD_EN=1 LCDC=D3 LY=79
+  ppu_step: calls=765952 total_cyc=7101336 clk=144 LCD_EN=1 LCDC=D3 LY=35
+  ppu_step: calls=770048 total_cyc=7139560 clk=72 LCD_EN=1 LCDC=D3 LY=89
+  ppu_step: calls=774144 total_cyc=7178596 clk=340 LCD_EN=1 LCDC=D3 LY=44
+  ppu_step: calls=778240 total_cyc=7217632 clk=160 LCD_EN=1 LCDC=D3 LY=00
+  ppu_step: calls=782336 total_cyc=7255856 clk=88 LCD_EN=1 LCDC=D3 LY=54
+  ppu_step: calls=786432 total_cyc=7294892 clk=356 LCD_EN=1 LCDC=D3 LY=0F
+  ppu_step: calls=790528 total_cyc=7333124 clk=284 LCD_EN=1 LCDC=D3 LY=63
+  ppu_step: calls=794624 total_cyc=7372152 clk=104 LCD_EN=1 LCDC=D3 LY=1F
+  ppu_step: calls=798720 total_cyc=7410384 clk=24 LCD_EN=1 LCDC=D3 LY=73
+  ppu_step: calls=802816 total_cyc=7449420 clk=300 LCD_EN=1 LCDC=D3 LY=2E
+  ppu_step: calls=806912 total_cyc=7487644 clk=228 LCD_EN=1 LCDC=D3 LY=82
+  ppu_step: calls=811008 total_cyc=7526680 clk=40 LCD_EN=1 LCDC=D3 LY=3E
+  ppu_step: calls=815104 total_cyc=7565496 clk=96 LCD_EN=1 LCDC=D3 LY=93
+  ppu_step: calls=819200 total_cyc=7603940 clk=244 LCD_EN=1 LCDC=D3 LY=4D
+  ppu_step: calls=823296 total_cyc=7642976 clk=56 LCD_EN=1 LCDC=D3 LY=09
+  ppu_step: calls=827392 total_cyc=7681208 clk=440 LCD_EN=1 LCDC=D3 LY=5C
+  INT#100 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[200] write 00 (PC=02F5)
+  ppu_step: calls=831488 total_cyc=7720236 clk=260 LCD_EN=1 LCDC=D3 LY=18
+  ppu_step: calls=835584 total_cyc=7758468 clk=180 LCD_EN=1 LCDC=D3 LY=6C
+  ppu_step: calls=839680 total_cyc=7797504 clk=0 LCD_EN=1 LCDC=D3 LY=28
+  ppu_step: calls=843776 total_cyc=7835728 clk=384 LCD_EN=1 LCDC=D3 LY=7B
+  ppu_step: calls=847872 total_cyc=7874764 clk=196 LCD_EN=1 LCDC=D3 LY=37
+  ppu_step: calls=851968 total_cyc=7912996 clk=124 LCD_EN=1 LCDC=D3 LY=8B
+  ppu_step: calls=856064 total_cyc=7952024 clk=400 LCD_EN=1 LCDC=D3 LY=46
+  ppu_step: calls=860160 total_cyc=7991060 clk=212 LCD_EN=1 LCDC=D3 LY=02
+  ppu_step: calls=864256 total_cyc=8029292 clk=140 LCD_EN=1 LCDC=D3 LY=56
+  ppu_step: calls=868352 total_cyc=8068320 clk=416 LCD_EN=1 LCDC=D3 LY=11
+  ppu_step: calls=872448 total_cyc=8106552 clk=336 LCD_EN=1 LCDC=D3 LY=65
+  ppu_step: calls=876544 total_cyc=8145588 clk=156 LCD_EN=1 LCDC=D3 LY=21
+  ppu_step: calls=880640 total_cyc=8183812 clk=84 LCD_EN=1 LCDC=D3 LY=75
+  ppu_step: calls=884736 total_cyc=8222848 clk=352 LCD_EN=1 LCDC=D3 LY=30
+  ppu_step: calls=888832 total_cyc=8261080 clk=280 LCD_EN=1 LCDC=D3 LY=84
+  ppu_step: calls=892928 total_cyc=8300108 clk=100 LCD_EN=1 LCDC=D3 LY=40
+  ppu_step: calls=897024 total_cyc=8338868 clk=92 LCD_EN=1 LCDC=D3 LY=95
+  ppu_step: calls=901120 total_cyc=8377376 clk=296 LCD_EN=1 LCDC=D3 LY=4F
+  ppu_step: calls=905216 total_cyc=8416404 clk=116 LCD_EN=1 LCDC=D3 LY=0B
+Frame 120: cycles=70232 ppu.clk=332 LCDC=D3 LY=23 IF=00 IE=09 FF85=00 halt=0 ime=1 pend=0 pc=02ED
+  ppu_step: calls=909312 total_cyc=8454636 clk=36 LCD_EN=1 LCDC=D3 LY=5F
+  ppu_step: calls=913408 total_cyc=8493672 clk=312 LCD_EN=1 LCDC=D3 LY=1A
+  ppu_step: calls=917504 total_cyc=8531896 clk=240 LCD_EN=1 LCDC=D3 LY=6E
+  ppu_step: calls=921600 total_cyc=8570932 clk=52 LCD_EN=1 LCDC=D3 LY=2A
+  ppu_step: calls=925696 total_cyc=8609164 clk=436 LCD_EN=1 LCDC=D3 LY=7D
+  ppu_step: calls=929792 total_cyc=8648192 clk=256 LCD_EN=1 LCDC=D3 LY=39
+  ppu_step: calls=933888 total_cyc=8686424 clk=176 LCD_EN=1 LCDC=D3 LY=8D
+  ppu_step: calls=937984 total_cyc=8725460 clk=452 LCD_EN=1 LCDC=D3 LY=48
+  ppu_step: calls=942080 total_cyc=8764488 clk=272 LCD_EN=1 LCDC=D3 LY=04
+  ppu_step: calls=946176 total_cyc=8802720 clk=192 LCD_EN=1 LCDC=D3 LY=58
+  ppu_step: calls=950272 total_cyc=8841756 clk=12 LCD_EN=1 LCDC=D3 LY=14
+  ppu_step: calls=954368 total_cyc=8879980 clk=396 LCD_EN=1 LCDC=D3 LY=67
+  ppu_step: calls=958464 total_cyc=8919016 clk=208 LCD_EN=1 LCDC=D3 LY=23
+  ppu_step: calls=962560 total_cyc=8957248 clk=136 LCD_EN=1 LCDC=D3 LY=77
+  ppu_step: calls=966656 total_cyc=8996276 clk=412 LCD_EN=1 LCDC=D3 LY=32
+  ppu_step: calls=970752 total_cyc=9034508 clk=332 LCD_EN=1 LCDC=D3 LY=86
+  ppu_step: calls=974848 total_cyc=9073544 clk=152 LCD_EN=1 LCDC=D3 LY=42
+  ppu_step: calls=978944 total_cyc=9112476 clk=324 LCD_EN=1 LCDC=D3 LY=97
+  ppu_step: calls=983040 total_cyc=9150804 clk=348 LCD_EN=1 LCDC=D3 LY=51
+  ppu_step: calls=987136 total_cyc=9189840 clk=168 LCD_EN=1 LCDC=D3 LY=0D
+  ppu_step: calls=991232 total_cyc=9228064 clk=96 LCD_EN=1 LCDC=D3 LY=61
+  ppu_step: calls=995328 total_cyc=9267100 clk=364 LCD_EN=1 LCDC=D3 LY=1C
+  ppu_step: calls=999424 total_cyc=9305332 clk=292 LCD_EN=1 LCDC=D3 LY=70
+  ppu_step: calls=1003520 total_cyc=9344360 clk=112 LCD_EN=1 LCDC=D3 LY=2C
+  ppu_step: calls=1007616 total_cyc=9382592 clk=32 LCD_EN=1 LCDC=D3 LY=80
+  ppu_step: calls=1011712 total_cyc=9421628 clk=308 LCD_EN=1 LCDC=D3 LY=3B
+  ppu_step: calls=1015808 total_cyc=9459852 clk=236 LCD_EN=1 LCDC=D3 LY=8F
+  ppu_step: calls=1019904 total_cyc=9498888 clk=48 LCD_EN=1 LCDC=D3 LY=4B
+  ppu_step: calls=1024000 total_cyc=9537924 clk=324 LCD_EN=1 LCDC=D3 LY=06
+  ppu_step: calls=1028096 total_cyc=9576148 clk=252 LCD_EN=1 LCDC=D3 LY=5A
+  ppu_step: calls=1032192 total_cyc=9615184 clk=64 LCD_EN=1 LCDC=D3 LY=16
+  ppu_step: calls=1036288 total_cyc=9653416 clk=448 LCD_EN=1 LCDC=D3 LY=69
+  ppu_step: calls=1040384 total_cyc=9692444 clk=268 LCD_EN=1 LCDC=D3 LY=25
+  ppu_step: calls=1044480 total_cyc=9730676 clk=188 LCD_EN=1 LCDC=D3 LY=79
+  ppu_step: calls=1048576 total_cyc=9769712 clk=8 LCD_EN=1 LCDC=D3 LY=35
+  ppu_step: calls=1052672 total_cyc=9807936 clk=392 LCD_EN=1 LCDC=D3 LY=88
+  ppu_step: calls=1056768 total_cyc=9846972 clk=204 LCD_EN=1 LCDC=D3 LY=44
+  ppu_step: calls=1060864 total_cyc=9886008 clk=24 LCD_EN=1 LCDC=D3 LY=00
+  ppu_step: calls=1064960 total_cyc=9924232 clk=408 LCD_EN=1 LCDC=D3 LY=53
+  ppu_step: calls=1069056 total_cyc=9963268 clk=220 LCD_EN=1 LCDC=D3 LY=0F
+  ppu_step: calls=1073152 total_cyc=10001500 clk=148 LCD_EN=1 LCDC=D3 LY=63
+  ppu_step: calls=1077248 total_cyc=10040528 clk=424 LCD_EN=1 LCDC=D3 LY=1E
+  ppu_step: calls=1081344 total_cyc=10078760 clk=344 LCD_EN=1 LCDC=D3 LY=72
+  ppu_step: calls=1085440 total_cyc=10117796 clk=164 LCD_EN=1 LCDC=D3 LY=2E
+  ppu_step: calls=1089536 total_cyc=10156020 clk=92 LCD_EN=1 LCDC=D3 LY=82
+  ppu_step: calls=1093632 total_cyc=10195056 clk=360 LCD_EN=1 LCDC=D3 LY=3D
+  ppu_step: calls=1097728 total_cyc=10233812 clk=348 LCD_EN=1 LCDC=D3 LY=92
+  ppu_step: calls=1101824 total_cyc=10272316 clk=108 LCD_EN=1 LCDC=D3 LY=4D
+  ppu_step: calls=1105920 total_cyc=10311352 clk=376 LCD_EN=1 LCDC=D3 LY=08
+  ppu_step: calls=1110016 total_cyc=10349584 clk=304 LCD_EN=1 LCDC=D3 LY=5C
+  ppu_step: calls=1114112 total_cyc=10388612 clk=124 LCD_EN=1 LCDC=D3 LY=18
+  ppu_step: calls=1118208 total_cyc=10426844 clk=44 LCD_EN=1 LCDC=D3 LY=6C
+  ppu_step: calls=1122304 total_cyc=10465880 clk=320 LCD_EN=1 LCDC=D3 LY=27
+  ppu_step: calls=1126400 total_cyc=10504104 clk=248 LCD_EN=1 LCDC=D3 LY=7B
+  ppu_step: calls=1130496 total_cyc=10543140 clk=60 LCD_EN=1 LCDC=D3 LY=37
+  ppu_step: calls=1134592 total_cyc=10581372 clk=444 LCD_EN=1 LCDC=D3 LY=8A
+  ppu_step: calls=1138688 total_cyc=10620400 clk=264 LCD_EN=1 LCDC=D3 LY=46
+  ppu_step: calls=1142784 total_cyc=10659436 clk=76 LCD_EN=1 LCDC=D3 LY=02
+  ppu_step: calls=1146880 total_cyc=10697668 clk=4 LCD_EN=1 LCDC=D3 LY=56
+  ppu_step: calls=1150976 total_cyc=10736696 clk=280 LCD_EN=1 LCDC=D3 LY=11
+  ppu_step: calls=1155072 total_cyc=10774928 clk=200 LCD_EN=1 LCDC=D3 LY=65
+  ppu_step: calls=1159168 total_cyc=10813964 clk=20 LCD_EN=1 LCDC=D3 LY=21
+  ppu_step: calls=1163264 total_cyc=10852188 clk=404 LCD_EN=1 LCDC=D3 LY=74
+  ppu_step: calls=1167360 total_cyc=10891224 clk=216 LCD_EN=1 LCDC=D3 LY=30
+  ppu_step: calls=1171456 total_cyc=10929456 clk=144 LCD_EN=1 LCDC=D3 LY=84
+  ppu_step: calls=1175552 total_cyc=10968484 clk=420 LCD_EN=1 LCDC=D3 LY=3F
+  ppu_step: calls=1179648 total_cyc=11007228 clk=404 LCD_EN=1 LCDC=D3 LY=94
+  ppu_step: calls=1183744 total_cyc=11045752 clk=160 LCD_EN=1 LCDC=D3 LY=4F
+  ppu_step: calls=1187840 total_cyc=11084780 clk=436 LCD_EN=1 LCDC=D3 LY=0A
+  ppu_step: calls=1191936 total_cyc=11123012 clk=356 LCD_EN=1 LCDC=D3 LY=5E
+  ppu_step: calls=1196032 total_cyc=11162048 clk=176 LCD_EN=1 LCDC=D3 LY=1A
+  ppu_step: calls=1200128 total_cyc=11200272 clk=104 LCD_EN=1 LCDC=D3 LY=6E
+  FF85[300] write 00 (PC=02F5)
+  ppu_step: calls=1204224 total_cyc=11239308 clk=372 LCD_EN=1 LCDC=D3 LY=29
+  ppu_step: calls=1208320 total_cyc=11277540 clk=300 LCD_EN=1 LCDC=D3 LY=7D
+  ppu_step: calls=1212416 total_cyc=11316568 clk=120 LCD_EN=1 LCDC=D3 LY=39
+  ppu_step: calls=1216512 total_cyc=11354800 clk=40 LCD_EN=1 LCDC=D3 LY=8D
+  ppu_step: calls=1220608 total_cyc=11393836 clk=316 LCD_EN=1 LCDC=D3 LY=48
+  ppu_step: calls=1224704 total_cyc=11432864 clk=136 LCD_EN=1 LCDC=D3 LY=04
+  ppu_step: calls=1228800 total_cyc=11471096 clk=56 LCD_EN=1 LCDC=D3 LY=58
+  ppu_step: calls=1232896 total_cyc=11510132 clk=332 LCD_EN=1 LCDC=D3 LY=13
+  ppu_step: calls=1236992 total_cyc=11548356 clk=260 LCD_EN=1 LCDC=D3 LY=67
+  ppu_step: calls=1241088 total_cyc=11587392 clk=72 LCD_EN=1 LCDC=D3 LY=23
+  ppu_step: calls=1245184 total_cyc=11625624 clk=0 LCD_EN=1 LCDC=D3 LY=77
+  ppu_step: calls=1249280 total_cyc=11664652 clk=276 LCD_EN=1 LCDC=D3 LY=32
+  ppu_step: calls=1253376 total_cyc=11702884 clk=196 LCD_EN=1 LCDC=D3 LY=86
+  ppu_step: calls=1257472 total_cyc=11741920 clk=16 LCD_EN=1 LCDC=D3 LY=42
+  ppu_step: calls=1261568 total_cyc=11780816 clk=160 LCD_EN=1 LCDC=D3 LY=97
+  ppu_step: calls=1265664 total_cyc=11819180 clk=212 LCD_EN=1 LCDC=D3 LY=51
+  ppu_step: calls=1269760 total_cyc=11858216 clk=32 LCD_EN=1 LCDC=D3 LY=0D
+  ppu_step: calls=1273856 total_cyc=11896440 clk=416 LCD_EN=1 LCDC=D3 LY=60
+  ppu_step: calls=1277952 total_cyc=11935476 clk=228 LCD_EN=1 LCDC=D3 LY=1C
+  ppu_step: calls=1282048 total_cyc=11973708 clk=156 LCD_EN=1 LCDC=D3 LY=70
+  ppu_step: calls=1286144 total_cyc=12012736 clk=432 LCD_EN=1 LCDC=D3 LY=2B
+  ppu_step: calls=1290240 total_cyc=12050968 clk=352 LCD_EN=1 LCDC=D3 LY=7F
+  ppu_step: calls=1294336 total_cyc=12090004 clk=172 LCD_EN=1 LCDC=D3 LY=3B
+  ppu_step: calls=1298432 total_cyc=12128228 clk=100 LCD_EN=1 LCDC=D3 LY=8F
+  ppu_step: calls=1302528 total_cyc=12167264 clk=368 LCD_EN=1 LCDC=D3 LY=4A
+  ppu_step: calls=1306624 total_cyc=12206300 clk=188 LCD_EN=1 LCDC=D3 LY=06
+  ppu_step: calls=1310720 total_cyc=12244524 clk=116 LCD_EN=1 LCDC=D3 LY=5A
+  ppu_step: calls=1314816 total_cyc=12283560 clk=384 LCD_EN=1 LCDC=D3 LY=15
+  ppu_step: calls=1318912 total_cyc=12321792 clk=312 LCD_EN=1 LCDC=D3 LY=69
+  ppu_step: calls=1323008 total_cyc=12360820 clk=132 LCD_EN=1 LCDC=D3 LY=25
+  ppu_step: calls=1327104 total_cyc=12399052 clk=52 LCD_EN=1 LCDC=D3 LY=79
+  ppu_step: calls=1331200 total_cyc=12438088 clk=328 LCD_EN=1 LCDC=D3 LY=34
+  ppu_step: calls=1335296 total_cyc=12476312 clk=256 LCD_EN=1 LCDC=D3 LY=88
+  ppu_step: calls=1339392 total_cyc=12515348 clk=68 LCD_EN=1 LCDC=D3 LY=44
+  ppu_step: calls=1343488 total_cyc=12554384 clk=344 LCD_EN=1 LCDC=D3 LY=99
+  ppu_step: calls=1347584 total_cyc=12592608 clk=272 LCD_EN=1 LCDC=D3 LY=53
+  ppu_step: calls=1351680 total_cyc=12631644 clk=84 LCD_EN=1 LCDC=D3 LY=0F
+Frame 180: cycles=70232 ppu.clk=236 LCDC=D3 LY=24 IF=00 IE=09 FF85=00 halt=0 ime=1 pend=0 pc=02ED
+  ppu_step: calls=1355776 total_cyc=12669876 clk=12 LCD_EN=1 LCDC=D3 LY=63
+  ppu_step: calls=1359872 total_cyc=12708904 clk=288 LCD_EN=1 LCDC=D3 LY=1E
+  ppu_step: calls=1363968 total_cyc=12747136 clk=208 LCD_EN=1 LCDC=D3 LY=72
+  ppu_step: calls=1368064 total_cyc=12786172 clk=28 LCD_EN=1 LCDC=D3 LY=2E
+  ppu_step: calls=1372160 total_cyc=12824396 clk=412 LCD_EN=1 LCDC=D3 LY=81
+  ppu_step: calls=1376256 total_cyc=12863432 clk=224 LCD_EN=1 LCDC=D3 LY=3D
+  ppu_step: calls=1380352 total_cyc=12902096 clk=116 LCD_EN=1 LCDC=D3 LY=92
+  ppu_step: calls=1384448 total_cyc=12940692 clk=428 LCD_EN=1 LCDC=D3 LY=4C
+  ppu_step: calls=1388544 total_cyc=12979728 clk=240 LCD_EN=1 LCDC=D3 LY=08
+  ppu_step: calls=1392640 total_cyc=13017960 clk=168 LCD_EN=1 LCDC=D3 LY=5C
+  ppu_step: calls=1396736 total_cyc=13056988 clk=444 LCD_EN=1 LCDC=D3 LY=17
+  ppu_step: calls=1400832 total_cyc=13095220 clk=364 LCD_EN=1 LCDC=D3 LY=6B
+  ppu_step: calls=1404928 total_cyc=13134256 clk=184 LCD_EN=1 LCDC=D3 LY=27
+  ppu_step: calls=1409024 total_cyc=13172480 clk=112 LCD_EN=1 LCDC=D3 LY=7B
+  ppu_step: calls=1413120 total_cyc=13211516 clk=380 LCD_EN=1 LCDC=D3 LY=36
+  ppu_step: calls=1417216 total_cyc=13249748 clk=308 LCD_EN=1 LCDC=D3 LY=8A
+  ppu_step: calls=1421312 total_cyc=13288776 clk=128 LCD_EN=1 LCDC=D3 LY=46
+  ppu_step: calls=1425408 total_cyc=13327812 clk=396 LCD_EN=1 LCDC=D3 LY=01
+  ppu_step: calls=1429504 total_cyc=13366044 clk=324 LCD_EN=1 LCDC=D3 LY=55
+  ppu_step: calls=1433600 total_cyc=13405072 clk=144 LCD_EN=1 LCDC=D3 LY=11
+  ppu_step: calls=1437696 total_cyc=13443304 clk=64 LCD_EN=1 LCDC=D3 LY=65
+  ppu_step: calls=1441792 total_cyc=13482340 clk=340 LCD_EN=1 LCDC=D3 LY=20
+  ppu_step: calls=1445888 total_cyc=13520564 clk=268 LCD_EN=1 LCDC=D3 LY=74
+  ppu_step: calls=1449984 total_cyc=13559600 clk=80 LCD_EN=1 LCDC=D3 LY=30
+  ppu_step: calls=1454080 total_cyc=13597832 clk=8 LCD_EN=1 LCDC=D3 LY=84
+  ppu_step: calls=1458176 total_cyc=13636860 clk=284 LCD_EN=1 LCDC=D3 LY=3F
+  ppu_step: calls=1462272 total_cyc=13675580 clk=244 LCD_EN=1 LCDC=D3 LY=94
+  ppu_step: calls=1466368 total_cyc=13714128 clk=24 LCD_EN=1 LCDC=D3 LY=4F
+  ppu_step: calls=1470464 total_cyc=13753156 clk=300 LCD_EN=1 LCDC=D3 LY=0A
+  ppu_step: calls=1474560 total_cyc=13791388 clk=220 LCD_EN=1 LCDC=D3 LY=5E
+  ppu_step: calls=1478656 total_cyc=13830424 clk=40 LCD_EN=1 LCDC=D3 LY=1A
+  ppu_step: calls=1482752 total_cyc=13868648 clk=424 LCD_EN=1 LCDC=D3 LY=6D
+  ppu_step: calls=1486848 total_cyc=13907684 clk=236 LCD_EN=1 LCDC=D3 LY=29
+  ppu_step: calls=1490944 total_cyc=13945916 clk=164 LCD_EN=1 LCDC=D3 LY=7D
+  ppu_step: calls=1495040 total_cyc=13984944 clk=440 LCD_EN=1 LCDC=D3 LY=38
+  ppu_step: calls=1499136 total_cyc=14023176 clk=360 LCD_EN=1 LCDC=D3 LY=8C
+  ppu_step: calls=1503232 total_cyc=14062212 clk=180 LCD_EN=1 LCDC=D3 LY=48
+  ppu_step: calls=1507328 total_cyc=14101240 clk=0 LCD_EN=1 LCDC=D3 LY=04
+  ppu_step: calls=1511424 total_cyc=14139472 clk=376 LCD_EN=1 LCDC=D3 LY=57
+  ppu_step: calls=1515520 total_cyc=14178508 clk=196 LCD_EN=1 LCDC=D3 LY=13
+  ppu_step: calls=1519616 total_cyc=14216732 clk=124 LCD_EN=1 LCDC=D3 LY=67
+  ppu_step: calls=1523712 total_cyc=14255768 clk=392 LCD_EN=1 LCDC=D3 LY=22
+  ppu_step: calls=1527808 total_cyc=14294000 clk=320 LCD_EN=1 LCDC=D3 LY=76
+  ppu_step: calls=1531904 total_cyc=14333028 clk=140 LCD_EN=1 LCDC=D3 LY=32
+  ppu_step: calls=1536000 total_cyc=14371260 clk=60 LCD_EN=1 LCDC=D3 LY=86
+  ppu_step: calls=1540096 total_cyc=14410296 clk=336 LCD_EN=1 LCDC=D3 LY=41
+  ppu_step: calls=1544192 total_cyc=14449188 clk=0 LCD_EN=1 LCDC=D3 LY=97
+  ppu_step: calls=1548288 total_cyc=14487556 clk=76 LCD_EN=1 LCDC=D3 LY=51
+  ppu_step: calls=1552384 total_cyc=14526592 clk=352 LCD_EN=1 LCDC=D3 LY=0C
+  ppu_step: calls=1556480 total_cyc=14564816 clk=280 LCD_EN=1 LCDC=D3 LY=60
+  ppu_step: calls=1560576 total_cyc=14603852 clk=92 LCD_EN=1 LCDC=D3 LY=1C
+  ppu_step: calls=1564672 total_cyc=14642084 clk=20 LCD_EN=1 LCDC=D3 LY=70
+  ppu_step: calls=1568768 total_cyc=14681112 clk=296 LCD_EN=1 LCDC=D3 LY=2B
+  ppu_step: calls=1572864 total_cyc=14719344 clk=216 LCD_EN=1 LCDC=D3 LY=7F
+  INT#200 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[400] write 00 (PC=02F5)
+  ppu_step: calls=1576960 total_cyc=14758380 clk=36 LCD_EN=1 LCDC=D3 LY=3B
+  ppu_step: calls=1581056 total_cyc=14796604 clk=420 LCD_EN=1 LCDC=D3 LY=8E
+  ppu_step: calls=1585152 total_cyc=14835640 clk=232 LCD_EN=1 LCDC=D3 LY=4A
+  ppu_step: calls=1589248 total_cyc=14874676 clk=52 LCD_EN=1 LCDC=D3 LY=06
+  ppu_step: calls=1593344 total_cyc=14912900 clk=436 LCD_EN=1 LCDC=D3 LY=59
+  ppu_step: calls=1597440 total_cyc=14951936 clk=248 LCD_EN=1 LCDC=D3 LY=15
+  ppu_step: calls=1601536 total_cyc=14990168 clk=176 LCD_EN=1 LCDC=D3 LY=69
+  ppu_step: calls=1605632 total_cyc=15029196 clk=452 LCD_EN=1 LCDC=D3 LY=24
+  ppu_step: calls=1609728 total_cyc=15067428 clk=372 LCD_EN=1 LCDC=D3 LY=78
+  ppu_step: calls=1613824 total_cyc=15106464 clk=192 LCD_EN=1 LCDC=D3 LY=34
+  ppu_step: calls=1617920 total_cyc=15144688 clk=120 LCD_EN=1 LCDC=D3 LY=88
+  ppu_step: calls=1622016 total_cyc=15183724 clk=388 LCD_EN=1 LCDC=D3 LY=43
+  ppu_step: calls=1626112 total_cyc=15222760 clk=208 LCD_EN=1 LCDC=D3 LY=99
+  ppu_step: calls=1630208 total_cyc=15260984 clk=136 LCD_EN=1 LCDC=D3 LY=53
+  ppu_step: calls=1634304 total_cyc=15300020 clk=404 LCD_EN=1 LCDC=D3 LY=0E
+  ppu_step: calls=1638400 total_cyc=15338252 clk=332 LCD_EN=1 LCDC=D3 LY=62
+  ppu_step: calls=1642496 total_cyc=15377280 clk=152 LCD_EN=1 LCDC=D3 LY=1E
+  ppu_step: calls=1646592 total_cyc=15415512 clk=72 LCD_EN=1 LCDC=D3 LY=72
+  ppu_step: calls=1650688 total_cyc=15454548 clk=348 LCD_EN=1 LCDC=D3 LY=2D
+  ppu_step: calls=1654784 total_cyc=15492772 clk=276 LCD_EN=1 LCDC=D3 LY=81
+  ppu_step: calls=1658880 total_cyc=15531808 clk=88 LCD_EN=1 LCDC=D3 LY=3D
+  ppu_step: calls=1662976 total_cyc=15570368 clk=344 LCD_EN=1 LCDC=D3 LY=91
+  ppu_step: calls=1667072 total_cyc=15609068 clk=292 LCD_EN=1 LCDC=D3 LY=4C
+  ppu_step: calls=1671168 total_cyc=15648104 clk=104 LCD_EN=1 LCDC=D3 LY=08
+  ppu_step: calls=1675264 total_cyc=15686336 clk=32 LCD_EN=1 LCDC=D3 LY=5C
+  ppu_step: calls=1679360 total_cyc=15725364 clk=308 LCD_EN=1 LCDC=D3 LY=17
+  ppu_step: calls=1683456 total_cyc=15763596 clk=228 LCD_EN=1 LCDC=D3 LY=6B
+  ppu_step: calls=1687552 total_cyc=15802632 clk=48 LCD_EN=1 LCDC=D3 LY=27
+  ppu_step: calls=1691648 total_cyc=15840856 clk=432 LCD_EN=1 LCDC=D3 LY=7A
+  ppu_step: calls=1695744 total_cyc=15879892 clk=244 LCD_EN=1 LCDC=D3 LY=36
+  ppu_step: calls=1699840 total_cyc=15918124 clk=172 LCD_EN=1 LCDC=D3 LY=8A
+  ppu_step: calls=1703936 total_cyc=15957152 clk=448 LCD_EN=1 LCDC=D3 LY=45
+  ppu_step: calls=1708032 total_cyc=15996188 clk=260 LCD_EN=1 LCDC=D3 LY=01
+  ppu_step: calls=1712128 total_cyc=16034420 clk=188 LCD_EN=1 LCDC=D3 LY=55
+  ppu_step: calls=1716224 total_cyc=16073448 clk=8 LCD_EN=1 LCDC=D3 LY=11
+  ppu_step: calls=1720320 total_cyc=16111680 clk=384 LCD_EN=1 LCDC=D3 LY=64
+  ppu_step: calls=1724416 total_cyc=16150716 clk=204 LCD_EN=1 LCDC=D3 LY=20
+  ppu_step: calls=1728512 total_cyc=16188940 clk=132 LCD_EN=1 LCDC=D3 LY=74
+  ppu_step: calls=1732608 total_cyc=16227976 clk=400 LCD_EN=1 LCDC=D3 LY=2F
+  ppu_step: calls=1736704 total_cyc=16266208 clk=328 LCD_EN=1 LCDC=D3 LY=83
+  ppu_step: calls=1740800 total_cyc=16305236 clk=148 LCD_EN=1 LCDC=D3 LY=3F
+  ppu_step: calls=1744896 total_cyc=16343980 clk=124 LCD_EN=1 LCDC=D3 LY=94
+  ppu_step: calls=1748992 total_cyc=16382504 clk=344 LCD_EN=1 LCDC=D3 LY=4E
+  ppu_step: calls=1753088 total_cyc=16421532 clk=164 LCD_EN=1 LCDC=D3 LY=0A
+  ppu_step: calls=1757184 total_cyc=16459764 clk=84 LCD_EN=1 LCDC=D3 LY=5E
+  ppu_step: calls=1761280 total_cyc=16498800 clk=360 LCD_EN=1 LCDC=D3 LY=19
+  ppu_step: calls=1765376 total_cyc=16537024 clk=288 LCD_EN=1 LCDC=D3 LY=6D
+  ppu_step: calls=1769472 total_cyc=16576060 clk=100 LCD_EN=1 LCDC=D3 LY=29
+  ppu_step: calls=1773568 total_cyc=16614292 clk=28 LCD_EN=1 LCDC=D3 LY=7D
+  ppu_step: calls=1777664 total_cyc=16653320 clk=304 LCD_EN=1 LCDC=D3 LY=38
+  ppu_step: calls=1781760 total_cyc=16691552 clk=224 LCD_EN=1 LCDC=D3 LY=8C
+  ppu_step: calls=1785856 total_cyc=16730588 clk=44 LCD_EN=1 LCDC=D3 LY=48
+  ppu_step: calls=1789952 total_cyc=16769616 clk=320 LCD_EN=1 LCDC=D3 LY=03
+  ppu_step: calls=1794048 total_cyc=16807848 clk=240 LCD_EN=1 LCDC=D3 LY=57
+  ppu_step: calls=1798144 total_cyc=16846884 clk=60 LCD_EN=1 LCDC=D3 LY=13
+Frame 240: cycles=70232 ppu.clk=140 LCDC=D3 LY=25 IF=00 IE=09 FF85=00 halt=0 ime=1 pend=0 pc=02ED
+  ppu_step: calls=1802240 total_cyc=16885108 clk=444 LCD_EN=1 LCDC=D3 LY=66
+  ppu_step: calls=1806336 total_cyc=16924144 clk=256 LCD_EN=1 LCDC=D3 LY=22
+  ppu_step: calls=1810432 total_cyc=16962376 clk=184 LCD_EN=1 LCDC=D3 LY=76
+  ppu_step: calls=1814528 total_cyc=17001404 clk=4 LCD_EN=1 LCDC=D3 LY=32
+  ppu_step: calls=1818624 total_cyc=17039636 clk=380 LCD_EN=1 LCDC=D3 LY=85
+  ppu_step: calls=1822720 total_cyc=17078672 clk=200 LCD_EN=1 LCDC=D3 LY=41
+  ppu_step: calls=1826816 total_cyc=17117520 clk=284 LCD_EN=1 LCDC=D3 LY=96
+  ppu_step: calls=1830912 total_cyc=17155932 clk=396 LCD_EN=1 LCDC=D3 LY=50
+  ppu_step: calls=1835008 total_cyc=17194968 clk=216 LCD_EN=1 LCDC=D3 LY=0C
+  ppu_step: calls=1839104 total_cyc=17233192 clk=144 LCD_EN=1 LCDC=D3 LY=60
+  ppu_step: calls=1843200 total_cyc=17272228 clk=412 LCD_EN=1 LCDC=D3 LY=1B
+  ppu_step: calls=1847296 total_cyc=17310460 clk=340 LCD_EN=1 LCDC=D3 LY=6F
+  ppu_step: calls=1851392 total_cyc=17349488 clk=160 LCD_EN=1 LCDC=D3 LY=2B
+  ppu_step: calls=1855488 total_cyc=17387720 clk=80 LCD_EN=1 LCDC=D3 LY=7F
+  ppu_step: calls=1859584 total_cyc=17426756 clk=356 LCD_EN=1 LCDC=D3 LY=3A
+  ppu_step: calls=1863680 total_cyc=17464980 clk=284 LCD_EN=1 LCDC=D3 LY=8E
+  ppu_step: calls=1867776 total_cyc=17504016 clk=96 LCD_EN=1 LCDC=D3 LY=4A
+  ppu_step: calls=1871872 total_cyc=17543052 clk=372 LCD_EN=1 LCDC=D3 LY=05
+  ppu_step: calls=1875968 total_cyc=17581276 clk=300 LCD_EN=1 LCDC=D3 LY=59
+  ppu_step: calls=1880064 total_cyc=17620312 clk=112 LCD_EN=1 LCDC=D3 LY=15
+  ppu_step: calls=1884160 total_cyc=17658544 clk=40 LCD_EN=1 LCDC=D3 LY=69
+  ppu_step: calls=1888256 total_cyc=17697572 clk=316 LCD_EN=1 LCDC=D3 LY=24
+  ppu_step: calls=1892352 total_cyc=17735804 clk=236 LCD_EN=1 LCDC=D3 LY=78
+  ppu_step: calls=1896448 total_cyc=17774840 clk=56 LCD_EN=1 LCDC=D3 LY=34
+  ppu_step: calls=1900544 total_cyc=17813064 clk=440 LCD_EN=1 LCDC=D3 LY=87
+  ppu_step: calls=1904640 total_cyc=17852100 clk=252 LCD_EN=1 LCDC=D3 LY=43
+  ppu_step: calls=1908736 total_cyc=17891136 clk=72 LCD_EN=1 LCDC=D3 LY=99
+  ppu_step: calls=1912832 total_cyc=17929360 clk=0 LCD_EN=1 LCDC=D3 LY=53
+  ppu_step: calls=1916928 total_cyc=17968396 clk=268 LCD_EN=1 LCDC=D3 LY=0E
+  ppu_step: calls=1921024 total_cyc=18006628 clk=196 LCD_EN=1 LCDC=D3 LY=62
+  ppu_step: calls=1925120 total_cyc=18045656 clk=16 LCD_EN=1 LCDC=D3 LY=1E
+  ppu_step: calls=1929216 total_cyc=18083888 clk=392 LCD_EN=1 LCDC=D3 LY=71
+  ppu_step: calls=1933312 total_cyc=18122924 clk=212 LCD_EN=1 LCDC=D3 LY=2D
+  ppu_step: calls=1937408 total_cyc=18161148 clk=140 LCD_EN=1 LCDC=D3 LY=81
+  ppu_step: calls=1941504 total_cyc=18200184 clk=408 LCD_EN=1 LCDC=D3 LY=3C
+  ppu_step: calls=1945600 total_cyc=18238644 clk=100 LCD_EN=1 LCDC=D3 LY=91
+  FF85[500] write 00 (PC=02F5)
+  ppu_step: calls=1949696 total_cyc=18277444 clk=156 LCD_EN=1 LCDC=D3 LY=4C
+  ppu_step: calls=1953792 total_cyc=18316480 clk=424 LCD_EN=1 LCDC=D3 LY=07
+  ppu_step: calls=1957888 total_cyc=18354704 clk=352 LCD_EN=1 LCDC=D3 LY=5B
+  ppu_step: calls=1961984 total_cyc=18393736 clk=160 LCD_EN=1 LCDC=D3 LY=17
+  ppu_step: calls=1966080 total_cyc=18431968 clk=88 LCD_EN=1 LCDC=D3 LY=6B
+  ppu_step: calls=1970176 total_cyc=18470992 clk=360 LCD_EN=1 LCDC=D3 LY=26
+  ppu_step: calls=1974272 total_cyc=18509224 clk=280 LCD_EN=1 LCDC=D3 LY=7A
+  ppu_step: calls=1978368 total_cyc=18548256 clk=96 LCD_EN=1 LCDC=D3 LY=36
+  ppu_step: calls=1982464 total_cyc=18586480 clk=24 LCD_EN=1 LCDC=D3 LY=8A
+  ppu_step: calls=1986560 total_cyc=18625512 clk=288 LCD_EN=1 LCDC=D3 LY=45
+  ppu_step: calls=1990656 total_cyc=18664544 clk=104 LCD_EN=1 LCDC=D3 LY=01
+  ppu_step: calls=1994752 total_cyc=18702768 clk=32 LCD_EN=1 LCDC=D3 LY=55
+  ppu_step: calls=1998848 total_cyc=18741800 clk=296 LCD_EN=1 LCDC=D3 LY=10
+  ppu_step: calls=2002944 total_cyc=18780032 clk=224 LCD_EN=1 LCDC=D3 LY=64
+  ppu_step: calls=2007040 total_cyc=18819056 clk=40 LCD_EN=1 LCDC=D3 LY=20
+  ppu_step: calls=2011136 total_cyc=18857288 clk=416 LCD_EN=1 LCDC=D3 LY=73
+  ppu_step: calls=2015232 total_cyc=18896320 clk=232 LCD_EN=1 LCDC=D3 LY=2F
+  ppu_step: calls=2019328 total_cyc=18934544 clk=160 LCD_EN=1 LCDC=D3 LY=83
+  ppu_step: calls=2023424 total_cyc=18973576 clk=424 LCD_EN=1 LCDC=D3 LY=3E
+  ppu_step: calls=2027520 total_cyc=19012336 clk=432 LCD_EN=1 LCDC=D3 LY=93
+  ppu_step: calls=2031616 total_cyc=19050832 clk=168 LCD_EN=1 LCDC=D3 LY=4E
+  ppu_step: calls=2035712 total_cyc=19089864 clk=432 LCD_EN=1 LCDC=D3 LY=09
+  ppu_step: calls=2039808 total_cyc=19128096 clk=360 LCD_EN=1 LCDC=D3 LY=5D
+  ppu_step: calls=2043904 total_cyc=19167120 clk=176 LCD_EN=1 LCDC=D3 LY=19
+  ppu_step: calls=2048000 total_cyc=19205352 clk=96 LCD_EN=1 LCDC=D3 LY=6D
+  ppu_step: calls=2052096 total_cyc=19244384 clk=368 LCD_EN=1 LCDC=D3 LY=28
+  ppu_step: calls=2056192 total_cyc=19282608 clk=296 LCD_EN=1 LCDC=D3 LY=7C
+  ppu_step: calls=2060288 total_cyc=19321640 clk=104 LCD_EN=1 LCDC=D3 LY=38
+  ppu_step: calls=2064384 total_cyc=19359872 clk=32 LCD_EN=1 LCDC=D3 LY=8C
+  ppu_step: calls=2068480 total_cyc=19398896 clk=304 LCD_EN=1 LCDC=D3 LY=47
+  ppu_step: calls=2072576 total_cyc=19437928 clk=112 LCD_EN=1 LCDC=D3 LY=03
+  ppu_step: calls=2076672 total_cyc=19476160 clk=40 LCD_EN=1 LCDC=D3 LY=57
+  ppu_step: calls=2080768 total_cyc=19515184 clk=312 LCD_EN=1 LCDC=D3 LY=12
+  ppu_step: calls=2084864 total_cyc=19553416 clk=232 LCD_EN=1 LCDC=D3 LY=66
+  ppu_step: calls=2088960 total_cyc=19592448 clk=48 LCD_EN=1 LCDC=D3 LY=22
+  ppu_step: calls=2093056 total_cyc=19630672 clk=432 LCD_EN=1 LCDC=D3 LY=75
+  ppu_step: calls=2097152 total_cyc=19669704 clk=240 LCD_EN=1 LCDC=D3 LY=31
+  ppu_step: calls=2101248 total_cyc=19707936 clk=168 LCD_EN=1 LCDC=D3 LY=85
+  ppu_step: calls=2105344 total_cyc=19746960 clk=440 LCD_EN=1 LCDC=D3 LY=40
+  ppu_step: calls=2109440 total_cyc=19785744 clk=0 LCD_EN=1 LCDC=D3 LY=96
+  ppu_step: calls=2113536 total_cyc=19824224 clk=176 LCD_EN=1 LCDC=D3 LY=50
+  ppu_step: calls=2117632 total_cyc=19863248 clk=448 LCD_EN=1 LCDC=D3 LY=0B
+  ppu_step: calls=2121728 total_cyc=19901480 clk=368 LCD_EN=1 LCDC=D3 LY=5F
+  ppu_step: calls=2125824 total_cyc=19940512 clk=184 LCD_EN=1 LCDC=D3 LY=1B
+  ppu_step: calls=2129920 total_cyc=19978736 clk=112 LCD_EN=1 LCDC=D3 LY=6F
+  ppu_step: calls=2134016 total_cyc=20017768 clk=376 LCD_EN=1 LCDC=D3 LY=2A
+  ppu_step: calls=2138112 total_cyc=20056000 clk=304 LCD_EN=1 LCDC=D3 LY=7E
+  ppu_step: calls=2142208 total_cyc=20095024 clk=120 LCD_EN=1 LCDC=D3 LY=3A
+  ppu_step: calls=2146304 total_cyc=20133256 clk=40 LCD_EN=1 LCDC=D3 LY=8E
+  ppu_step: calls=2150400 total_cyc=20172288 clk=312 LCD_EN=1 LCDC=D3 LY=49
+  ppu_step: calls=2154496 total_cyc=20211312 clk=128 LCD_EN=1 LCDC=D3 LY=05
+  ppu_step: calls=2158592 total_cyc=20249544 clk=48 LCD_EN=1 LCDC=D3 LY=59
+  ppu_step: calls=2162688 total_cyc=20288576 clk=320 LCD_EN=1 LCDC=D3 LY=14
+  ppu_step: calls=2166784 total_cyc=20326800 clk=248 LCD_EN=1 LCDC=D3 LY=68
+  ppu_step: calls=2170880 total_cyc=20365832 clk=56 LCD_EN=1 LCDC=D3 LY=24
+  ppu_step: calls=2174976 total_cyc=20404064 clk=440 LCD_EN=1 LCDC=D3 LY=77
+  ppu_step: calls=2179072 total_cyc=20443088 clk=256 LCD_EN=1 LCDC=D3 LY=33
+  ppu_step: calls=2183168 total_cyc=20481320 clk=176 LCD_EN=1 LCDC=D3 LY=87
+  ppu_step: calls=2187264 total_cyc=20520352 clk=448 LCD_EN=1 LCDC=D3 LY=42
+  ppu_step: calls=2191360 total_cyc=20559392 clk=272 LCD_EN=1 LCDC=D3 LY=98
+  ppu_step: calls=2195456 total_cyc=20597608 clk=184 LCD_EN=1 LCDC=D3 LY=52
+  ppu_step: calls=2199552 total_cyc=20636640 clk=0 LCD_EN=1 LCDC=D3 LY=0E
+  ppu_step: calls=2203648 total_cyc=20674864 clk=384 LCD_EN=1 LCDC=D3 LY=61
+  ppu_step: calls=2207744 total_cyc=20713896 clk=192 LCD_EN=1 LCDC=D3 LY=1D
+  ppu_step: calls=2211840 total_cyc=20752128 clk=120 LCD_EN=1 LCDC=D3 LY=71
+  ppu_step: calls=2215936 total_cyc=20791152 clk=392 LCD_EN=1 LCDC=D3 LY=2C
+  ppu_step: calls=2220032 total_cyc=20829384 clk=312 LCD_EN=1 LCDC=D3 LY=80
+  ppu_step: calls=2224128 total_cyc=20868416 clk=128 LCD_EN=1 LCDC=D3 LY=3C
+  ppu_step: calls=2228224 total_cyc=20906692 clk=100 LCD_EN=1 LCDC=D3 LY=90
+  ppu_step: calls=2232320 total_cyc=20945672 clk=320 LCD_EN=1 LCDC=D3 LY=4B
+  ppu_step: calls=2236416 total_cyc=20984704 clk=136 LCD_EN=1 LCDC=D3 LY=07
+  ppu_step: calls=2240512 total_cyc=21022928 clk=64 LCD_EN=1 LCDC=D3 LY=5B
+  ppu_step: calls=2244608 total_cyc=21061960 clk=328 LCD_EN=1 LCDC=D3 LY=16
+Frame 300: cycles=70224 ppu.clk=344 LCDC=D3 LY=25 IF=00 IE=09 FF85=00 halt=0 ime=1 pend=0 pc=02EF
+  ppu_step: calls=2248704 total_cyc=21100192 clk=256 LCD_EN=1 LCDC=D3 LY=6A
+  ppu_step: calls=2252800 total_cyc=21139216 clk=72 LCD_EN=1 LCDC=D3 LY=26
+  ppu_step: calls=2256896 total_cyc=21177448 clk=448 LCD_EN=1 LCDC=D3 LY=79
+  ppu_step: calls=2260992 total_cyc=21216480 clk=264 LCD_EN=1 LCDC=D3 LY=35
+  ppu_step: calls=2265088 total_cyc=21254704 clk=192 LCD_EN=1 LCDC=D3 LY=89
+  ppu_step: calls=2269184 total_cyc=21293736 clk=0 LCD_EN=1 LCDC=D3 LY=45
+  ppu_step: calls=2273280 total_cyc=21332768 clk=272 LCD_EN=1 LCDC=D3 LY=00
+  ppu_step: calls=2277376 total_cyc=21370992 clk=200 LCD_EN=1 LCDC=D3 LY=54
+  ppu_step: calls=2281472 total_cyc=21410024 clk=8 LCD_EN=1 LCDC=D3 LY=10
+  ppu_step: calls=2285568 total_cyc=21448256 clk=392 LCD_EN=1 LCDC=D3 LY=63
+  ppu_step: calls=2289664 total_cyc=21487280 clk=208 LCD_EN=1 LCDC=D3 LY=1F
+  ppu_step: calls=2293760 total_cyc=21525512 clk=128 LCD_EN=1 LCDC=D3 LY=73
+  ppu_step: calls=2297856 total_cyc=21564544 clk=400 LCD_EN=1 LCDC=D3 LY=2E
+  ppu_step: calls=2301952 total_cyc=21602768 clk=328 LCD_EN=1 LCDC=D3 LY=82
+  ppu_step: calls=2306048 total_cyc=21641800 clk=136 LCD_EN=1 LCDC=D3 LY=3E
+  ppu_step: calls=2310144 total_cyc=21680608 clk=184 LCD_EN=1 LCDC=D3 LY=93
+  ppu_step: calls=2314240 total_cyc=21719056 clk=336 LCD_EN=1 LCDC=D3 LY=4D
+  INT#300 i=0 new_pc=0040 FF85=00 LY=90
+  FF85[600] write 00 (PC=02F5)
+  ppu_step: calls=2318336 total_cyc=21758088 clk=144 LCD_EN=1 LCDC=D3 LY=09
+  ppu_step: calls=2322432 total_cyc=21796320 clk=72 LCD_EN=1 LCDC=D3 LY=5D
+  ppu_step: calls=2326528 total_cyc=21835344 clk=344 LCD_EN=1 LCDC=D3 LY=18
+  ppu_step: calls=2330624 total_cyc=21873576 clk=264 LCD_EN=1 LCDC=D3 LY=6C
+  ppu_step: calls=2334720 total_cyc=21912608 clk=80 LCD_EN=1 LCDC=D3 LY=28
+  ppu_step: calls=2338816 total_cyc=21950832 clk=8 LCD_EN=1 LCDC=D3 LY=7C
+  ppu_step: calls=2342912 total_cyc=21989864 clk=272 LCD_EN=1 LCDC=D3 LY=37
+  ppu_step: calls=2347008 total_cyc=22028096 clk=200 LCD_EN=1 LCDC=D3 LY=8B
+  ppu_step: calls=2351104 total_cyc=22067120 clk=16 LCD_EN=1 LCDC=D3 LY=47
+  ppu_step: calls=2355200 total_cyc=22106152 clk=280 LCD_EN=1 LCDC=D3 LY=02
+  ppu_step: calls=2359296 total_cyc=22144384 clk=208 LCD_EN=1 LCDC=D3 LY=56
+  ppu_step: calls=2363392 total_cyc=22183408 clk=24 LCD_EN=1 LCDC=D3 LY=12
+  ppu_step: calls=2367488 total_cyc=22221640 clk=400 LCD_EN=1 LCDC=D3 LY=65
+  ppu_step: calls=2371584 total_cyc=22260672 clk=216 LCD_EN=1 LCDC=D3 LY=21
+  ppu_step: calls=2375680 total_cyc=22298896 clk=144 LCD_EN=1 LCDC=D3 LY=75
+  ppu_step: calls=2379776 total_cyc=22337928 clk=408 LCD_EN=1 LCDC=D3 LY=30
+  ppu_step: calls=2383872 total_cyc=22376160 clk=336 LCD_EN=1 LCDC=D3 LY=84
+  ppu_step: calls=2387968 total_cyc=22415184 clk=152 LCD_EN=1 LCDC=D3 LY=40
+  ppu_step: calls=2392064 total_cyc=22453972 clk=172 LCD_EN=1 LCDC=D3 LY=95
+  ppu_step: calls=2396160 total_cyc=22492448 clk=344 LCD_EN=1 LCDC=D3 LY=4F
+  ppu_step: calls=2400256 total_cyc=22531472 clk=160 LCD_EN=1 LCDC=D3 LY=0B
+  ppu_step: calls=2404352 total_cyc=22569704 clk=80 LCD_EN=1 LCDC=D3 LY=5F
+  ppu_step: calls=2408448 total_cyc=22608736 clk=352 LCD_EN=1 LCDC=D3 LY=1A
+  ppu_step: calls=2412544 total_cyc=22646960 clk=280 LCD_EN=1 LCDC=D3 LY=6E
+  ppu_step: calls=2416640 total_cyc=22685992 clk=88 LCD_EN=1 LCDC=D3 LY=2A
+  ppu_step: calls=2420736 total_cyc=22724224 clk=16 LCD_EN=1 LCDC=D3 LY=7E
+  ppu_step: calls=2424832 total_cyc=22763248 clk=288 LCD_EN=1 LCDC=D3 LY=39
+  ppu_step: calls=2428928 total_cyc=22801480 clk=208 LCD_EN=1 LCDC=D3 LY=8D
+  ppu_step: calls=2433024 total_cyc=22840512 clk=24 LCD_EN=1 LCDC=D3 LY=49
+  ppu_step: calls=2437120 total_cyc=22879536 clk=296 LCD_EN=1 LCDC=D3 LY=04
+  ppu_step: calls=2441216 total_cyc=22917768 clk=216 LCD_EN=1 LCDC=D3 LY=58
+  ppu_step: calls=2445312 total_cyc=22956800 clk=32 LCD_EN=1 LCDC=D3 LY=14
+  ppu_step: calls=2449408 total_cyc=22995024 clk=416 LCD_EN=1 LCDC=D3 LY=67
+  ppu_step: calls=2453504 total_cyc=23034056 clk=224 LCD_EN=1 LCDC=D3 LY=23
+  ppu_step: calls=2457600 total_cyc=23072288 clk=152 LCD_EN=1 LCDC=D3 LY=77
+  ppu_step: calls=2461696 total_cyc=23111312 clk=424 LCD_EN=1 LCDC=D3 LY=32
+  ppu_step: calls=2465792 total_cyc=23149544 clk=344 LCD_EN=1 LCDC=D3 LY=86
+  ppu_step: calls=2469888 total_cyc=23188576 clk=160 LCD_EN=1 LCDC=D3 LY=42
+  ppu_step: calls=2473984 total_cyc=23227500 clk=328 LCD_EN=1 LCDC=D3 LY=97
+  ppu_step: calls=2478080 total_cyc=23265832 clk=352 LCD_EN=1 LCDC=D3 LY=51
+  ppu_step: calls=2482176 total_cyc=23304864 clk=168 LCD_EN=1 LCDC=D3 LY=0D
+  ppu_step: calls=2486272 total_cyc=23343088 clk=96 LCD_EN=1 LCDC=D3 LY=61
+  ppu_step: calls=2490368 total_cyc=23382120 clk=360 LCD_EN=1 LCDC=D3 LY=1C
+  ppu_step: calls=2494464 total_cyc=23420352 clk=288 LCD_EN=1 LCDC=D3 LY=70
+  ppu_step: calls=2498560 total_cyc=23459376 clk=104 LCD_EN=1 LCDC=D3 LY=2C
+  ppu_step: calls=2502656 total_cyc=23497608 clk=24 LCD_EN=1 LCDC=D3 LY=80
+  ppu_step: calls=2506752 total_cyc=23536640 clk=296 LCD_EN=1 LCDC=D3 LY=3B
+  ppu_step: calls=2510848 total_cyc=23574864 clk=224 LCD_EN=1 LCDC=D3 LY=8F
+  ppu_step: calls=2514944 total_cyc=23613896 clk=32 LCD_EN=1 LCDC=D3 LY=4B
+  ppu_step: calls=2519040 total_cyc=23652928 clk=304 LCD_EN=1 LCDC=D3 LY=06
+  ppu_step: calls=2523136 total_cyc=23691152 clk=232 LCD_EN=1 LCDC=D3 LY=5A
+  ppu_step: calls=2527232 total_cyc=23730184 clk=40 LCD_EN=1 LCDC=D3 LY=16
+  ppu_step: calls=2531328 total_cyc=23768416 clk=424 LCD_EN=1 LCDC=D3 LY=69
+  ppu_step: calls=2535424 total_cyc=23807440 clk=240 LCD_EN=1 LCDC=D3 LY=25
+  ppu_step: calls=2539520 total_cyc=23845672 clk=160 LCD_EN=1 LCDC=D3 LY=79
+  ppu_step: calls=2543616 total_cyc=23884704 clk=432 LCD_EN=1 LCDC=D3 LY=34
+  ppu_step: calls=2547712 total_cyc=23922928 clk=360 LCD_EN=1 LCDC=D3 LY=88
+  ppu_step: calls=2551808 total_cyc=23961960 clk=168 LCD_EN=1 LCDC=D3 LY=44
+  ppu_step: calls=2555904 total_cyc=24000992 clk=440 LCD_EN=1 LCDC=D3 LY=99
+  ppu_step: calls=2560000 total_cyc=24039216 clk=368 LCD_EN=1 LCDC=D3 LY=53
+  ppu_step: calls=2564096 total_cyc=24078248 clk=176 LCD_EN=1 LCDC=D3 LY=0F
+  ppu_step: calls=2568192 total_cyc=24116480 clk=104 LCD_EN=1 LCDC=D3 LY=63
+  ppu_step: calls=2572288 total_cyc=24155504 clk=376 LCD_EN=1 LCDC=D3 LY=1E
+  ppu_step: calls=2576384 total_cyc=24193736 clk=296 LCD_EN=1 LCDC=D3 LY=72
+  ppu_step: calls=2580480 total_cyc=24232768 clk=112 LCD_EN=1 LCDC=D3 LY=2E
+  ppu_step: calls=2584576 total_cyc=24270992 clk=40 LCD_EN=1 LCDC=D3 LY=82
+  ppu_step: calls=2588672 total_cyc=24310024 clk=304 LCD_EN=1 LCDC=D3 LY=3D
+  ppu_step: calls=2592768 total_cyc=24348744 clk=264 LCD_EN=1 LCDC=D3 LY=92
+  ppu_step: calls=2596864 total_cyc=24387280 clk=48 LCD_EN=1 LCDC=D3 LY=4D
+  ppu_step: calls=2600960 total_cyc=24426312 clk=312 LCD_EN=1 LCDC=D3 LY=08
+  ppu_step: calls=2605056 total_cyc=24464544 clk=240 LCD_EN=1 LCDC=D3 LY=5C
+  ppu_step: calls=2609152 total_cyc=24503568 clk=56 LCD_EN=1 LCDC=D3 LY=18
+  ppu_step: calls=2613248 total_cyc=24541800 clk=432 LCD_EN=1 LCDC=D3 LY=6B
