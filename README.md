@@ -2,7 +2,7 @@
 
 Game Boy emulator from scratch, targeting Raspberry Pi Pico 2 (RP2350).
 
-![Tetris title screen](docs/tetris.png)
+<img src="docs/tetris.png" alt="drawing" width="400"/>
 
 ## Status
 
@@ -21,7 +21,7 @@ Game Boy emulator from scratch, targeting Raspberry Pi Pico 2 (RP2350).
 | MBC | ❌ |
 | Pico target | ⏳ |
 
-**Tetris** boots to the title screen, accepts Start (Enter / Z), and is playable.
+**Tetris** boots to the title screen, accepts Start (Enter / Z), but is not playable.
 
 ## Project layout
 
