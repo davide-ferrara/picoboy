@@ -58,6 +58,17 @@ extern uint8_t  *reg[];
 extern uint16_t *reg16[];
 extern uint16_t *reg16_stk[];
 
+/* IO register offsets from 0xFF00. */
+enum IO_ADDR {
+    IO_JOYP = 0x00, IO_SB = 0x01, IO_SC = 0x02,
+    IO_DIV  = 0x04, IO_TIMA = 0x05, IO_TMA = 0x06, IO_TAC = 0x07,
+    IO_IF   = 0x0F,
+    IO_IE   = 0xFF,
+};
+
+static inline uint8_t io_read(uint8_t reg)  { return mmu[0xFF00 + reg]; }
+static inline void    io_write(uint8_t reg, uint8_t val) { mmu[0xFF00 + reg] = val; }
+
 /* Serial output hook for test harness. NULL -> putchar. */
 extern void (*serial_out)(uint8_t);
 

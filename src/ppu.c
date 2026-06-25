@@ -1,171 +1,86 @@
 #include "ppu.h"
 #include "cpu.h"
-#include <stdint.h>
-#include <stdio.h>
-#include "debug.h"
+#include "interrupts.h"
+
+#define UPDATE_TICKS 456    /* Needed cylces to draw a line */
+#define VBLANK_END   154
+#define WIDTH  160
+#define HEIGHT 144
+
+/* Why UPDATE_TICKS = 456? 456 × 154 rows = 70.224 cycles.
+ * At 4.194.304 Hz (clock of GB): 4.194.304 ÷ 70.224 ≈ 59.7 fps
+ * They added more rows to fit this calculation, crazy.
+ * */
 
 PPU ppu = {0};
-enum { LCDC = 0, STAT, SCY, SCX, LY, LYC, DMA, BGP, OBP0, OBP1, WY, WX};
-enum lcdc { LCD_EN = 7, WIN_MAP, WIN_EN, TILE_SEL, BG_MAP, OBJ_SIZE, OBJ_EN, BG_EN };
-enum stat { NTR_LYC = 6, INTR_M2, INTR_M1, INTR_M0, LYC_STAT, LCD_MODE };
 
-uint8_t ppu_read8(uint16_t addr) {
-    // VRAM
-    if (addr >= 0x8000 && addr <= 0x9FFF)
-        return ppu.vram[addr - 0x8000];
-    // OAM
-    if (addr >= 0xFE00 && addr <= 0xFE9F)
-        return ppu.oam[addr - 0xFE00];
-    // Registri
-    if (addr >= 0xFF40 && addr <= 0xFF4B)
-        return ppu.reg[addr - 0xFF40];
-    return 0xFF;
+/* TODO: A future refactor could include a new register.c file that handles
+ * set, unset, reset/clear functions. Basically we could have generalized funcitons
+ * that modify the mmu registers allowing to remove code duplication. */
+
+/* Set the specified LCDC flag. */
+static void set_lcdc(uint8_t flag) {
+    reg_write(LCDC, reg_read(LCDC) | (0x1 << flag));
 }
 
-void ppu_write8(uint16_t addr, uint8_t val) {
-    // VRAM
-    if (addr >= 0x8000 && addr <= 0x9FFF)
-        ppu.vram[addr - 0x8000] = val;
-    // OAM
-    else if (addr >= 0xFE00 && addr <= 0xFE9F)
-        ppu.oam[addr - 0xFE00] = val;
-    // Registri
-    else if (addr >= 0xFF40 && addr <= 0xFF4B) {
-        if (addr == 0xFF40) {
-            static uint32_t lcdc_writes = 0;
-            lcdc_writes++;
-            DBG("  LCDC[%u] write %02X (was %02X)\n",
-                    lcdc_writes, val, ppu.reg[0]);
-        }
-        ppu.reg[addr - 0xFF40] = val;
-    }
+/* Unset the specified LCDC flag. */
+static void unset_lcdc(uint8_t flag) {
+    reg_write(LCDC, reg_read(LCDC) & ~(0x1 << flag));
 }
 
-void ppu_lcdc_set(uint8_t flag) {
-    ppu.reg[LCDC] |= (1 << flag);
+/* Get the specified LCDC flag. */
+static uint8_t get_lcdc(uint8_t flag) {
+    return (reg_read(LCDC) >> flag) & 0x1;
 }
 
-uint8_t ppu_lcdc_get(uint8_t flag) {
-    return (ppu.reg[LCDC] >> flag) & 1;
+/* Set the specified STAT flag.
+ * NOTE: This doesnt not allow you to set LCD_MODE, use set_lcd_mode()
+ * */
+static void set_stat(uint8_t flag) {
+    if (flag == LCD_MODE) return;
+    reg_write(STAT, reg_read(STAT) | (0x1 << flag));
 }
 
-void ppu_stat_set(uint8_t flag) {
-    ppu.reg[STAT] |= (1 << flag);
+/* Unset the specified STAT flag. */
+static void unset_stat(uint8_t flag) {
+    if (flag == LCD_MODE) return;
+    reg_write(STAT, reg_read(STAT) & ~(0x1 << flag));
 }
 
-uint8_t ppu_lcd_mode_get(void) {
-    return ppu.reg[STAT] & 0x03;
+/* Get the specified STAT flag. */
+static uint8_t get_stat(uint8_t flag) {
+    return (reg_read(STAT) >> flag) & 0x1;
 }
 
-void ppu_lcdc_unset(uint8_t flag) {
-    ppu.reg[LCDC] &= ~(1 << flag);
-}
-
-void ppu_stat_unset(uint8_t flag) {
-    ppu.reg[STAT] &= ~(1 << flag);
-}
-
-void ppu_lcd_mode_set(uint8_t val) {
+static void set_lcd_mode(uint8_t val) {
     if (val > 3) return;
-    ppu.reg[STAT] = (ppu.reg[STAT] & ~0x03) | (val & 0x03);
+    reg_write(STAT, (reg_read(STAT) & ~0x03) | (val & 0x03));
 }
 
-void print_framebuffer(void) {
-    static uint8_t last_ly = 0;
-    uint8_t ly = ppu.reg[LY];
-    if (ly == 144 && last_ly != 144) {
-        const char map[] = " .+@";
-        for (int i = 0; i < 144; i++) {
-            for (int j = 0; j < 160; j++)
-                putchar(map[ppu.framebuffer[i][j] & 3]);
-            putchar('\n');
-        }
-    }
-    last_ly = ly;
+static uint8_t get_lcd_mode(void) {
+    return reg_read(STAT) & 0x03;
 }
 
-void ppu_draw_scanline() {
-    if (ppu_lcdc_get(LCD_EN) && ppu.reg[LY] < 144) {
-        uint8_t map_y = ppu.reg[SCY] + ppu.reg[LY];
-        uint16_t map_base = ppu_lcdc_get(BG_MAP) ? 0x9C00 : 0x9800;
-
-        for (uint8_t i = 0; i < 160; i++) {
-            uint8_t map_x = (ppu.reg[SCX] + i) & 0xFF;
-            uint8_t cell_x = map_x / 8;
-            uint8_t cell_y = map_y / 8;
-
-            uint8_t tile_idx = ppu.vram[(map_base - 0x8000) + cell_y * 32 + cell_x];
-            uint16_t tile_addr;
-            if (ppu_lcdc_get(TILE_SEL)) tile_addr = 0x8000 + tile_idx * 16;
-            else tile_addr = 0x9000 + (int8_t)(tile_idx) * 16;
-
-            uint8_t pixel_x = map_x % 8;
-            uint8_t pixel_y = map_y % 8;
-            uint8_t byte0 = ppu.vram[(tile_addr - 0x8000) + pixel_y * 2];
-            uint8_t byte1 = ppu.vram[(tile_addr - 0x8000) + pixel_y * 2 + 1];
-
-            uint8_t bit = 7 - pixel_x;
-            uint8_t color_idx = ((byte1 >> bit) & 1) << 1 | ((byte0 >> bit) & 1);
-
-            // ppu.framebuffer[ppu.reg[LY]][i] = (ppu.reg[BGP] >> (color_idx * 2)) & 0x03;
-            static const uint8_t grey[] = {255, 192, 96, 0};  // white→black
-            uint8_t idx = (ppu.reg[BGP] >> (color_idx * 2)) & 0x03;
-            ppu.framebuffer[ppu.reg[LY]][i] = grey[idx];
-        }
-    }
+static void draw_scanline(void) {
+    ;
 }
 
 void ppu_step(uint16_t cycles) {
-    static uint32_t call_count = 0;
-    static uint64_t total_cycles = 0;
-    call_count++;
-    total_cycles += cycles;
-    if ((call_count & 0xFFF) == 0) {
-        DBG("  ppu_step: calls=%u total_cyc=%lu clk=%u LCD_EN=%d LCDC=%02X LY=%02X\n",
-                call_count, (unsigned long)total_cycles, ppu.clock, ppu_lcdc_get(LCD_EN), ppu.reg[LCDC], ppu.reg[LY]);
-    }
-    if (!ppu_lcdc_get(LCD_EN)) {
-        static uint32_t off_count = 0;
-        off_count++;
-        if ((off_count & 0xFFFFF) == 0) {
-            DBG("  LCD off reset #%u calls=%u LCDC_prev=%02X\n",
-                    off_count, call_count, ppu.reg[LCDC]);
-        }
-        ppu.clock = 0;
-        ppu.reg[LY] = 0;
-        ppu_lcd_mode_set(0);
-        return;
-    }
     ppu.clock += cycles;
-    uint8_t *ly = &(ppu.reg[LY]);
 
-    // Scanline finished (456 Cycles)
-    while (ppu.clock >= 456) {
-        ppu.clock -= 456;
-        (*ly)++;
+    while (ppu.clock >= UPDATE_TICKS) {
+        ppu.clock -= UPDATE_TICKS;
 
-        // VBLANK STARTED
-        if ((*ly) == 144) {
-            mmu[0xFF0F] |= 0x1; // IF_VBLANK
-        }
-        // RESET
-        if ((*ly) == 154) (*ly) = 0;
+        /* If we haven't draw all the lines */
+        if (reg_read(LY) < HEIGHT) draw_scanline();
+
+        reg_write(LY, reg_read(LY) + 1);
+
+        /* Draw finished, we reached the end on the y axis (143)
+         * We send the VBLANK interrupt to the CPU */
+        if (reg_read(LY) == HEIGHT) set_if(VBLANK);
+
+        /* Ready to draw anotehr frame. We restart from line y = 0 */
+        if (reg_read(LY) == VBLANK_END) reg_write(LY, 0);
     }
-    uint8_t old_mode = ppu_lcd_mode_get();
-    uint8_t new_mode;
-
-    if ((*ly) >= 144)
-        new_mode = 1;                        // VBlank
-    else if (ppu.clock < 80)
-        new_mode = 2;                        // OAM scan
-    else if (ppu.clock < 252)
-        new_mode = 3;                        // Draw
-    else
-        new_mode = 0;                        // HBlank
-
-    if (old_mode != 3 && new_mode == 3)      // Start Draw
-        ppu_draw_scanline();
-
-    ppu_lcd_mode_set(new_mode);
 }
-

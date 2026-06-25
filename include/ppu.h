@@ -2,22 +2,23 @@
 #define PPU_H
 
 #include <stdint.h>
-
-typedef uint8_t tile[16];
+#include "cpu.h"
 
 typedef struct {
     uint32_t clock;
-    uint8_t reg[0xC];                // 12 registri (0xFF40–0xFF4B)
-    uint8_t vram[0x2000];            // 8192 byte VRAM
-    uint8_t oam[0xA0];               // 160 byte OAM
-    uint8_t framebuffer[144][160];   // framebuffer (contains all the pixels)
+    uint8_t  framebuffer[144][160];
 } PPU;
+
+enum LCDC {BG_EN, OBJ_EN, OBJ_SIZE, BG_MAP, BG_SEL, WIN_EN, WIN_MAP, LCD_END};
+enum STAT {LCD_MODE = 1, LYC_STAT, INTR_M0, INTR_M1, INTR_M2, INTR_LYC};
+/* FF40-FF4B */
+enum REGS  {LCDC, STAT, SCY, SCX, LY, LYC, DMA, BGP, OBP1, WX, WY};
 
 extern PPU ppu;
 
-uint8_t ppu_read8(uint16_t addr);
-void    ppu_write8(uint16_t addr, uint8_t val);
-void    ppu_step(uint16_t cycles);
-void    print_framebuffer(void);
+static inline uint8_t reg_read(uint8_t reg)  { return mmu[0xFF40 + reg]; }
+static inline void    reg_write(uint8_t reg, uint8_t val) { mmu[0xFF40 + reg] = val; }
 
-#endif // !PPU_H
+void ppu_step(uint16_t cycles);
+
+#endif /* PPU_H */

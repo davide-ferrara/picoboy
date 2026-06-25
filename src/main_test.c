@@ -74,8 +74,8 @@ static void init_dmg_post_boot(void) {
     mmu[0xFF24] = 0x77;                    /* NR50  */
     mmu[0xFF25] = 0xF3;                    /* NR51  */
     mmu[0xFF26] = 0xF1;                    /* NR52  */
-    ppu.reg[0]  = 0x91;                    /* LCDC  (LCD on) */
-    ppu.reg[7]  = 0xFC;                    /* BGP   */
+    mmu[0xFF40] = 0x91;                    /* LCDC  (LCD on) */
+    mmu[0xFF47] = 0xFC;                    /* BGP   */
     mmu[0xFF0F] = 0xE1;                    /* IF    */
     mmu[0xFFFF] = 0x00;                    /* IE    */
 }

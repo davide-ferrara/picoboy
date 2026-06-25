@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
         frame_num++;
         if (frame_num % 60 == 0)
             fprintf(stderr, "Frame %u: cycles=%u ppu.clk=%u LCDC=%02X LY=%02X IF=%02X IE=%02X FF85=%02X halt=%d ime=%d pend=%d pc=%04X\n",
-                    frame_num, cycles_this_frame, ppu.clock, ppu.reg[0], ppu.reg[4], mmu[0xFF0F], mmu[0xFFFF], mmu[0xFF85], cpu.halted, cpu.ime, cpu.ime_pending, cpu.pc);
+                    frame_num, cycles_this_frame, ppu.clock, mmu[0xFF40], mmu[0xFF44], mmu[0xFF0F], mmu[0xFFFF], mmu[0xFF85], cpu.halted, cpu.ime, cpu.ime_pending, cpu.pc);
 
         BeginDrawing();
         ClearBackground(BLACK);

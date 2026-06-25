@@ -17,11 +17,8 @@ uint16_t *reg16[] = {&cpu.bc, &cpu.de, &cpu.hl, &cpu.sp};
 uint16_t *reg16_stk[] = {&cpu.bc, &cpu.de, &cpu.hl, &cpu.af};
 
 uint8_t read8(uint16_t addr) {
-    if      (addr >= 0x8000 && addr <= 0x9FFF) return ppu_read8(addr);
-    else if (addr >= 0xFE00 && addr <= 0xFE9F) return ppu_read8(addr);
-    else if (addr >= 0xFF40 && addr <= 0xFF4B) return ppu_read8(addr);
-    else if (addr == 0xFF00) {
-        uint8_t p1 = mmu[0xFF00] & 0x30;
+    if (addr == 0xFF00) {
+        uint8_t p1 = io_read(IO_JOYP) & 0x30;
         if (!(p1 & 0x10)) p1 |= 0x0F; // buttons not pressed
         if (!(p1 & 0x20)) p1 |= 0x0F; // d-pad not pressed
         return p1;
@@ -31,14 +28,11 @@ uint8_t read8(uint16_t addr) {
 }
 
 void write8(uint16_t addr, uint8_t val) {
-    if      (addr >= 0x8000 && addr <= 0x9FFF) ppu_write8(addr, val);
-    else if (addr >= 0xFE00 && addr <= 0xFE9F) ppu_write8(addr, val);
-    else if (addr >= 0xFF40 && addr <= 0xFF4B) ppu_write8(addr, val);
-    else if (addr == 0xFF04) timer_div_reset();
+    if (addr == 0xFF04) timer_div_reset();
     else {
         mmu[addr] = val;
         if (addr == 0xFF02 && val == 0x81) {
-            uint8_t c = mmu[0xFF01];
+            uint8_t c = io_read(IO_SB);
             if (serial_out) serial_out(c);
             else            putchar(c);
         }
@@ -536,7 +530,7 @@ static int flag_ops(uint8_t op) {
 int cpu_step(void) {
     static uint32_t int_count = 0;
     if (cpu.halted) {
-        uint8_t flagged = (mmu[0xFF0F] & mmu[0xFFFF]) & 0x1F;
+        uint8_t flagged = (io_read(IO_IF) & io_read(IO_IE)) & 0x1F;
         if (!flagged) return 4;
         cpu.halted = 0;
         if (!cpu.ime && !cpu.ime_pending) return 4;
@@ -547,7 +541,7 @@ int cpu_step(void) {
         cpu.ime = 1;
         cpu.ime_pending = 0;
     } else if (cpu.ime) {
-        uint8_t flagged = (mmu[0xFF0F] & mmu[0xFFFF]) & 0x1F;
+        uint8_t flagged = (io_read(IO_IF) & io_read(IO_IE)) & 0x1F;
         uint8_t addr = 0;
         for (uint8_t i = 0; i < 5; i++) {
             uint8_t curr = (flagged >> i) & 0x1;
@@ -572,11 +566,11 @@ int cpu_step(void) {
                 }
                 cpu.ime = 0;
                 cpu.pc = addr;
-                mmu[0xFF0F] &= ~(1 << i);
+                io_write(IO_IF, io_read(IO_IF) & ~(1 << i));
                 int_count++;
                 if (int_count <= 50 || (int_count % 100) == 0) {
                     DBG("  INT#%u i=%u new_pc=%04X FF85=%02X LY=%02X\n",
-                        int_count, i, addr, mmu[0xFF85], ppu.reg[4]);
+                        int_count, i, addr, mmu[0xFF85], reg_read(LY));
                 }
                 return 20;
             }
@@ -753,7 +747,7 @@ int cpu_step(void) {
                 cpu.hl = (uint16_t)(cpu.sp + off);
                 return 12;
             }
-            else fprintf(stderr, "Invalid opcode: %04X\n", op);
+            DBG("Invalid opcode: %04X\n", op);
             return 0;
     }
 }

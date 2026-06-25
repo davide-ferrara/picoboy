@@ -37,7 +37,7 @@ static void tima_incr(void) {
 
 static void tima_reset(void) {
     mmu[0xFF05] = read_tma();
-    if_set(TIMER);
+    set_if(TIMER);
 }
 
 void timer_step(uint16_t cycles) {

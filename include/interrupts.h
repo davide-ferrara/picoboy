@@ -6,7 +6,7 @@
 
 enum IFLAG {VBLANK = 0, LCD = 2, TIMER = 4, SERIAL = 8, JOYPAD = 16};
 
-void if_set(uint8_t iflag);
-void ie_set(uint8_t iflag);
+void set_if(uint8_t iflag);
+void set_ie(uint8_t iflag);
 
 #endif // !INTERRUPTS_H

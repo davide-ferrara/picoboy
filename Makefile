@@ -65,6 +65,9 @@ $(BUILD)/%.o: src/%.c | $(BUILD)
 $(BUILD):
 	mkdir -p $@
 
+run:
+	$(BUILD)/gbemu
+
 # --- Compile database for clangd/LSP ---
 compdb:
 	$(MAKE) clean
