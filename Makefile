@@ -15,7 +15,7 @@ BUILD_PICO  := build-pico
 TEST_ROMS_DIR := test-roms
 
 # --- Sources ---
-CORE_SRCS := src/cpu.c src/ppu.c src/timer.c
+CORE_SRCS := src/cpu.c src/ppu.c src/timer.c src/interrupts.c
 EMU_SRCS  := src/main.c
 TEST_SRCS := src/main_test.c
 

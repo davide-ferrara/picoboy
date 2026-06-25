@@ -1,5 +1,6 @@
 #include "timer.h"
 #include "cpu.h"
+#include "interrupts.h"
 #include <stdint.h>
 
 static uint16_t div_counter = 0;
@@ -34,10 +35,9 @@ static void tima_incr(void) {
     mmu[0xFF05]++;
 }
 
-// TODO: Helper to set interrupt to improve readibility
 static void tima_reset(void) {
     mmu[0xFF05] = read_tma();
-    mmu[0xFF0F] |= 0x04;
+    iflag_set(TIMER);
 }
 
 void timer_step(uint16_t cycles) {
