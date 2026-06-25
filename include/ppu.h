@@ -4,15 +4,18 @@
 #include <stdint.h>
 #include "cpu.h"
 
+#define WIDTH  160
+#define HEIGHT 144
+
 typedef struct {
     uint32_t clock;
-    uint8_t  framebuffer[144][160];
+    uint8_t  framebuffer[HEIGHT][WIDTH]; /* Raylib wants this order */
 } PPU;
 
 enum LCDC {BG_EN, OBJ_EN, OBJ_SIZE, BG_MAP, BG_SEL, WIN_EN, WIN_MAP, LCD_END};
 enum STAT {LCD_MODE = 1, LYC_STAT, INTR_M0, INTR_M1, INTR_M2, INTR_LYC};
 /* FF40-FF4B */
-enum REGS  {LCDC, STAT, SCY, SCX, LY, LYC, DMA, BGP, OBP1, WX, WY};
+enum REGS  {LCDC, STAT, SCY, SCX, LY, LYC, DMA, BGP, OBP0, OBP1, WX, WY};
 
 extern PPU ppu;
 

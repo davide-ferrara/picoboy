@@ -7,6 +7,18 @@
 #include "timer.h"
 #include <raylib.h>
 
+static void update_joypad(void) {
+    joypad_state = 0xFF;
+    if (IsKeyDown(KEY_Z))     joypad_state &= ~(1 << 4); // A
+    if (IsKeyDown(KEY_X))     joypad_state &= ~(1 << 5); // B
+    if (IsKeyDown(KEY_TAB))   joypad_state &= ~(1 << 6); // Select
+    if (IsKeyDown(KEY_ENTER)) joypad_state &= ~(1 << 7); // Start
+    if (IsKeyDown(KEY_RIGHT)) joypad_state &= ~(1 << 0); // →
+    if (IsKeyDown(KEY_LEFT))  joypad_state &= ~(1 << 1); // ←
+    if (IsKeyDown(KEY_UP))    joypad_state &= ~(1 << 2); // ↑
+    if (IsKeyDown(KEY_DOWN))  joypad_state &= ~(1 << 3); // ↓
+}
+
 int main(int argc, char **argv) {
     const char *romfile = argc > 1 ? argv[1] : "tetris.gb";
     int fd = open(romfile, O_RDONLY);
@@ -46,6 +58,7 @@ int main(int argc, char **argv) {
 
     uint32_t frame_num = 0;
     while (!WindowShouldClose()) {
+        update_joypad();
         uint32_t cycles_this_frame = 0;
         while (cycles_this_frame < 70224) {
             uint16_t c = cpu_step();

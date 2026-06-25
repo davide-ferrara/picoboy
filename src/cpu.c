@@ -12,6 +12,7 @@ CPU cpu = {0};
  * test harness (main_test.c) to capture Blargg test output. */
 void (*serial_out)(uint8_t) = NULL;
 uint8_t mmu[0x10000];
+uint8_t joypad_state = 0xFF;
 uint8_t *reg[] = {&cpu.b, &cpu.c, &cpu.d, &cpu.e, &cpu.h, &cpu.l, NULL, &cpu.a};
 uint16_t *reg16[] = {&cpu.bc, &cpu.de, &cpu.hl, &cpu.sp};
 uint16_t *reg16_stk[] = {&cpu.bc, &cpu.de, &cpu.hl, &cpu.af};
@@ -19,8 +20,8 @@ uint16_t *reg16_stk[] = {&cpu.bc, &cpu.de, &cpu.hl, &cpu.af};
 uint8_t read8(uint16_t addr) {
     if (addr == 0xFF00) {
         uint8_t p1 = io_read(IO_JOYP) & 0x30;
-        if (!(p1 & 0x10)) p1 |= 0x0F; // buttons not pressed
-        if (!(p1 & 0x20)) p1 |= 0x0F; // d-pad not pressed
+        if (!(p1 & 0x10)) p1 |= ((joypad_state >> 4) & 0x0F); // bit4=0: bottoni (Start,Sel,B,A)
+        if (!(p1 & 0x20)) p1 |= (joypad_state & 0x0F);       // bit5=0: d-pad (Giù,Su,Sin,Des)
         return p1;
     }
     else if (addr == 0xFF04) return timer_div_read();
@@ -29,6 +30,12 @@ uint8_t read8(uint16_t addr) {
 
 void write8(uint16_t addr, uint8_t val) {
     if (addr == 0xFF04) timer_div_reset();
+    else if (addr == 0xFF46) {
+        uint16_t src = (uint16_t)val << 8;
+        for (int i = 0; i < 0xA0; i++)
+            mmu[0xFE00 + i] = mmu[src + i];
+        mmu[0xFF46] = val;
+    }
     else {
         mmu[addr] = val;
         if (addr == 0xFF02 && val == 0x81) {

@@ -2,6 +2,27 @@
 
 Game Boy emulator from scratch, targeting Raspberry Pi Pico 2 (RP2350).
 
+![Tetris title screen](docs/tetris.png)
+
+## Status
+
+| Feature | Status |
+|---------|--------|
+| CPU (Blargg 11/11) | ✅ |
+| Background + Window | ✅ |
+| Sprites (OBJ) | ✅ |
+| DMA (FF46) | ✅ |
+| PPU modes + timing | ✅ |
+| VBlank interrupt | ✅ |
+| STAT interrupt (LYC=LY) | ✅ |
+| Joypad input (keyboard) | ✅ |
+| Timer | ⏳ |
+| Sound | ❌ |
+| MBC | ❌ |
+| Pico target | ⏳ |
+
+**Tetris** boots to the title screen, accepts Start (Enter / Z), and is playable.
+
 ## Project layout
 
 ```
@@ -13,6 +34,7 @@ picoboy/
 ├── build/                # host objects + binaries (gbemu, gbtest)
 ├── build-pico/           # Pico CMake build (gitignored)
 ├── test-roms/            # Blargg test ROMs (git submodule)
+├── docs/                 # screenshots
 └── tools/                # scripts (run_blargg.sh)
 ```
 
@@ -20,12 +42,23 @@ picoboy/
 
 ```
 make emu          # build host emulator with raylib -> build/gbemu
+make run          # run Tetris (tetris.gb in repo root)
 make gbtest       # build headless test harness   -> build/gbtest
 make test-blargg  # run Blargg cpu_instrs suite (11 ROMs)
 make pico         # build Pico firmware via CMake -> build-pico/
 make flash        # flash firmware to Pico
 make clean        # remove build/ and build-pico/
 ```
+
+## Controls
+
+| Game Boy | Keyboard |
+|----------|----------|
+| A        | Z        |
+| B        | X        |
+| Start    | Enter    |
+| Select   | Tab      |
+| D-Pad    | Arrows   |
 
 ## Testing
 

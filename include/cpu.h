@@ -57,6 +57,7 @@ extern uint8_t  mmu[0x10000];
 extern uint8_t  *reg[];
 extern uint16_t *reg16[];
 extern uint16_t *reg16_stk[];
+extern uint8_t   joypad_state;
 
 /* IO register offsets from 0xFF00. */
 enum IO_ADDR {
