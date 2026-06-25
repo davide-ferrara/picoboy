@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 /* Set the specified interrupt flag at IF 0xFF0F*/
-void iflag_set(uint8_t iflag) {
+void if_set(uint8_t iflag) {
     mmu[0xFF0F] |= iflag;
 }
 
