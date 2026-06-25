@@ -4,6 +4,11 @@
 /bin/
 /compile_commands.json
 
+# ROM images (copyrighted, don't commit)
+/*.gb
+/*.gbc
+/*.bin
+
 # editors / tooling
 /.cache/
 *.o
