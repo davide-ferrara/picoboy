@@ -3,6 +3,13 @@
 #include <stdint.h>
 #include <stdio.h>
 
+/* Debug logging: silent unless -DPICOBOY_DEBUG is passed at compile time. */
+#ifdef PICOBOY_DEBUG
+#define DBG(...) fprintf(stderr, __VA_ARGS__)
+#else
+#define DBG(...) ((void)0)
+#endif
+
 PPU ppu = {0};
 enum { LCDC = 0, STAT, SCY, SCX, LY, LYC, DMA, BGP, OBP0, OBP1, WY, WX};
 enum lcdc { LCD_EN = 7, WIN_MAP, WIN_EN, TILE_SEL, BG_MAP, OBJ_SIZE, OBJ_EN, BG_EN };
@@ -33,7 +40,7 @@ void ppu_write8(uint16_t addr, uint8_t val) {
         if (addr == 0xFF40) {
             static uint32_t lcdc_writes = 0;
             lcdc_writes++;
-            fprintf(stderr, "  LCDC[%u] write %02X (was %02X)\n",
+            DBG("  LCDC[%u] write %02X (was %02X)\n",
                     lcdc_writes, val, ppu.reg[0]);
         }
         ppu.reg[addr - 0xFF40] = val;
@@ -120,14 +127,14 @@ void ppu_step(uint16_t cycles) {
     call_count++;
     total_cycles += cycles;
     if ((call_count & 0xFFF) == 0) {
-        fprintf(stderr, "  ppu_step: calls=%u total_cyc=%lu clk=%u LCD_EN=%d LCDC=%02X LY=%02X\n",
+        DBG("  ppu_step: calls=%u total_cyc=%lu clk=%u LCD_EN=%d LCDC=%02X LY=%02X\n",
                 call_count, (unsigned long)total_cycles, ppu.clock, ppu_lcdc_get(LCD_EN), ppu.reg[LCDC], ppu.reg[LY]);
     }
     if (!ppu_lcdc_get(LCD_EN)) {
         static uint32_t off_count = 0;
         off_count++;
         if ((off_count & 0xFFFFF) == 0) {
-            fprintf(stderr, "  LCD off reset #%u calls=%u LCDC_prev=%02X\n",
+            DBG("  LCD off reset #%u calls=%u LCDC_prev=%02X\n",
                     off_count, call_count, ppu.reg[LCDC]);
         }
         ppu.clock = 0;

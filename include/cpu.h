@@ -56,6 +56,9 @@ extern uint8_t  *reg[];
 extern uint16_t *reg16[];
 extern uint16_t *reg16_stk[];
 
+/* Serial output hook for test harness. NULL -> putchar. */
+extern void (*serial_out)(uint8_t);
+
 uint8_t  read8(uint16_t addr);
 void     write8(uint16_t addr, uint8_t value);
 uint8_t  fetch8(void);

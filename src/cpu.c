@@ -2,8 +2,21 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "ppu.h"
+#include "timer.h"
+
+/* Debug logging: silent unless -DPICOBOY_DEBUG is passed at compile time. */
+#ifdef PICOBOY_DEBUG
+#define DBG(...) fprintf(stderr, __VA_ARGS__)
+#else
+#define DBG(...) ((void)0)
+#endif
 
 CPU cpu = {0};
+
+/* Serial output hook. When non-NULL, SB bytes triggered by SC=0x81 are
+ * routed here instead of being written to stdout. Used by the headless
+ * test harness (main_test.c) to capture Blargg test output. */
+void (*serial_out)(uint8_t) = NULL;
 uint8_t mmu[0x10000];
 uint8_t *reg[] = {&cpu.b, &cpu.c, &cpu.d, &cpu.e, &cpu.h, &cpu.l, NULL, &cpu.a};
 uint16_t *reg16[] = {&cpu.bc, &cpu.de, &cpu.hl, &cpu.sp};
@@ -22,6 +35,7 @@ uint8_t read8(uint16_t addr) {
         if (!(p1 & 0x20)) p1 |= 0x0F; // d-pad not pressed
         return p1;
     }
+    else if (addr == 0xFF04) return timer_div_read();
     else return mmu[addr];
 }
 
@@ -29,15 +43,19 @@ void write8(uint16_t addr, uint8_t val) {
     if      (addr >= 0x8000 && addr <= 0x9FFF) ppu_write8(addr, val);
     else if (addr >= 0xFE00 && addr <= 0xFE9F) ppu_write8(addr, val);
     else if (addr >= 0xFF40 && addr <= 0xFF4B) ppu_write8(addr, val);
+    else if (addr == 0xFF04) timer_div_reset();
     else {
         mmu[addr] = val;
-        if (addr == 0xFF02 && val == 0x81)
-            putchar(mmu[0xFF01]);
+        if (addr == 0xFF02 && val == 0x81) {
+            uint8_t c = mmu[0xFF01];
+            if (serial_out) serial_out(c);
+            else            putchar(c);
+        }
         if (addr == 0xFF85) {
             static uint32_t ff85_w = 0;
             ff85_w++;
             if (ff85_w <= 100 || (ff85_w % 100) == 0)
-                fprintf(stderr, "  FF85[%u] write %02X (PC=%04X)\n", ff85_w, val, cpu.pc);
+                DBG("  FF85[%u] write %02X (PC=%04X)\n", ff85_w, val, cpu.pc);
         }
     }
 }
@@ -479,7 +497,7 @@ int cb(uint8_t op) {
             val |= (1 << bit);
             break;
         default:
-            printf("Invalid CB opcode: %04X\n", op);
+            fprintf(stderr, "Invalid CB opcode: %04X\n", op);
             return 0;
     }
 
@@ -575,8 +593,8 @@ int cpu_step(void) {
                 mmu[0xFF0F] &= ~(1 << i);
                 int_count++;
                 if (int_count <= 50 || (int_count % 100) == 0) {
-                    fprintf(stderr, "  INT#%u i=%u new_pc=%04X FF85=%02X LY=%02X\n",
-                            int_count, i, addr, mmu[0xFF85], ppu.reg[4]);
+                    DBG("  INT#%u i=%u new_pc=%04X FF85=%02X LY=%02X\n",
+                        int_count, i, addr, mmu[0xFF85], ppu.reg[4]);
                 }
                 return 20;
             }
@@ -753,7 +771,7 @@ int cpu_step(void) {
                 cpu.hl = cpu.sp + off;
                 return 12;
             }
-            else printf("Invalid opcode: %04X\n", op);
+            else fprintf(stderr, "Invalid opcode: %04X\n", op);
             return 0;
     }
 }

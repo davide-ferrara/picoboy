@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include "cpu.h"
 #include "ppu.h"
+#include "timer.h"
 #include <raylib.h>
 
 int main(int argc, char **argv) {
@@ -50,6 +51,7 @@ int main(int argc, char **argv) {
             uint16_t c = cpu_step();
             if (c == 0) break;
             ppu_step(c);
+            timer_step(c);
             cycles_this_frame += c;
         }
         frame_num++;

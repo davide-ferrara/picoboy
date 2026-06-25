@@ -1,0 +1,11 @@
+# build artifacts
+/build/
+/build-pico/
+/bin/
+/compile_commands.json
+
+# editors / tooling
+/.cache/
+*.o
+*.d
+*.gb
