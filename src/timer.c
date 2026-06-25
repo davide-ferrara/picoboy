@@ -6,7 +6,7 @@
 static uint16_t div_counter = 0;
 static uint16_t tima_acc = 0;
 
-uint16_t timer_div_read(void) {
+uint8_t timer_div_read(void) {
     return mmu[0xFF04] = (div_counter >> 8) & 0xFF;
 }
 

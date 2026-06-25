@@ -2,13 +2,7 @@
 #include "cpu.h"
 #include <stdint.h>
 #include <stdio.h>
-
-/* Debug logging: silent unless -DPICOBOY_DEBUG is passed at compile time. */
-#ifdef PICOBOY_DEBUG
-#define DBG(...) fprintf(stderr, __VA_ARGS__)
-#else
-#define DBG(...) ((void)0)
-#endif
+#include "debug.h"
 
 PPU ppu = {0};
 enum { LCDC = 0, STAT, SCY, SCX, LY, LYC, DMA, BGP, OBP0, OBP1, WY, WX};

@@ -1,15 +1,9 @@
-#include "cpu.h"
 #include <stdint.h>
 #include <stdio.h>
+#include "cpu.h"
 #include "ppu.h"
 #include "timer.h"
-
-/* Debug logging: silent unless -DPICOBOY_DEBUG is passed at compile time. */
-#ifdef PICOBOY_DEBUG
-#define DBG(...) fprintf(stderr, __VA_ARGS__)
-#else
-#define DBG(...) ((void)0)
-#endif
+#include "debug.h"
 
 CPU cpu = {0};
 
@@ -21,9 +15,6 @@ uint8_t mmu[0x10000];
 uint8_t *reg[] = {&cpu.b, &cpu.c, &cpu.d, &cpu.e, &cpu.h, &cpu.l, NULL, &cpu.a};
 uint16_t *reg16[] = {&cpu.bc, &cpu.de, &cpu.hl, &cpu.sp};
 uint16_t *reg16_stk[] = {&cpu.bc, &cpu.de, &cpu.hl, &cpu.af};
-
-enum { ADD = 0, ADC = 1, SUB = 2, SBC = 3, AND = 4, XOR = 5, OR = 6, CP = 7, CPL = 5, SCF = 6, CCF = 7 };
-enum { RLCA = 0, RRCA = 1, RLA = 2, RRA = 3 };
 
 uint8_t read8(uint16_t addr) {
     if      (addr >= 0x8000 && addr <= 0x9FFF) return ppu_read8(addr);
@@ -64,7 +55,7 @@ uint8_t fetch8(void) { return read8(cpu.pc++); }
 
 uint16_t fetch16(void) {
     uint8_t lo = fetch8();
-    return (fetch8() << 8) | lo;
+    return (uint16_t)(((uint16_t)fetch8() << 8) | lo);
 }
 
 void flag_clear(void) {
@@ -88,7 +79,7 @@ void flag_assign(uint8_t mask, int condition) {
     else           cpu.f &= ~mask;
 }
 
-int inc8(uint8_t src) {
+static int inc8(uint8_t src) {
     if (src == 6) {
         uint8_t old = read8(cpu.hl);
         write8(cpu.hl, old + 1);
@@ -105,7 +96,7 @@ int inc8(uint8_t src) {
     return 4;
 }
 
-int dec8(uint8_t src) {
+static int dec8(uint8_t src) {
     if (src == 6) {
         uint8_t old = read8(cpu.hl);
         write8(cpu.hl, old - 1);
@@ -122,26 +113,17 @@ int dec8(uint8_t src) {
     return 4;
 }
 
-int inc16(uint8_t pair) {
+static int inc16(uint8_t pair) {
     (*reg16[pair])++;
     return 8;
 }
 
-int dec16(uint8_t pair) {
+static int dec16(uint8_t pair) {
     (*reg16[pair])--;
     return 8;
 }
 
-int dec(uint8_t *reg) {
-    uint8_t old = *reg;
-    (*reg)--;
-    flag_assign(FLAG_Z, *reg == 0);
-    flag_set(FLAG_N);
-    flag_assign(FLAG_H, (old & 0x0F) == 0x00);
-    return 4;
-}
-
-int add(uint8_t val) {
+static int add(uint8_t val) {
     cpu.a += val;
     flag_assign(FLAG_Z, cpu.a == 0);
     flag_unset(FLAG_N);
@@ -150,9 +132,9 @@ int add(uint8_t val) {
     return 4;
 }
 
-int adc(uint8_t val) {
+static int adc(uint8_t val) {
     int carry = flag_get(FLAG_C);
-    uint16_t res = (uint16_t)cpu.a + val + carry;
+    uint16_t res = (uint16_t)(cpu.a + val + carry);
     flag_assign(FLAG_H, (cpu.a & 0x0F) + (val & 0x0F) + carry > 0x0F);
     flag_assign(FLAG_C, res > 0xFF);
     cpu.a = (uint8_t)res;
@@ -161,7 +143,7 @@ int adc(uint8_t val) {
     return 4;
 }
 
-int sub(uint8_t val) {
+static int sub(uint8_t val) {
     flag_assign(FLAG_H, (cpu.a & 0x0F) < (val & 0x0F));
     flag_assign(FLAG_C, cpu.a < val);
     cpu.a -= val;
@@ -170,7 +152,7 @@ int sub(uint8_t val) {
     return 4;
 }
 
-int sbc(uint8_t val) {
+static int sbc(uint8_t val) {
     int carry = flag_get(FLAG_C);
     flag_assign(FLAG_C, cpu.a < val + carry);
     flag_assign(FLAG_H, (cpu.a & 0x0F) < (val & 0x0F) + carry);
@@ -180,7 +162,7 @@ int sbc(uint8_t val) {
     return 4;
 }
 
-int and8(uint8_t val) {
+static int and8(uint8_t val) {
     cpu.a &= val;
     flag_assign(FLAG_Z, cpu.a == 0);
     flag_unset(FLAG_N);
@@ -189,7 +171,7 @@ int and8(uint8_t val) {
     return 4;
 }
 
-int xor8(uint8_t val) {
+static int xor8(uint8_t val) {
     cpu.a ^= val;
     flag_assign(FLAG_Z, cpu.a == 0);
     flag_unset(FLAG_N);
@@ -198,7 +180,7 @@ int xor8(uint8_t val) {
     return 4;
 }
 
-int or8(uint8_t val) {
+static int or8(uint8_t val) {
     cpu.a |= val;
     flag_assign(FLAG_Z, cpu.a == 0);
     flag_unset(FLAG_N);
@@ -207,7 +189,7 @@ int or8(uint8_t val) {
     return 4;
 }
 
-int cp(uint8_t val) {
+static int cp(uint8_t val) {
     flag_assign(FLAG_Z, cpu.a == val);
     flag_set(FLAG_N);
     flag_assign(FLAG_H, (cpu.a & 0x0F) < (val & 0x0F));
@@ -215,7 +197,7 @@ int cp(uint8_t val) {
     return 4;
 }
 
-int jp_cond(int condition) {
+static int jp_cond(int condition) {
     if (condition) {
         cpu.pc = fetch16();
         return 16;
@@ -224,7 +206,7 @@ int jp_cond(int condition) {
     return 12;
 }
 
-int jr_cond(int condition) {
+static int jr_cond(int condition) {
     int8_t offset = (int8_t)fetch8();
     if (condition) {
         cpu.pc += offset;
@@ -233,7 +215,7 @@ int jr_cond(int condition) {
     return 8;
 }
 
-int call_cond(int condition) {
+static int call_cond(int condition) {
     if (condition) {
         uint16_t target = fetch16();
         push(cpu.pc);
@@ -244,7 +226,7 @@ int call_cond(int condition) {
     return 12;
 }
 
-int ret_cond(int condition) {
+static int ret_cond(int condition) {
     if (condition) {
         pop(&cpu.pc);
         return 20;
@@ -252,37 +234,37 @@ int ret_cond(int condition) {
     return 8;
 }
 
-int push(uint16_t reg) {
+int push(uint16_t val) {
     cpu.sp--;
-    mmu[cpu.sp] = (uint8_t)(reg >> 8);
+    mmu[cpu.sp] = (uint8_t)(val >> 8);
     cpu.sp--;
-    mmu[cpu.sp] = (uint8_t)reg;
+    mmu[cpu.sp] = (uint8_t)val;
     return 16;
 }
 
-int pop(uint16_t *reg) {
+int pop(uint16_t *out) {
     uint8_t low  = mmu[cpu.sp++];
     uint8_t high = mmu[cpu.sp++];
-    *reg = ((uint16_t)high << 8) | low;
+    *out = (uint16_t)(((uint16_t)high << 8) | low);
     return 12;
 }
 
-int push_r16(uint8_t pair) {
+static int push_r16(uint8_t pair) {
     return push(*reg16_stk[pair]);
 }
 
-int pop_r16(uint8_t pair) {
+static int pop_r16(uint8_t pair) {
     pop(reg16_stk[pair]);
     if (pair == 3) cpu.f &= 0xF0;
     return 12;
 }
 
-int halt(void) {
+static int halt(void) {
     cpu.halted = 1;
     return 4;
-};
+}
 
-int ld_r_r(uint8_t op) {
+static int ld_r_r(uint8_t op) {
     uint8_t src = op & 0x07; // 111
     uint8_t dst = (op >> 3) & 0x07;
     uint8_t val;
@@ -296,7 +278,7 @@ int ld_r_r(uint8_t op) {
     return (src == 6 || dst == 6) ? 8 : 4;
 }
 
-int ld_r_u8(uint8_t src) {
+static int ld_r_u8(uint8_t src) {
     if (src == 6) {
         write8(cpu.hl, fetch8());
         return 12;
@@ -305,12 +287,12 @@ int ld_r_u8(uint8_t src) {
     return 8;
 }
 
-int ld_r16_u16(uint8_t pair) {
+static int ld_r16_u16(uint8_t pair) {
     *reg16[pair] = fetch16();
     return 12;
 }
 
-int ld_r16_a(uint8_t pair) {
+static int ld_r16_a(uint8_t pair) {
     switch (pair) {
         case 0: write8(cpu.bc, cpu.a); break;
         case 1: write8(cpu.de, cpu.a); break;
@@ -320,7 +302,7 @@ int ld_r16_a(uint8_t pair) {
     return 8;
 }
 
-int ld_a_r16(uint8_t pair) {
+static int ld_a_r16(uint8_t pair) {
     switch (pair) {
         case 0: cpu.a = read8(cpu.bc); break;
         case 1: cpu.a = read8(cpu.de); break;
@@ -330,7 +312,7 @@ int ld_a_r16(uint8_t pair) {
     return 8;
 }
 
-int alu_a(uint8_t op) {
+static int alu_a(uint8_t op) {
     uint8_t src = op & 0x07;
     uint8_t op_t = (op >> 3) & 0x07;
     uint8_t val;
@@ -352,7 +334,7 @@ int alu_a(uint8_t op) {
     return (src == 6) ? 8 : 4;
 }
 
-int alu_imm(uint8_t op) {
+static int alu_imm(uint8_t op) {
     uint8_t op_t = (op >> 3) & 0x07;
     uint8_t val = fetch8();
     switch (op_t) {
@@ -368,7 +350,7 @@ int alu_imm(uint8_t op) {
     return 8;
 }
 
-int rst(uint8_t op) {
+static int rst(uint8_t op) {
     push(cpu.pc);
     cpu.pc = op & 0x38;
     return 16;
@@ -379,31 +361,31 @@ int rst(uint8_t op) {
 // RLA  00 010 111
 // RRA  00 011 111
 // Rotate Left Circular Accumulator
-int rlca(uint8_t op) {
+static int rlca(uint8_t op) {
     uint8_t op_t = (op >> 3) & 0x07;
 
     switch (op_t) {
         case RLCA: {
             uint8_t carry = (cpu.a >> 7) & 1;
-            cpu.a = (cpu.a << 1) | carry;
+            cpu.a = (uint8_t)((cpu.a << 1) | carry);
             flag_assign(FLAG_C, carry);
             break;
         }
         case RRCA: {
             uint8_t carry = cpu.a & 1;
-            cpu.a = (cpu.a >> 1) | (carry << 7);
+            cpu.a = (uint8_t)((cpu.a >> 1) | (carry << 7));
             flag_assign(FLAG_C, carry);
             break;
         }
         case RLA: {
             uint8_t carry = (cpu.a >> 7) & 1;
-            cpu.a = (cpu.a << 1) | flag_get(FLAG_C);
+            cpu.a = (uint8_t)((cpu.a << 1) | flag_get(FLAG_C));
             flag_assign(FLAG_C, carry);
             break;
         }
         case RRA: {
             uint8_t carry = cpu.a & 1;
-            cpu.a = (cpu.a >> 1) | (flag_get(FLAG_C) << 7);
+            cpu.a = (uint8_t)((cpu.a >> 1) | (flag_get(FLAG_C) << 7));
             flag_assign(FLAG_C, carry);
             break;
         }
@@ -414,7 +396,7 @@ int rlca(uint8_t op) {
     return 4;
 }
 
-int add_hl_r16(uint8_t op) {
+static int add_hl_r16(uint8_t op) {
     uint8_t pair = (op >> 4) & 0x03;
     uint16_t val = *reg16[pair];
     uint32_t res = (uint32_t)cpu.hl + val;
@@ -425,7 +407,7 @@ int add_hl_r16(uint8_t op) {
     return 8;
 }
 
-int cb(uint8_t op) {
+static int cb(uint8_t op) {
     uint8_t src = op & 0x07;
     uint8_t bit = (op >> 3) & 0x07;
     uint8_t val;
@@ -438,25 +420,25 @@ int cb(uint8_t op) {
             switch (bit) {
                 case 0: { // RLC
                     uint8_t c = val >> 7;
-                    val = (val << 1) | c;
+                    val = (uint8_t)((val << 1) | c);
                     flag_assign(FLAG_C, c);
                     break;
                 }
                 case 1: { // RRC
                     uint8_t c = val & 1;
-                    val = (val >> 1) | (c << 7);
+                    val = (uint8_t)((val >> 1) | (c << 7));
                     flag_assign(FLAG_C, c);
                     break;
                 }
                 case 2: { // RL
                     uint8_t c = val >> 7;
-                    val = (val << 1) | flag_get(FLAG_C);
+                    val = (uint8_t)((val << 1) | flag_get(FLAG_C));
                     flag_assign(FLAG_C, c);
                     break;
                 }
                 case 3: { // RR
                     uint8_t c = val & 1;
-                    val = (val >> 1) | (flag_get(FLAG_C) << 7);
+                    val = (uint8_t)((val >> 1) | (flag_get(FLAG_C) << 7));
                     flag_assign(FLAG_C, c);
                     break;
                 }
@@ -471,7 +453,7 @@ int cb(uint8_t op) {
                     break;
                 }
                 case 6: { // SWAP
-                    val = (val << 4) | (val >> 4);
+                    val = (uint8_t)((val << 4) | (val >> 4));
                     flag_unset(FLAG_C);
                     break;
                 }
@@ -507,7 +489,7 @@ int cb(uint8_t op) {
 }
 
 // 0x27 DAA
-int daa(void) {
+static int daa(void) {
     uint16_t a = cpu.a;
     if (!flag_get(FLAG_N)) {
         if (flag_get(FLAG_H) || (a & 0x0F) > 9) a += 6;
@@ -526,11 +508,11 @@ int daa(void) {
 // 0x2F CPL 00 101 111 5
 // 0x37 SCF 00 110 111 6
 // 0x3F CCF 00 111 111 7
-int flag_ops(uint8_t op) {
+static int flag_ops(uint8_t op) {
     uint8_t op_t = (op >> 3) & 0x07;
     switch(op_t) {
         case CPL:
-            cpu.a = ~cpu.a;
+            cpu.a = (uint8_t)~cpu.a;
             flag_set(FLAG_N);
             flag_set(FLAG_H);
             break;
@@ -566,7 +548,7 @@ int cpu_step(void) {
         cpu.ime_pending = 0;
     } else if (cpu.ime) {
         uint8_t flagged = (mmu[0xFF0F] & mmu[0xFFFF]) & 0x1F;
-        uint8_t addr;
+        uint8_t addr = 0;
         for (uint8_t i = 0; i < 5; i++) {
             uint8_t curr = (flagged >> i) & 0x1;
             if (curr) {
@@ -768,21 +750,10 @@ int cpu_step(void) {
                 flag_unset(FLAG_N);
                 flag_assign(FLAG_H, (cpu.sp & 0x0F) + (off & 0x0F) > 0x0F);
                 flag_assign(FLAG_C, (cpu.sp & 0xFF) + (off & 0xFF) > 0xFF);
-                cpu.hl = cpu.sp + off;
+                cpu.hl = (uint16_t)(cpu.sp + off);
                 return 12;
             }
             else fprintf(stderr, "Invalid opcode: %04X\n", op);
             return 0;
     }
-}
-
-void print_bits8(uint8_t n) {
-    for (int i = 7; i >= 0; i--) {
-        printf("%X ", (n >> i) & 0x01);
-    }
-    printf("\n");
-}
-
-void print_flag_reg(void) {
-    print_bits8(cpu.f);
 }

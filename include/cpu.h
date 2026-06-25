@@ -49,6 +49,8 @@ enum Opcode {
 };
 
 enum { FLAG_Z = 0x80, FLAG_N = 0x40, FLAG_H = 0x20, FLAG_C = 0x10 };
+enum { ADD = 0, ADC = 1, SUB = 2, SBC = 3, AND = 4, XOR = 5, OR = 6, CP = 7, CPL = 5, SCF = 6, CCF = 7 };
+enum { RLCA = 0, RRCA = 1, RLA = 2, RRA = 3 };
 
 extern CPU      cpu;
 extern uint8_t  mmu[0x10000];
@@ -73,8 +75,5 @@ void    flag_assign(uint8_t mask, int condition);
 uint8_t flag_get(uint8_t flag);
 
 int cpu_step(void);
-
-void print_bits8(uint8_t n);
-void print_flag_reg(void);
 
 #endif

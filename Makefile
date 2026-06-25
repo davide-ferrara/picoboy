@@ -1,8 +1,18 @@
 .DEFAULT_GOAL := emu
-.PHONY: all emu gbtest test-blargg test-roms pico build flash bootsel monitor clean
+.PHONY: all emu gbtest test-blargg test-roms pico build flash bootsel monitor clean compdb
 
 CC       := gcc
 CFLAGS   := -Wall -Wextra -std=c11 -g -O2 -D_DEFAULT_SOURCE
+# Silence pedantic/stylistic warnings (mainly from clang -Weverything):
+#  - padded: struct alignment padding (CPU unions need specific layout)
+#  - declaration-after-statement: mixing decls/code is fine in C11
+#  - switch-default: not every switch needs a default case
+CFLAGS   += -Wno-padded -Wno-declaration-after-statement -Wno-switch-default
+# clang 22+ only: -Wno-unsafe-buffer-usage (very noisy on raw array indexing like mmu[]).
+# gcc doesn't recognize this flag, so only add it when CC is clang.
+ifneq (,$(findstring clang,$(CC)))
+CFLAGS   += -Wno-unsafe-buffer-usage
+endif
 CPPFLAGS := -Iinclude
 LDFLAGS  := -lm -lraylib
 LDFLAGS_TEST := -lm
@@ -15,7 +25,7 @@ BUILD_PICO  := build-pico
 TEST_ROMS_DIR := test-roms
 
 # --- Sources ---
-CORE_SRCS := src/cpu.c src/ppu.c src/timer.c src/interrupts.c
+CORE_SRCS := src/cpu.c src/ppu.c src/timer.c src/debug.c src/interrupts.c
 EMU_SRCS  := src/main.c
 TEST_SRCS := src/main_test.c
 
@@ -54,6 +64,11 @@ $(BUILD)/%.o: src/%.c | $(BUILD)
 
 $(BUILD):
 	mkdir -p $@
+
+# --- Compile database for clangd/LSP ---
+compdb:
+	$(MAKE) clean
+	bear -- $(MAKE) gbtest
 
 # --- Pico firmware (CMake, separate build dir) ---
 pico:
